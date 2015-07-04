@@ -100,27 +100,32 @@ html
                     socket.emit('search changed', $("input.gsc-input").val());
                 }
                 function sendSearch2(e){
-                    if(e.which == 13){
-                        socket.emit('search changed', $("input.gsc-input").val());
-                    }
+                    /*if(e.which == 17){
+                        $('input.gsc-search-button').click();
+                    }*/ //Activa la busqueda con el CTRL
+                    $('input.gsc-search-button').click();
+
                 }
 
-                function activateSearhEvents(){
+                function activateSearchEvents(){
                         $("#search-panel").on("click", "input.gsc-search-button", sendSearch);
-                        $("#search-panel").on("keydown", ".gsc-input", sendSearch2);
+                        $("#search-panel").on("keyup", ".gsc-input", sendSearch2);
+                    //$("#search-panel").on("keydown", ".gsc-input", sendSearch2);
+
                 }
 
-                function desactivateSearhEvents(){
+                function deactivateSearchEvents(){
                         $("#search-panel").off("click", "input.gsc-search-button", sendSearch);
-                        $("#search-panel").off("keydown", ".gsc-input", sendSearch2);
+                        $("#search-panel").off("keyup", ".gsc-input", sendSearch2);
+                    //$("#search-panel").off("keydown", ".gsc-input", sendSearch2);
                 }
 
-                activateSearhEvents();
+                activateSearchEvents();
 
                 socket.on('search changed', function(msg){
                    $('input.gsc-input').val(msg);
-                   desactivateSearhEvents();
+                    deactivateSearchEvents();
                    $('input.gsc-search-button').click();
-                   activateSearhEvents();
+                    activateSearchEvents();
                 });
             });
