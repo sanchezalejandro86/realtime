@@ -328,3 +328,41 @@ input.gsc-input,
 .gs-text-box{
     display: none;
 }
+
+#page-wrap  {
+    position: relative;
+    background: url(../images/bg.png);
+}
+
+#chat-wrap  {
+    border: 1px solid #eee;
+    margin: 0 0 15px 0;
+}
+
+#chat-area  {
+    height: 300px;
+    overflow: auto;
+    border: 1px solid #666;
+    padding: 20px;
+    background: white;
+}
+#chat-area span {
+    color: white;
+    background: #333;
+    padding: 4px 8px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 8px;
+    margin: 0 5px 0 0;
+}
+
+#chat-area input {
+    margin-bottom: 3px;
+}
+
+#sendie {
+    border: 3px solid #999;
+    width: 100%;
+    padding: 10px;
+    font: 12px "Lucida Grande", Sans-Serif;
+    margin-bottom: 10px;
+}

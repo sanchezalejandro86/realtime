@@ -30,6 +30,13 @@ io.on('connection', function(socket){
         console.log('message: ' + msg);
         socket.broadcast.emit('search changed', msg);
     });
+    socket.on('newMessageChat', function (data) {
+      io.sockets.emit('newMessageChat', data);
+    });
+    socket.on('messageChatChanged', function (data) {
+      io.sockets.emit('messageChatChanged', data);
+    });
+
 })
 
 /**

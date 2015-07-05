@@ -71,7 +71,7 @@ html
                     .col-md-12
                         .alert.alert-warning Este es una versión demo de la aplicación Realtime
                 .row
-                    .col-md-12#search-panel
+                    .col-md-7#search-panel
                         script.
                               (function() {
                                 var cx = '004468690808925015633:ehl2wqargfg';
@@ -85,6 +85,13 @@ html
                               })();
                         gcse:search(disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
                         //.gcse-searchbox(data-disableWebSearch="true", data-enableImageSearch="true")
+                    .col-md-5#page-wrap
+                        h2
+                        #chat-wrap
+                            #chat-area
+                        #send-message-area
+                            textarea#sendie
+
         footer
             .container
                 .row
@@ -122,10 +129,40 @@ html
 
                 activateSearchEvents();
 
+                $("#sendie").keyup(function(e){
+                    if(e.which == 13){
+                        var text = $.trim($("#sendie").val());
+                        if(text != ""){
+                            var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
+                            socket.emit('newMessageChat', { message: text, inputId: randomInputId });
+                            $("#sendie").val("");
+                        }
+                    }
+                });
+
+                $("#chat-area").on("keyup", ".chatInput", function(e){
+                    if(e.which == 13){
+                        var inputId = e.target.id;
+                        var inputValue = $.trim($("#" + inputId).val());
+                        if(inputValue != ""){
+                            socket.emit('messageChatChanged', { message: inputValue, inputId: inputId});
+                        }
+                    }
+                });
+
                 socket.on('search changed', function(msg){
                    $('input.gsc-input').val(msg);
                     deactivateSearchEvents();
                    $('input.gsc-search-button').click();
                     activateSearchEvents();
+                });
+
+                socket.on('newMessageChat', function (data) {
+                    $('#chat-area').append('<input id="'+data.inputId+'" type="text" class="input form-control chatInput" value="'+ data.message +'"></input>');
+                    document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+                });
+
+                socket.on('messageChatChanged', function (data) {
+                    $("#" + data.inputId).val(data.message);
                 });
             });
