@@ -1,0 +1,104 @@
+doctype html
+html
+    head
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='content-language', content='es')
+        meta(name="robots" content="INDEX,FOLLOW")
+        link(href='/stylesheets/bootstrap.min.css', rel='stylesheet', media='screen')
+        link(href='/stylesheets/font-awesome.min.css', rel='stylesheet', media='screen')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        header
+            .container
+                .row
+                    .col-md-12
+                        strong Email:
+                        span xxxx@tudominio.com &nbsp;&nbsp;
+                        strong Soporte:
+                        span +54-11-5555-5555
+        .navbar.navbar-inverse.set-radius-zero
+            .container
+                .navbar-header
+                    button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href="/")
+                        img(src="images/logo.png")
+                .left-div
+                    .user-settings-wrapper
+                        ul.nav
+                            li.dropdown
+                                a.dropdown-toggle(data-toggle="dropdown", href="#", aria-expanded="false")
+                                    span.glyphicon.glyphicon-user(style="font-size: 25px")
+                                .dropdown-menu.dropdown-settings
+                                    .media
+                                        a.media-left(href="#")
+                                            img.img-rounded(src="images/64-64.jpg", alt="")
+                                        .media-body
+                                            h4.media-heading Alejandro Sánchez
+                                            h5 Administrador
+                                    hr
+                                    h5
+                                        strong Biografía
+                                    span Ingeniero en Sistemas de Información
+                                    hr
+                                    a.btn.btn-info.btn-sm(href="#") Perfil &nbsp;
+                                    a.btn.btn-danger.btn-sm(href="#") Cerrar Sesión
+        section.menu-section
+            .container
+                .row
+                    .col-md-12
+                        .navbar-collapse.collapse
+                            ul.nav.navbar-nav.navbar-right#menu-top
+                                li
+                                    a.menu-top-active(href="#") Realtime
+                                li
+                                    a(href="#") Menu 2
+                                li
+                                    a(href="#") Menu 3
+                                li
+                                    a(href="#") Menu 4
+                                li
+                                    a(href="#") Menu 5
+
+        .content-wrapper
+            .container
+                .row
+                    .col-md-12
+                        h4.page-head-line Realtime
+                .row
+                    .col-md-12
+                        .alert.alert-warning Este es una versión demo de la aplicación Realtime
+                .row
+                    .col-md-12
+                        video#vidCliente(autoplay)
+
+
+        footer
+            .container
+                .row
+                    .col-md-12 &copy; 2015 Unlimited Solutions
+
+        script(type='text/javascript', src='/javascripts/jquery-2.1.4.min.js')
+        script(type='text/javascript', src='/javascripts/bootstrap.min.js')
+        script(type='text/javascript', src='/javascripts/socket.io-1.3.5.js')
+        script(type='text/javascript', src='/javascripts/peer.js')
+        script.
+            var peer = new Peer({key: 'bp70suzmx5ok1emi'});
+
+            $(document).ready(function(){
+                peer.on('open', function (id) {
+                    console.log('My peer ID is: ' + id); //este peerId es el que pone el admin para stremearle el audio/video
+                });
+
+                peer.on('call', function (call) {
+                    call.answer(null);//contesto con null para que la comunicacion sea unidireccional
+
+                    call.on('stream', function (stream) {
+                        var vidCliente = document.getElementById('vidCliente');
+                        vidCliente.src = window.URL.createObjectURL(stream);
+                    });
+                });
+
+            });
