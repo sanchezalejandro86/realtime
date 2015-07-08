@@ -8,14 +8,6 @@ html
         link(href='/stylesheets/font-awesome.min.css', rel='stylesheet', media='screen')
         link(rel='stylesheet', href='/stylesheets/style.css')
     body
-        header
-            .container
-                .row
-                    .col-md-12
-                        strong Email:
-                        span xxxx@tudominio.com &nbsp;&nbsp;
-                        strong Soporte:
-                        span +54-11-5555-5555
         .navbar.navbar-inverse.set-radius-zero
             .container
                 .navbar-header
@@ -65,13 +57,7 @@ html
         .content-wrapper
             .container
                 .row
-                    .col-md-12
-                        h4.page-head-line Realtime
-                .row
-                    .col-md-12
-                        .alert.alert-warning Este es una versión demo de la aplicación Realtime
-                .row
-                    .col-md-7#search-panel
+                    .col-md-12#search-panel
                         script.
                               (function() {
                                 var cx = '004468690808925015633:ehl2wqargfg';
@@ -85,17 +71,26 @@ html
                               })();
                         gcse:search(disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
                         //.gcse-searchbox(data-disableWebSearch="true", data-enableImageSearch="true")
-                    .col-md-5#page-wrap
-                        h2
+                .row
+                    .col-md-6
+                        video#vid(height="400px",autoplay,controls)
+                    .col-md-6#page-wrap
                         #chat-wrap
                             #chat-area
                         #send-message-area
                             textarea#sendie
-                .row
-                    .col-md-12
-                        input(type="text")#clientId
-                        video#vid(autoplay)
-
+                if profesor
+                    .row
+                        .form-group.col-lg-12
+                            label.col-md-2.control-label Agregar Alumno Al Video:
+                            .col-md-10
+                                input(type="text")#clientId
+                else
+                    .row
+                        .form-group.col-lg-12
+                            label.col-md-1.control-label Mi Id:
+                            .col-md-11
+                                input(type="text", disabled)#alumnoPeerId
 
         footer
             .container
@@ -109,7 +104,7 @@ html
         script.
             var socket = io();
             var peer = new Peer({key: 'bp70suzmx5ok1emi'});
-            //var peerId = null;
+            var profesor = '#{profesor}' == '1';
             var mediaStream = null;
 
             function sendSearch(){
@@ -177,36 +172,45 @@ html
                     $("#" + data.inputId).val(data.message);
                 });
 
-                /*peer.on('open', function (id) {
-                    console.log('My peer ID is: ' + id);
-                    peerId = id;
-                });*/
+                if(profesor){ //el profesor activa su camara para stremear a los alumnos
+                    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                    navigator.getUserMedia({audio: true, video:true},
+                    function(localMediaStream){
+                        console.log("JOYAAA");
+                        mediaStream = localMediaStream;
+                        var vid = document.getElementById('vid');
+                        vid.src = window.URL.createObjectURL(localMediaStream);
+                    },function(err) {
+                        console.log('The following error occurred when trying to use getUserMedia: ' + err);
+                    });
 
-                navigator.getUserMedia({audio: true, video:true},
-                function(localMediaStream){
-                    console.log("JOYAAA");
-                    mediaStream = localMediaStream;
-                    var vid = document.getElementById('vid');
-                    vid.src = window.URL.createObjectURL(localMediaStream);
-                },function(err) {
-                    console.log('The following error occurred when trying to use getUserMedia: ' + err);
-                });
-
-                /*peer.on('call', function (call) {
-                    console.log("LLAMADO DESDE UN CLIENTE");
-                    call.answer(mediaStream);
-                });*/
-
-                $("#clientId").keyup(function(e){
-                    if(e.which == 13){
-                        var peerClientId = $.trim($("#clientId").val());
-                        if(peerClientId != ""){
-                            peer.call(peerClientId, mediaStream);
+                    $("#clientId").keyup(function(e){
+                        if(e.which == 13){
+                            var peerClientId = $.trim($("#clientId").val());
+                            if(peerClientId != ""){
+                                peer.call(peerClientId, mediaStream);
+                            }
                         }
-                    }
-                });
+                    });
+                } else { //los alumnos abren el peer y esperan la conexion del profesor
+                    peer.on('open', function (id) {
+                        $("#alumnoPeerId").val(id); //este peerId es el que pone el profesor para stremearle el audio/video
+                    });
+
+                    $("#vid").hide();
+
+                    peer.on('call', function (call) {
+                        call.answer(null);//contesto con null para que la comunicacion sea unidireccional
+
+                        call.on('stream', function (stream) {
+                            var vidCliente = document.getElementById('vid');
+                            vidCliente.src = window.URL.createObjectURL(stream);
+                            $("#vid").show();
+                        });
+                    });
+                }
+
 
 
             });
