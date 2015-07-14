@@ -1,0 +1,30 @@
+extends ./index.jade
+
+block videosExtra
+    .col-md-6
+        video#profesorVideo(height="400px",autoplay)
+    .col-md-6
+        button#conectar CONECTAR CON PROFESOR
+block javascript
+    script.
+        var peerId;
+        $(document).ready(function(){
+            $("#conectar").hide();
+            peer.on('open', function (id) {
+                peerId = id;
+                $("#conectar").show();
+            });
+
+            $("#conectar").click(function(){
+                socket.emit('newStudentConnected', { peerId: peerId});
+                $("#conectar").hide();
+            });
+
+            peer.on('call', function (call) {
+                call.answer(mediaStream);
+                call.on('stream', function (stream) {
+                    var profesorVideo = document.getElementById('profesorVideo');
+                    profesorVideo.src = window.URL.createObjectURL(stream);
+                });
+            });
+        });

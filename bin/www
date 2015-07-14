@@ -36,6 +36,9 @@ io.on('connection', function(socket){
     socket.on('messageChatChanged', function (data) {
       io.sockets.emit('messageChatChanged', data);
     });
+    socket.on('newStudentConnected', function (data) {
+        io.sockets.emit('newStudentConnected', data);
+    });
 
 })
 

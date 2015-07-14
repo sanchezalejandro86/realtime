@@ -1,0 +1,25 @@
+extends ./index.jade
+
+block videosExtra
+    #alumnos
+
+block javascript
+    script.
+        $(document).ready(function(){
+            socket.on('newStudentConnected', function(data){
+                var call = peer.call(data.peerId, mediaStream);
+                call.on('stream', function (stream) {
+                    createNewAlumnoVideoTag(stream);
+                });
+            });
+        });
+
+        function createNewAlumnoVideoTag(stream){
+            var randomId = Math.floor((Math.random() * 1000000000) + 1);
+            var htmlVideo = '<div class="col-md-3"><video id="'+randomId+'" autoplay /></div>';
+            $("#alumnos").append(htmlVideo);
+            var alumnoVideo = document.getElementById(randomId);
+            alumnoVideo.src = window.URL.createObjectURL(stream);
+        }
+
+

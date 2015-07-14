@@ -73,24 +73,14 @@ html
                         //.gcse-searchbox(data-disableWebSearch="true", data-enableImageSearch="true")
                 .row
                     .col-md-6
-                        video#vid(height="400px",autoplay,controls)
+                        video#selfVideo(height="400px",autoplay,controls,muted)
                     .col-md-6#page-wrap
                         #chat-wrap
                             #chat-area
                         #send-message-area
                             textarea#sendie
-                if profesor
-                    .row
-                        .form-group.col-lg-12
-                            label.col-md-2.control-label Agregar Alumno Al Video:
-                            .col-md-10
-                                input(type="text")#clientId
-                else
-                    .row
-                        .form-group.col-lg-12
-                            label.col-md-1.control-label Mi Id:
-                            .col-md-11
-                                input(type="text", disabled)#alumnoPeerId
+                .row
+                    block videosExtra
 
         footer
             .container
@@ -104,7 +94,6 @@ html
         script.
             var socket = io();
             var peer = new Peer({key: 'bp70suzmx5ok1emi'});
-            var profesor = '#{profesor}' == '1';
             var mediaStream = null;
 
             function sendSearch(){
@@ -132,85 +121,53 @@ html
             }
 
             $(document).ready(function(){
-
-                activateSearchEvents();
-
-                $("#sendie").keyup(function(e){
-                    if(e.which == 13){
-                        var text = $.trim($("#sendie").val());
-                        if(text != ""){
-                            var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
-                            socket.emit('newMessageChat', { message: text, inputId: randomInputId });
-                            $("#sendie").val("");
-                        }
-                    }
-                });
-
-                $("#chat-area").on("keyup", ".chatInput", function(e){
-                    if(e.which == 13){
-                        var inputId = e.target.id;
-                        var inputValue = $.trim($("#" + inputId).val());
-                        if(inputValue != ""){
-                            socket.emit('messageChatChanged', { message: inputValue, inputId: inputId});
-                        }
-                    }
-                });
-
-                socket.on('search changed', function(msg){
-                   $('input.gsc-input').val(msg);
-                    deactivateSearchEvents();
-                   $('input.gsc-search-button').click();
                     activateSearchEvents();
-                });
 
-                socket.on('newMessageChat', function (data) {
-                    $('#chat-area').append('<input id="'+data.inputId+'" type="text" class="input form-control chatInput" value="'+ data.message +'"></input>');
-                    document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
-                });
-
-                socket.on('messageChatChanged', function (data) {
-                    $("#" + data.inputId).val(data.message);
-                });
-
-                if(profesor){ //el profesor activa su camara para stremear a los alumnos
-                    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-                    navigator.getUserMedia({audio: true, video:true},
-                    function(localMediaStream){
-                        console.log("JOYAAA");
-                        mediaStream = localMediaStream;
-                        var vid = document.getElementById('vid');
-                        vid.src = window.URL.createObjectURL(localMediaStream);
-                    },function(err) {
-                        console.log('The following error occurred when trying to use getUserMedia: ' + err);
-                    });
-
-                    $("#clientId").keyup(function(e){
+                    $("#sendie").keyup(function(e){
                         if(e.which == 13){
-                            var peerClientId = $.trim($("#clientId").val());
-                            if(peerClientId != ""){
-                                peer.call(peerClientId, mediaStream);
+                            var text = $.trim($("#sendie").val());
+                            if(text != ""){
+                                var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
+                                socket.emit('newMessageChat', { message: text, inputId: randomInputId });
+                                $("#sendie").val("");
                             }
                         }
                     });
-                } else { //los alumnos abren el peer y esperan la conexion del profesor
-                    peer.on('open', function (id) {
-                        $("#alumnoPeerId").val(id); //este peerId es el que pone el profesor para stremearle el audio/video
+
+                    $("#chat-area").on("keyup", ".chatInput", function(e){
+                        if(e.which == 13){
+                            var inputId = e.target.id;
+                            var inputValue = $.trim($("#" + inputId).val());
+                            if(inputValue != ""){
+                                socket.emit('messageChatChanged', { message: inputValue, inputId: inputId});
+                            }
+                        }
                     });
 
-                    $("#vid").hide();
-
-                    peer.on('call', function (call) {
-                        call.answer(null);//contesto con null para que la comunicacion sea unidireccional
-
-                        call.on('stream', function (stream) {
-                            var vidCliente = document.getElementById('vid');
-                            vidCliente.src = window.URL.createObjectURL(stream);
-                            $("#vid").show();
-                        });
+                    socket.on('search changed', function(msg){
+                       $('input.gsc-input').val(msg);
+                        deactivateSearchEvents();
+                       $('input.gsc-search-button').click();
+                        activateSearchEvents();
                     });
-                }
 
+                    socket.on('newMessageChat', function (data) {
+                        $('#chat-area').append('<input id="'+data.inputId+'" type="text" class="input form-control chatInput" value="'+ data.message +'"></input>');
+                        document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+                    });
 
+                    socket.on('messageChatChanged', function (data) {
+                        $("#" + data.inputId).val(data.message);
+                    });
 
+                    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                    navigator.getUserMedia({audio: true, video:true},
+                    function(localMediaStream){
+                       mediaStream = localMediaStream;
+                       var selfVideo = document.getElementById('selfVideo');
+                       selfVideo.src = window.URL.createObjectURL(localMediaStream);
+                    },function(err) {
+                       console.log('The following error occurred when trying to use getUserMedia: ' + err);
+                    });
             });
+        block javascript
