@@ -1,24 +1,39 @@
 extends ./index.jade
 
+block video
+    .col-md-6
+        video#selfVideo(height="400px",autoplay,muted)
+
 block videosExtra
     #alumnos
 
 block javascript
     script.
+        var studentsConnected = [];
         $(document).ready(function(){
             socket.on('newStudentConnected', function(data){
-                var call = peer.call(data.peerId, mediaStream);
-                call.on('stream', function (stream) {
-                    createNewAlumnoVideoTag(stream);
-                });
+                if(studentsConnected.indexOf(data.peerId) == -1){ //me fijo que no este ya conectado a ese alumno
+                    var call = peer.call(data.peerId, mediaStream);
+                    call.on('stream', function (stream) {
+                        createNewAlumnoVideoTag(stream, data.peerId);
+                        studentsConnected.push(data.peerId);
+                    });
+                }
+            });
+
+            socket.on('studentDisconnected', function(peerIdDisconnected){
+                if(studentsConnected.indexOf(peerIdDisconnected) != -1){
+                    $("#" + peerIdDisconnected).remove();
+                    $("#div_" + peerIdDisconnected).remove();
+                    studentsConnected.splice(studentsConnected.indexOf(peerIdDisconnected), 1);
+                }
             });
         });
 
-        function createNewAlumnoVideoTag(stream){
-            var randomId = Math.floor((Math.random() * 1000000000) + 1);
-            var htmlVideo = '<div class="col-md-3"><video id="'+randomId+'" autoplay /></div>';
+        function createNewAlumnoVideoTag(stream, peerId){
+            var htmlVideo = '<div id="div_'+peerId+'" class="col-md-3"><video style="width:250px;" id="'+peerId+'" autoplay controls/></div>';
             $("#alumnos").append(htmlVideo);
-            var alumnoVideo = document.getElementById(randomId);
+            var alumnoVideo = document.getElementById(peerId);
             alumnoVideo.src = window.URL.createObjectURL(stream);
         }
 

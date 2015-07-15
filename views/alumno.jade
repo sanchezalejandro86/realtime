@@ -1,10 +1,15 @@
 extends ./index.jade
 
-block videosExtra
+block video
     .col-md-6
         video#profesorVideo(height="400px",autoplay)
+
+block videosExtra
+    .col-md-6
+        video#selfVideo(height="400px",autoplay,muted)
     .col-md-6
         button#conectar CONECTAR CON PROFESOR
+
 block javascript
     script.
         var peerId;
@@ -17,7 +22,7 @@ block javascript
 
             $("#conectar").click(function(){
                 socket.emit('newStudentConnected', { peerId: peerId});
-                $("#conectar").hide();
+            //     $("#conectar").hide();
             });
 
             peer.on('call', function (call) {

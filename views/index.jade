@@ -72,13 +72,14 @@ html
                         gcse:search(disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
                         //.gcse-searchbox(data-disableWebSearch="true", data-enableImageSearch="true")
                 .row
-                    .col-md-6
-                        video#selfVideo(height="400px",autoplay,controls,muted)
-                    .col-md-6#page-wrap
+                    //.col-md-6#page-wrap
                         #chat-wrap
                             #chat-area
                         #send-message-area
                             textarea#sendie
+                    .col-md-6
+                        #chatEtherpad
+                    block video
                 .row
                     block videosExtra
 
@@ -91,6 +92,7 @@ html
         script(type='text/javascript', src='/javascripts/bootstrap.min.js')
         script(type='text/javascript', src='/javascripts/socket.io-1.3.5.js')
         script(type='text/javascript', src='/javascripts/peer.js')
+        script(type='text/javascript', src='/javascripts/etherpad.js')
         script.
             var socket = io();
             var peer = new Peer({key: 'bp70suzmx5ok1emi'});
@@ -121,6 +123,15 @@ html
             }
 
             $(document).ready(function(){
+                    // var randomEtherpadChatId = Math.floor((Math.random() * 1000000000) + 1);
+                    $('#chatEtherpad').pad({
+                            'padId' :'fedeprueba1234567',
+                            'width' : 600,
+                            'height' : 400,
+                            'showControls' : true
+                        }
+                    );
+
                     activateSearchEvents();
 
                     $("#sendie").keyup(function(e){

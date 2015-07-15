@@ -24,8 +24,10 @@ var io = require('socket.io').listen(server);
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+var socketsPeers = [];
+
 io.on('connection', function(socket){
-    console.log('a user connected');
     socket.on('search changed', function(msg){
         console.log('message: ' + msg);
         socket.broadcast.emit('search changed', msg);
@@ -37,7 +39,14 @@ io.on('connection', function(socket){
       io.sockets.emit('messageChatChanged', data);
     });
     socket.on('newStudentConnected', function (data) {
+        socketsPeers[socket.id] = data.peerId;
         io.sockets.emit('newStudentConnected', data);
+    });
+    socket.on('disconnect', function() {
+        var peerId = socketsPeers[socket.id];
+        if(peerId != null){
+            io.sockets.emit('studentDisconnected', peerId);
+        }
     });
 
 })
