@@ -28,15 +28,8 @@ server.listen(app.get('port'), function(){
 var socketsPeers = [];
 
 io.on('connection', function(socket){
-    socket.on('search changed', function(msg){
-        console.log('message: ' + msg);
-        socket.broadcast.emit('search changed', msg);
-    });
-    socket.on('newMessageChat', function (data) {
-      io.sockets.emit('newMessageChat', data);
-    });
-    socket.on('messageChatChanged', function (data) {
-      io.sockets.emit('messageChatChanged', data);
+    socket.on('search changed', function(data){
+        socket.broadcast.emit('search changed', data);
     });
     socket.on('newStudentConnected', function (data) {
         socketsPeers[socket.id] = data.peerId;
@@ -48,6 +41,13 @@ io.on('connection', function(socket){
             io.sockets.emit('studentDisconnected', peerId);
         }
     });
+
+    /*socket.on('newMessageChat', function (data) {
+     io.sockets.emit('newMessageChat', data);
+     });
+     socket.on('messageChatChanged', function (data) {
+     io.sockets.emit('messageChatChanged', data);
+     });*/
 
 })
 

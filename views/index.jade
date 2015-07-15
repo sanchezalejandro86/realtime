@@ -97,88 +97,89 @@ html
             var socket = io();
             var peer = new Peer({key: 'bp70suzmx5ok1emi'});
             var mediaStream = null;
+            var classRoom = '#{classRoom}';
 
             function sendSearch(){
-                socket.emit('search changed', $("input.gsc-input").val());
+                socket.emit('search changed', { text: $("input.gsc-input").val(), classRoom: classRoom});
             }
             function sendSearch2(e){
-                /*if(e.which == 17){
-                 $('input.gsc-search-button').click();
-                 }*/ //Activa la busqueda con el CTRL
-                $('input.gsc-search-button').click();
-
+                if(e.which == 17){ //Activa la busqueda con el CTRL
+                    $('input.gsc-search-button').click();
+                }
             }
 
             function activateSearchEvents(){
                 $("#search-panel").on("click", "input.gsc-search-button", sendSearch);
                 $("#search-panel").on("keyup", ".gsc-input", sendSearch2);
-                //$("#search-panel").on("keydown", ".gsc-input", sendSearch2);
 
             }
 
             function deactivateSearchEvents(){
                 $("#search-panel").off("click", "input.gsc-search-button", sendSearch);
                 $("#search-panel").off("keyup", ".gsc-input", sendSearch2);
-                //$("#search-panel").off("keydown", ".gsc-input", sendSearch2);
             }
 
             $(document).ready(function(){
-                    // var randomEtherpadChatId = Math.floor((Math.random() * 1000000000) + 1);
-                    $('#chatEtherpad').pad({
-                            'padId' :'fedeprueba1234567',
-                            'width' : 600,
-                            'height' : 400,
-                            'showControls' : true
-                        }
-                    );
+                var padId = 'realtimePortugues_' + classRoom;
+                $('#chatEtherpad').pad({
+                        'padId' : padId,
+                        'width' : 600,
+                        'height' : 400,
+                        'showControls' : true
+                    }
+                );
 
-                    activateSearchEvents();
+                activateSearchEvents();
 
-                    $("#sendie").keyup(function(e){
-                        if(e.which == 13){
-                            var text = $.trim($("#sendie").val());
-                            if(text != ""){
-                                var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
-                                socket.emit('newMessageChat', { message: text, inputId: randomInputId });
-                                $("#sendie").val("");
-                            }
-                        }
-                    });
-
-                    $("#chat-area").on("keyup", ".chatInput", function(e){
-                        if(e.which == 13){
-                            var inputId = e.target.id;
-                            var inputValue = $.trim($("#" + inputId).val());
-                            if(inputValue != ""){
-                                socket.emit('messageChatChanged', { message: inputValue, inputId: inputId});
-                            }
-                        }
-                    });
-
-                    socket.on('search changed', function(msg){
-                       $('input.gsc-input').val(msg);
+                socket.on('search changed', function(data){
+                    if(data.classRoom == classRoom){
+                        $('input.gsc-input').val(data.text);
                         deactivateSearchEvents();
-                       $('input.gsc-search-button').click();
+                        $('input.gsc-search-button').click();
                         activateSearchEvents();
-                    });
+                    }
+                });
 
-                    socket.on('newMessageChat', function (data) {
-                        $('#chat-area').append('<input id="'+data.inputId+'" type="text" class="input form-control chatInput" value="'+ data.message +'"></input>');
-                        document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
-                    });
+                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                navigator.getUserMedia({audio: true, video:true},
+                function(localMediaStream){
+                   mediaStream = localMediaStream;
+                   var selfVideo = document.getElementById('selfVideo');
+                   selfVideo.src = window.URL.createObjectURL(localMediaStream);
+                },function(err) {
+                   console.log('The following error occurred when trying to use getUserMedia: ' + err);
+                });
 
-                    socket.on('messageChatChanged', function (data) {
-                        $("#" + data.inputId).val(data.message);
-                    });
+                /*
+                $("#sendie").keyup(function(e){
+                    if(e.which == 13){
+                        var text = $.trim($("#sendie").val());
+                        if(text != ""){
+                            var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
+                            socket.emit('newMessageChat', { message: text, inputId: randomInputId });
+                            $("#sendie").val("");
+                        }
+                    }
+                });
 
-                    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-                    navigator.getUserMedia({audio: true, video:true},
-                    function(localMediaStream){
-                       mediaStream = localMediaStream;
-                       var selfVideo = document.getElementById('selfVideo');
-                       selfVideo.src = window.URL.createObjectURL(localMediaStream);
-                    },function(err) {
-                       console.log('The following error occurred when trying to use getUserMedia: ' + err);
-                    });
+                $("#chat-area").on("keyup", ".chatInput", function(e){
+                    if(e.which == 13){
+                        var inputId = e.target.id;
+                        var inputValue = $.trim($("#" + inputId).val());
+                        if(inputValue != ""){
+                            socket.emit('messageChatChanged', { message: inputValue, inputId: inputId});
+                        }
+                    }
+                });
+
+                socket.on('newMessageChat', function (data) {
+                    $('#chat-area').append('<input id="'+data.inputId+'" type="text" class="input form-control chatInput" value="'+ data.message +'"></input>');
+                    document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+                });
+
+                socket.on('messageChatChanged', function (data) {
+                    $("#" + data.inputId).val(data.message);
+                });
+                */
             });
         block javascript

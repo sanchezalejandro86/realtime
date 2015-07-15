@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  //res.render('client', { profesor: '0' });
-  res.render('alumno');
+router.get('/:classRoom', function(req, res, next) {
+    res.render('alumno', { classRoom: req.params.classRoom });
 });
 
 module.exports = router;

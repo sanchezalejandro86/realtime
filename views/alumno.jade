@@ -21,7 +21,7 @@ block javascript
             });
 
             $("#conectar").click(function(){
-                socket.emit('newStudentConnected', { peerId: peerId});
+                socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
             //     $("#conectar").hide();
             });
 

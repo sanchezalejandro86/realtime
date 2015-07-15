@@ -12,12 +12,14 @@ block javascript
         var studentsConnected = [];
         $(document).ready(function(){
             socket.on('newStudentConnected', function(data){
-                if(studentsConnected.indexOf(data.peerId) == -1){ //me fijo que no este ya conectado a ese alumno
-                    var call = peer.call(data.peerId, mediaStream);
-                    call.on('stream', function (stream) {
-                        createNewAlumnoVideoTag(stream, data.peerId);
-                        studentsConnected.push(data.peerId);
-                    });
+                if(data.classRoom == classRoom){
+                    if(studentsConnected.indexOf(data.peerId) == -1){ //me fijo que no este ya conectado a ese alumno
+                        var call = peer.call(data.peerId, mediaStream);
+                        call.on('stream', function (stream) {
+                            createNewAlumnoVideoTag(stream, data.peerId);
+                            studentsConnected.push(data.peerId);
+                        });
+                    }
                 }
             });
 
