@@ -41,14 +41,12 @@ io.on('connection', function(socket){
             io.sockets.emit('studentDisconnected', peerId);
         }
     });
-
-    /*socket.on('newMessageChat', function (data) {
-     io.sockets.emit('newMessageChat', data);
-     });
-     socket.on('messageChatChanged', function (data) {
-     io.sockets.emit('messageChatChanged', data);
-     });*/
-
+    socket.on('newMessageChat', function (data) {
+        io.sockets.emit('newMessageChat', data);
+    });
+    socket.on('messageChatChanged', function (data) {
+        io.sockets.emit('messageChatChanged', data);
+    });
 })
 
 /**

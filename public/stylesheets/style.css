@@ -323,6 +323,7 @@ input.gsc-input,
     line-height: normal;
 }
 
+.gsc-above-wrapper-area,
 .gsc-result-info-container,
 .gcsc-branding,
 .gsc-cursor-box.gs-bidi-start-align,
@@ -330,10 +331,14 @@ input.gsc-input,
     display: none;
 }
 
-#page-wrap  {
+.gsc-imageResult-classic {
+    padding: 0 !important;
+}
+
+/*#page-wrap  {
     position: relative;
     background: url(../images/bg.png);
-}
+}*/
 
 #chat-wrap  {
     border: 1px solid #eee;
@@ -341,10 +346,10 @@ input.gsc-input,
 }
 
 #chat-area  {
-    height: 300px;
+    height: 400px;
     overflow: auto;
     border: 1px solid #666;
-    padding: 20px;
+    padding: 5px;
     background: white;
 }
 #chat-area span {
@@ -366,5 +371,6 @@ input.gsc-input,
     padding: 10px;
     font: 12px "Lucida Grande", Sans-Serif;
     margin-bottom: 10px;
+    height: 100px;
 }
 

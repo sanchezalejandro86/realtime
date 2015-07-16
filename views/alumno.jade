@@ -1,11 +1,11 @@
 extends ./index.jade
 
 block video
-    .col-md-6
-        video#profesorVideo(height="400px",autoplay)
+    .col-md-3
+        video#profesorVideo(height="100px",autoplay)
 
 block videosExtra
-    .col-md-6
+    //.col-md-6
         video#selfVideo(height="400px",autoplay,muted)
     .col-md-6
         button#conectar CONECTAR CON PROFESOR
@@ -14,10 +14,23 @@ block javascript
     script.
         var peerId;
         $(document).ready(function(){
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            navigator.getUserMedia({audio: true, video:false},
+            function(localMediaStream){
+               mediaStream = localMediaStream;
+               //var selfVideo = document.getElementById('selfVideo');
+               //selfVideo.src = window.URL.createObjectURL(localMediaStream);
+            },function(err) {
+               console.log('The following error occurred when trying to use getUserMedia: ' + err);
+            });
+
             $("#conectar").hide();
+            $("#profesorVideo").hide();
+
             peer.on('open', function (id) {
                 peerId = id;
                 $("#conectar").show();
+                $("#profesorVideo").show();
             });
 
             $("#conectar").click(function(){

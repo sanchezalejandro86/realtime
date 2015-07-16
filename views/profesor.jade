@@ -1,8 +1,8 @@
 extends ./index.jade
 
 block video
-    .col-md-6
-        video#selfVideo(height="400px",autoplay,muted)
+    .col-md-3
+        video#selfVideo(height="100px",autoplay, muted)
 
 block videosExtra
     #alumnos
@@ -11,6 +11,17 @@ block javascript
     script.
         var studentsConnected = [];
         $(document).ready(function(){
+
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            navigator.getUserMedia({audio: true, video:true},
+            function(localMediaStream){
+               mediaStream = localMediaStream;
+               var selfVideo = document.getElementById('selfVideo');
+               selfVideo.src = window.URL.createObjectURL(localMediaStream);
+            },function(err) {
+               console.log('The following error occurred when trying to use getUserMedia: ' + err);
+            });
+
             socket.on('newStudentConnected', function(data){
                 if(data.classRoom == classRoom){
                     if(studentsConnected.indexOf(data.peerId) == -1){ //me fijo que no este ya conectado a ese alumno
@@ -33,10 +44,10 @@ block javascript
         });
 
         function createNewAlumnoVideoTag(stream, peerId){
-            var htmlVideo = '<div id="div_'+peerId+'" class="col-md-3"><video style="width:250px;" id="'+peerId+'" autoplay controls/></div>';
-            $("#alumnos").append(htmlVideo);
-            var alumnoVideo = document.getElementById(peerId);
-            alumnoVideo.src = window.URL.createObjectURL(stream);
+            var htmlAudio = '<div id="div_'+peerId+'" class="col-md-3"><audio style="width:250px;" id="'+peerId+'" autoplay controls/></div>';
+            $("#alumnos").append(htmlAudio);
+            var alumnoAudio = document.getElementById(peerId);
+            alumnoAudio.src = window.URL.createObjectURL(stream);
         }
 
 
