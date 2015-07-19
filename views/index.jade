@@ -173,7 +173,9 @@ html
                         var text = $.trim($("#sendie").val());
                         if(text != ""){
                             var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
-                            socket.emit('newMessageChat', { message: text, inputId: randomInputId, classRoom: classRoom });
+                            var data = { message: text, inputId: randomInputId, classRoom: classRoom, sender: peer.id };
+                            socket.emit('newMessageChat', data);
+                            addChatMsg(data, true);
                             $("#sendie").val("");
                         }
                     }
@@ -182,7 +184,7 @@ html
                 $("#chat-area").on("keyup", ".chatInput", function(e){
                     if(e.which == 13){
                         var inputId = e.target.id;
-                        var inputValue = $.trim($("#" + inputId).val());
+                        var inputValue = $.trim($("#" + inputId).text());
                         if(inputValue != ""){
                             socket.emit('messageChatChanged', { message: inputValue, inputId: inputId, classRoom: classRoom});
                         }
@@ -191,16 +193,29 @@ html
 
                 socket.on('newMessageChat', function (data) {
                     if(data.classRoom == classRoom){
-                        $('#chat-area').append('<input id="'+data.inputId+'" type="text" class="input form-control chatInput" value="'+ data.message +'"></input>');
+                        addChatMsg(data, false);
                         document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
                     }
                 });
 
                 socket.on('messageChatChanged', function (data) {
                     if(data.classRoom == classRoom){
-                        $("#" + data.inputId).val(data.message);
+                        $("#" + data.inputId).text(data.message);
                     }
                 });
 
+
+                function addChatMsg(data, sent){
+                    var timestamp = Date.now();
+                    var msg = '<div contentEditable="true" id="' + data.inputId + '" \
+                            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.sender + '">' +
+                            data.message +'</div>';
+
+                    if (data.sender != $('#chat-area > *:last-child').data('sender'))
+                        $('#chat-area').append('<hr class="chat-separator">');
+
+                    $('#chat-area').append(msg);
+                }
             });
+
         block javascript

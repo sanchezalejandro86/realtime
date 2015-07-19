@@ -42,7 +42,7 @@ io.on('connection', function(socket){
         }
     });
     socket.on('newMessageChat', function (data) {
-        io.sockets.emit('newMessageChat', data);
+        socket.broadcast.emit('newMessageChat', data);
     });
     socket.on('messageChatChanged', function (data) {
         io.sockets.emit('messageChatChanged', data);

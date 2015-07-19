@@ -374,3 +374,17 @@ input.gsc-input,
     height: 100px;
 }
 
+.msg-sent{
+    text-align: right;
+}
+.msg-rcv{
+    text-align: left;
+}
+.chat-separator{
+    margin: 5px 0;
+}
+.chatInput{
+    resize: none;
+    height: auto;!important;
+    margin: 2px;
+}
