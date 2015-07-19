@@ -181,24 +181,26 @@ html
                     }
                 });
 
-                $("#chat-area").on("keyup", ".chatInput", function(e){
+                $("#chat-area").on("keydown", ".chatInput", function(e){
                     if(e.which == 13){
                         var inputId = e.target.id;
-                        var inputValue = $.trim($("#" + inputId).text());
+                        var item = $("#" + inputId);
+                        var inputValue = $.trim(item.text());
                         if(inputValue != ""){
                             socket.emit('messageChatChanged', { message: inputValue, inputId: inputId, classRoom: classRoom});
                         }
+                        e.preventDefault();
                     }
                 });
 
                 socket.on('newMessageChat', function (data) {
                     if(data.classRoom == classRoom){
                         addChatMsg(data, false);
-                        document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
                     }
                 });
 
                 socket.on('messageChatChanged', function (data) {
+                    console.log('changes');
                     if(data.classRoom == classRoom){
                         $("#" + data.inputId).text(data.message);
                     }
@@ -215,6 +217,7 @@ html
                         $('#chat-area').append('<hr class="chat-separator">');
 
                     $('#chat-area').append(msg);
+                    document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
                 }
             });
 

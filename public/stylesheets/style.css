@@ -376,15 +376,25 @@ input.gsc-input,
 
 .msg-sent{
     text-align: right;
+    margin-left: 10% !important;
 }
 .msg-rcv{
     text-align: left;
+    margin-right: 10% !important;
 }
 .chat-separator{
     margin: 5px 0;
 }
 .chatInput{
     resize: none;
-    height: auto;!important;
+    height: auto !important;
     margin: 2px;
+    border-width: 2px;
+    width: 90%;
+}
+.msg-complete{
+    border-color: #3c763d !important;
+}
+.msg-pending{
+    border-color: #8a6d3b !important;
 }
