@@ -181,12 +181,12 @@ html
                     }
                 });
 
-                $("#chat-area").on("keydown", ".chatInput", function(e){
+                $("#chat-area").on("keydown", ".chatInput .msg-text", function(e){
                     if(e.which != 13) return;
 
-                    var inputId = e.target.id;
+                    var inputId = $(e.target).parent().attr('id');
                     var item = $("#" + inputId);
-                    var inputValue = $.trim(item.children('msg-text').text());
+                    var inputValue = $(e.target).text();
 
                     socket.emit('messageChatChanged', { message: inputValue, inputId: inputId, classRoom: classRoom});
 
@@ -194,8 +194,8 @@ html
                     e.preventDefault();
                 });
 
-                $('#chat-area').on('input', '.chatInput', function(e){
-                    $(e.target).addClass('msg-pending');
+                $('#chat-area').on('input', '.chatInput .msg-text', function(e){
+                    $(e.target).parent().addClass('msg-pending');
                 });
 
                 socket.on('newMessageChat', function (data) {
@@ -206,15 +206,15 @@ html
 
                 socket.on('messageChatChanged', function (data) {
                     if(data.classRoom == classRoom){
-                        $("#" + data.inputId).text(data.message);
+                        $("#" + data.inputId + ' .msg-text').text(data.message);
                     }
                 });
 
                 function addChatMsg(data, sent){
                     var date = new Date(data.inputId);
-                    var msg = '<div contentEditable="true" id="' + data.inputId + '" \
+                    var msg = '<div contentEditable="false" id="' + data.inputId + '" \
                             class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.sender + '">' +
-                            '<span class="msg-text">' + data.message + '</span><span contenteditable="false" class="msg-date">' +
+                            '<span class="msg-text" contenteditable="true">' + data.message + '</span><span contenteditable="false" class="msg-date">' +
                             date.getDate() + "/" + (date.getMonth()+1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span></div>';
 
                     var chat_area = $('#chat-area');
