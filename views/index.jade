@@ -184,7 +184,7 @@ html
                 });
 
                 $("#chat-area").on("keydown", ".chatInput .msg-text", function(e){
-                    if(e.which != 13) return;
+                    if (e.which != 13 || e.shiftKey) return;
 
                     var inputId = $(e.target).parent().attr('id');
                     var item = $("#" + inputId);
@@ -226,7 +226,7 @@ html
                         chat_area.append('\
                                 <hr class="chat-separator">\
                                 <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
-                                data.sender.substring(0, 10) + '</span>');
+                                data.sender.substring(0, 9) + '</span>');
 
                     chat_area.append(msg);
                     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;

@@ -374,6 +374,7 @@ input.gsc-input,
 /********************MENSAGES DEL CHAT******************/
 .msg-text{
     max-width: 89%;
+    white-space: pre;
 }
 .msg-sent {
     margin-left: 10% !important;
