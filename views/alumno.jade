@@ -7,8 +7,14 @@ block video
 block videosExtra
     //.col-md-6
         video#selfVideo(height="400px",autoplay,muted)
-    .col-md-6
-        button#conectar CONECTAR CON PROFESOR
+    .row
+        .col-md-6
+            p Nombre:
+            input#name(type="text", value="Alumno")
+    .row
+        .col-md-6
+            br
+            button#conectar CONECTAR CON PROFESOR
 
 block javascript
     script.

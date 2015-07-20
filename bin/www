@@ -42,12 +42,13 @@ io.on('connection', function(socket){
         }
     });
     socket.on('newMessageChat', function (data) {
-        io.sockets.emit('newMessageChat', data);
+        socket.broadcast.emit('newMessageChat', data);
     });
     socket.on('messageChatChanged', function (data) {
-        io.sockets.emit('messageChatChanged', data);
+        socket.broadcast.emit('messageChatChanged', data);
+        //io.sockets.emit('messageChatChanged', data);
     });
-})
+});
 
 /**
  * Listen on provided port, on all network interfaces.
