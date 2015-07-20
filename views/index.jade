@@ -220,7 +220,7 @@ html
                     var chat_area = $('#chat-area');
                     var last = $('#chat-area>*:last-child');
 
-                    if (last.length == 0 || !(sent ^ last.hasClass('msg-rcv'))) // -- Eso es un XOR
+                    if (last.length == 0 || data.sender != last.data('sender'))
                         chat_area.append('<span class="msg-sender">' + data.sender + '</span><hr class="chat-separator">');
 
                     chat_area.append(msg);

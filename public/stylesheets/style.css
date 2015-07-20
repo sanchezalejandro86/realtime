@@ -361,10 +361,6 @@ input.gsc-input,
     /*margin: 0 5px 0 0;*/
 /*}*/
 
-#chat-area input {
-    margin-bottom: 3px;
-}
-
 #sendie {
     border: 3px solid #999;
     width: 100%;
@@ -374,6 +370,7 @@ input.gsc-input,
     height: 100px;
 }
 
+/********************MENSAGES DEL CHAT******************/
 .msg-text{
     max-width: 89%;
 }
