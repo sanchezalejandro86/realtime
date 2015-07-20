@@ -8,91 +8,92 @@ html
         link(href='/stylesheets/font-awesome.min.css', rel='stylesheet', media='screen')
         link(rel='stylesheet', href='/stylesheets/style.css')
     body
-        .navbar.navbar-inverse.set-radius-zero
-            .container
-                .navbar-header
-                    button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
-                        span.icon-bar
-                        span.icon-bar
-                        span.icon-bar
-                    a.navbar-brand(href="/")
-                        img(src="images/logo.png")
-                .left-div
-                    .user-settings-wrapper
-                        ul.nav
-                            li.dropdown
-                                a.dropdown-toggle(data-toggle="dropdown", href="#", aria-expanded="false")
-                                    span.glyphicon.glyphicon-user(style="font-size: 25px")
-                                .dropdown-menu.dropdown-settings
-                                    .media
-                                        a.media-left(href="#")
-                                            img.img-rounded(src="images/64-64.jpg", alt="")
-                                        .media-body
-                                            h4.media-heading Alejandro Sánchez
-                                            h5 Administrador
-                                    hr
-                                    h5
-                                        strong Biografía
-                                    span Ingeniero en Sistemas de Información
-                                    hr
-                                    a.btn.btn-info.btn-sm(href="#") Perfil &nbsp;
-                                    a.btn.btn-danger.btn-sm(href="#") Cerrar Sesión
-        section.menu-section
-            .container
-                .row
-                    .col-md-12
-                        .navbar-collapse.collapse
-                            ul.nav.navbar-nav.navbar-right#menu-top
-                                li
-                                    a.menu-top-active(href="#") Realtime
-                                li
-                                    a(href="#") Menu 2
-                                li
-                                    a(href="#") Menu 3
-                                li
-                                    a(href="#") Menu 4
-                                li
-                                    a(href="#") Menu 5
+        header
+            .navbar.navbar-inverse.set-radius-zero
+                .container
+                    .navbar-header
+                        button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a.navbar-brand(href="/")
+                            img(src="images/logo.png")
+                    .left-div
+                        .user-settings-wrapper
+                            ul.nav
+                                li.dropdown
+                                    a.dropdown-toggle(data-toggle="dropdown", href="#", aria-expanded="false")
+                                        span.glyphicon.glyphicon-user(style="font-size: 25px")
+                                    .dropdown-menu.dropdown-settings
+                                        .media
+                                            a.media-left(href="#")
+                                                img.img-rounded(src="images/64-64.jpg", alt="")
+                                            .media-body
+                                                h4.media-heading Alejandro Sánchez
+                                                h5 Administrador
+                                        hr
+                                        h5
+                                            strong Biografía
+                                        span Ingeniero en Sistemas de Información
+                                        hr
+                                        a.btn.btn-info.btn-sm(href="#") Perfil &nbsp;
+                                        a.btn.btn-danger.btn-sm(href="#") Cerrar Sesión
+            section.menu-section
+                .container
+                    .row
+                        .col-md-12
+                            .navbar-collapse.collapse
+                                ul.nav.navbar-nav.navbar-right#menu-top
+                                    li
+                                        a.menu-top-active(href="#") Realtime
+                                    li
+                                        a(href="#") Menu 2
+                                    li
+                                        a(href="#") Menu 3
+                                    li
+                                        a(href="#") Menu 4
+                                    li
+                                        a(href="#") Menu 5
+        content
+            .content-wrapper
+                .container
+                    .row
+                        .col-md-12#search-panel
+                            script.
+                                  (function() {
+                                    var cx = '004468690808925015633:ehl2wqargfg';
+                                    var gcse = document.createElement('script');
+                                    gcse.type = 'text/javascript';
+                                    gcse.async = true;
+                                    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                        '//cse.google.com/cse.js?cx=' + cx;
+                                    var s = document.getElementsByTagName('script')[0];
+                                    s.parentNode.insertBefore(gcse, s);
+                                  })();
+                            gcse:searchbox(gname="storesearch", disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
+                    .row
+                        .col-md-6
+                            gcse:searchresults(gname="storesearch")
+                        .col-md-6
+                            .row
+                                .col-md-12
+                                    #chat-wrap
+                                        #chat-area
+                            .row
+                                block video
+                                .col-md-9
+                                    #send-message-area
+                                        textarea#sendie
 
-        .content-wrapper
-            .container
-                .row
-                    .col-md-12#search-panel
-                        script.
-                              (function() {
-                                var cx = '004468690808925015633:ehl2wqargfg';
-                                var gcse = document.createElement('script');
-                                gcse.type = 'text/javascript';
-                                gcse.async = true;
-                                gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-                                    '//cse.google.com/cse.js?cx=' + cx;
-                                var s = document.getElementsByTagName('script')[0];
-                                s.parentNode.insertBefore(gcse, s);
-                              })();
-                        gcse:searchbox(gname="storesearch", disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
-                .row
-                    .col-md-6
-                        gcse:searchresults(gname="storesearch")
-                    .col-md-6
-                        .row
-                            .col-md-12
-                                #chat-wrap
-                                    #chat-area
-                        .row
-                            block video
-                            .col-md-9
-                                #send-message-area
-                                    textarea#sendie
 
+                    //.row
+                        .col-md-6
+                            #send-message-area
+                                textarea#sendie
+                        block video
 
-                //.row
-                    .col-md-6
-                        #send-message-area
-                            textarea#sendie
-                    block video
-
-                .row
-                    block videosExtra
+                    .row
+                        block videosExtra
 
         footer
             .container
@@ -169,16 +170,17 @@ html
                 });
 
                 $("#sendie").keyup(function(e){
-                    if(e.which == 13){
-                        var text = $.trim($("#sendie").val());
-                        if(text != ""){
-                            //var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
-                            var data = { message: text, inputId: Date.now() , classRoom: classRoom, sender: $('#name').val()};
-                            socket.emit('newMessageChat', data);
-                            addChatMsg(data, true);
-                            $("#sendie").val("");
-                        }
-                    }
+                    if (e.which != 13 || e.shiftKey) return;
+
+                    var text = $.trim($("#sendie").val());
+                    if (text == "") return;
+
+                    //var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
+                    var data = { message: text, inputId: Date.now() , classRoom: classRoom, sender: $('#name').val()};
+                    socket.emit('newMessageChat', data);
+                    addChatMsg(data, true);
+                    $("#sendie").val("");
+
                 });
 
                 $("#chat-area").on("keydown", ".chatInput .msg-text", function(e){
@@ -199,7 +201,7 @@ html
                 });
 
                 socket.on('newMessageChat', function (data) {
-                    if(data.classRoom == classRoom){
+                    if (data.classRoom == classRoom){
                         addChatMsg(data, false);
                     }
                 });
@@ -221,7 +223,10 @@ html
                     var last = $('#chat-area>*:last-child');
 
                     if (last.length == 0 || data.sender != last.data('sender'))
-                        chat_area.append('<span class="msg-sender">' + data.sender + '</span><hr class="chat-separator">');
+                        chat_area.append('\
+                                <hr class="chat-separator">\
+                                <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
+                                data.sender.substring(0, 10) + '</span>');
 
                     chat_area.append(msg);
                     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
