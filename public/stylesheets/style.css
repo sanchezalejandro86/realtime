@@ -352,14 +352,14 @@ input.gsc-input,
     padding: 5px;
     background: white;
 }
-#chat-area span {
-    color: white;
-    background: #333;
-    padding: 4px 8px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 8px;
-    margin: 0 5px 0 0;
-}
+/*#chat-area span {*/
+    /*color: white;*/
+    /*background: #333;*/
+    /*padding: 4px 8px;*/
+    /*-moz-border-radius: 5px;*/
+    /*-webkit-border-radius: 8px;*/
+    /*margin: 0 5px 0 0;*/
+/*}*/
 
 #chat-area input {
     margin-bottom: 3px;
@@ -374,27 +374,45 @@ input.gsc-input,
     height: 100px;
 }
 
-.msg-sent{
-    text-align: right;
+.msg-text{
+    max-width: 90%;
+}
+.msg-sent {
     margin-left: 10% !important;
 }
-.msg-rcv{
-    text-align: left;
+    .msg-sent .msg-date{
+        float: right;
+    }
+    .msg-sent .msg-text{
+        float: left;
+    }
+.msg-rcv {
     margin-right: 10% !important;
 }
-.chat-separator{
+    .msg-rcv .msg-date{
+        float: left;
+    }
+    .msg-rcv .msg-text{
+        float: right;
+    }
+.chat-separator {
     margin: 5px 0;
 }
-.chatInput{
+.chatInput {
     resize: none;
     height: auto !important;
     margin: 2px;
     border-width: 2px;
     width: 90%;
-}
-.msg-complete{
     border-color: #3c763d !important;
+    overflow: auto;
 }
-.msg-pending{
-    border-color: #8a6d3b !important;
+.msg-pending {
+    border-color: #caa658 !important;
+}
+.msg-date{
+    color: #cccccc !important;
+    font-size: 10px !important;
+    background-color: white !important;
+    line-height: 2;
 }
