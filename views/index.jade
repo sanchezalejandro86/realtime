@@ -173,7 +173,7 @@ html
                         var text = $.trim($("#sendie").val());
                         if(text != ""){
                             //var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
-                            var data = { message: text, inputId: Date.now() , classRoom: classRoom};
+                            var data = { message: text, inputId: Date.now() , classRoom: classRoom, sender: $('#name').val()};
                             socket.emit('newMessageChat', data);
                             addChatMsg(data, true);
                             $("#sendie").val("");
@@ -220,8 +220,8 @@ html
                     var chat_area = $('#chat-area');
                     var last = $('#chat-area>*:last-child');
 
-                    if (!(sent ^ last.hasClass('msg-rcv'))) // -- Eso es un XOR
-                        chat_area.append('<hr class="chat-separator">');
+                    if (last.length == 0 || !(sent ^ last.hasClass('msg-rcv'))) // -- Eso es un XOR
+                        chat_area.append('<span class="msg-sender">' + data.sender + '</span><hr class="chat-separator">');
 
                     chat_area.append(msg);
                     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;

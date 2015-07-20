@@ -396,7 +396,8 @@ input.gsc-input,
         float: right;
     }
 .chat-separator {
-    margin: 5px 0;
+    margin: 0 0 5px 0;
+    line-height: 1.42857143;
 }
 .chatInput {
     resize: none;
@@ -415,4 +416,9 @@ input.gsc-input,
     font-size: 10px !important;
     background-color: white !important;
     line-height: 2;
+}
+.msg-sender{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    color: #777777;
 }
