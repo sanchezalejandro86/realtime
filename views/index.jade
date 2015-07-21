@@ -111,24 +111,33 @@ html
             var mediaStream = null;
             var classRoom = '#{classRoom}';
 
+            function onlySearch(){
+                    deactivateSearchEvents();
+                    $('input.gsc-search-button').click();
+                    activateSearchEvents();
+            }
             function sendSearch(){
                 socket.emit('search changed', { text: $("input.gsc-input").val(), classRoom: classRoom});
             }
-            function sendSearch2(e){
-                if(e.which == 17){ //Activa la busqueda con el CTRL
+            function searchKeyUp(e){
+                if (e.which == 17){ //Activa la busqueda con el CTRL
                     $('input.gsc-search-button').click();
+                } else {
+                    onlySearch();
                 }
             }
 
-            function activateSearchEvents(){
-                $("#search-panel").on("click", "input.gsc-search-button", sendSearch);
-                $("#search-panel").on("keyup", ".gsc-input", sendSearch2);
+            var sp = $("#search-panel");
 
+            function activateSearchEvents(){
+                sp.on("click", "input.gsc-search-button", sendSearch);
+                sp.on("keyup", ".gsc-input", searchKeyUp);
+                sp.on("input", "input.gsc-input", onlySearch);
             }
 
             function deactivateSearchEvents(){
-                $("#search-panel").off("click", "input.gsc-search-button", sendSearch);
-                $("#search-panel").off("keyup", ".gsc-input", sendSearch2);
+                sp.off("click", "input.gsc-search-button", sendSearch);
+                sp.off("keyup", ".gsc-input", searchKeyUp);
             }
 
             if(!window.Kolich){
@@ -146,28 +155,48 @@ html
                 t = document.selection.createRange().text;
               }
               return t;
-            }
+            };
 
             Kolich.Selector.mouseup = function(){
                 var st = Kolich.Selector.getSelected();
-                if(st!=''){
-                    //alert("You selected:\n"+st);
-                }
-            }
+                if (st == '') return;
+
+                var input = $('input.gsc-input');
+                if (input.val() != "") //--Agregar coma
+                    st = ", " + st;
+
+                input.val(input.val() + st);
+                input.focus();
+                onlySearch();
+            };
 
             $(document).ready(function(){
                 activateSearchEvents();
 
-                $(document).bind("mouseup", Kolich.Selector.mouseup);
+                $('#chat-area,#sendie').bind("mouseup", Kolich.Selector.mouseup);
 
+                //************SOCKET EVENTS********************//
                 socket.on('search changed', function(data){
-                    if(data.classRoom == classRoom){
+                    if (data.classRoom == classRoom){
                         $('input.gsc-input').val(data.text);
                         deactivateSearchEvents();
                         $('input.gsc-search-button').click();
                         activateSearchEvents();
                     }
                 });
+
+                socket.on('newMessageChat', function (data) {
+                    if (data.classRoom == classRoom){
+                        addChatMsg(data, false);
+                    }
+                });
+
+                socket.on('messageChatChanged', function (data) {
+                    if (data.classRoom == classRoom){
+                        $("#" + data.inputId + ' .msg-text').text(data.message);
+                    }
+                });
+                //**********************************************//
 
                 $("#sendie").keyup(function(e){
                     if (e.which != 13 || e.shiftKey) return;
@@ -200,24 +229,15 @@ html
                     $(e.target).parent().addClass('msg-pending');
                 });
 
-                socket.on('newMessageChat', function (data) {
-                    if (data.classRoom == classRoom){
-                        addChatMsg(data, false);
-                    }
-                });
-
-                socket.on('messageChatChanged', function (data) {
-                    if(data.classRoom == classRoom){
-                        $("#" + data.inputId + ' .msg-text').text(data.message);
-                    }
-                });
-
                 function addChatMsg(data, sent){
                     var date = new Date(data.inputId);
-                    var msg = '<div contentEditable="false" id="' + data.inputId + '" \
-                            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.sender + '">' +
-                            '<span class="msg-text" contenteditable="true">' + data.message + '</span><span contenteditable="false" class="msg-date">' +
-                            date.getDate() + "/" + (date.getMonth()+1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span></div>';
+                    var msg =
+                            '<div contentEditable="false" id="' + data.inputId + '" \
+                                class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.sender + '">\
+                                <span class="msg-text" contenteditable="true">' + data.message + '</span>\
+                                <span contenteditable="false" class="msg-date">' +
+                                date.getDate() + "/" + (date.getMonth()+1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span>\
+                            </div>';
 
                     var chat_area = $('#chat-area');
                     var last = $('#chat-area>*:last-child');
