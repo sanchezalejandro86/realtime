@@ -8,14 +8,13 @@ block videosExtra
     //.col-md-6
         video#selfVideo(height="400px",autoplay,muted)
     .row
-        .col-md-6
-            p Nombre:
-            input#name(type="text", value="Alumno")
-    .row
-        .col-md-6
-            br
+        .col-md-3
+            label Nombre:
+            input#name(type="text", value="Alumno", style="margin-left:3px;")
+        .col-md-9
             button#conectar CONECTAR CON PROFESOR
-
+    .row
+        br
 block javascript
     script.
         var peerId;
