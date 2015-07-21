@@ -58,22 +58,22 @@ html
             .content-wrapper
                 .container
                     .row
-                        .col-md-12#search-panel
-                            script.
-                                  (function() {
-                                    var cx = '004468690808925015633:ehl2wqargfg';
-                                    var gcse = document.createElement('script');
-                                    gcse.type = 'text/javascript';
-                                    gcse.async = true;
-                                    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-                                        '//cse.google.com/cse.js?cx=' + cx;
-                                    var s = document.getElementsByTagName('script')[0];
-                                    s.parentNode.insertBefore(gcse, s);
-                                  })();
-                            gcse:searchbox(gname="storesearch", disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
-                    .row
                         .col-md-6
-                            gcse:searchresults(gname="storesearch")
+                            .row#search-panel
+                                script.
+                                      (function() {
+                                        var cx = '004468690808925015633:ehl2wqargfg';
+                                        var gcse = document.createElement('script');
+                                        gcse.type = 'text/javascript';
+                                        gcse.async = true;
+                                        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                            '//cse.google.com/cse.js?cx=' + cx;
+                                        var s = document.getElementsByTagName('script')[0];
+                                        s.parentNode.insertBefore(gcse, s);
+                                      })();
+                                gcse:searchbox(gname="storesearch", disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
+                            .row
+                                gcse:searchresults(gname="storesearch")
                         .col-md-6
                             .row
                                 .col-md-12
@@ -198,18 +198,18 @@ html
                 });
                 //**********************************************//
 
-                $("#sendie").keyup(function(e){
-                    if (e.which != 13 || e.shiftKey) return;
+                $('#sendie').keydown(function (e) {
+                    if (!(e.which == 13 && !e.shiftKey)) return; //--Con ENTER y sin SHIFT => enviar
 
-                    var text = $.trim($("#sendie").val());
+                    var sendie = $('#sendie');
+                    var text = $.trim(sendie.val());
                     if (text == "") return;
 
-                    //var randomInputId = Math.floor((Math.random() * 1000000000) + 1);
                     var data = { message: text, inputId: Date.now() , classRoom: classRoom, sender: $('#name').val()};
                     socket.emit('newMessageChat', data);
                     addChatMsg(data, true);
-                    $("#sendie").val("");
-
+                    sendie.val("");
+                    e.preventDefault();
                 });
 
                 $("#chat-area").on("keydown", ".chatInput .msg-text", function(e){
