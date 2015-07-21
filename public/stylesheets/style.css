@@ -437,7 +437,16 @@ input.gsc-input,
 div.separator {
     clear: both;
 }
-header {
+header, content, footer{
     padding: 0;
     margin: 0;
+}
+header {
+}
+content{
+}
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
