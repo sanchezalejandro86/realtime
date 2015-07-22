@@ -1,5 +1,5 @@
 doctype html
-html
+html(style="height: 100%")
     head
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         meta(http-equiv='content-language', content='es')
@@ -7,7 +7,7 @@ html
         link(href='/stylesheets/bootstrap.min.css', rel='stylesheet', media='screen')
         link(href='/stylesheets/font-awesome.min.css', rel='stylesheet', media='screen')
         link(rel='stylesheet', href='/stylesheets/style.css')
-    body
+    body(style="height: 100%")
         header
             .navbar.navbar-inverse.set-radius-zero
                 .container
@@ -54,10 +54,10 @@ html
                                         a(href="#") Menu 4
                                     li
                                         a(href="#") Menu 5
-        content
-            .content-wrapper
-                .container
-                    .row
+        content(style="height: 100%")
+            .content-wrapper(style="height: 70%")
+                .container(style="height: 100%")
+                    .row(style="height: 100%")
                         .col-md-6
                             .row#search-panel
                                 script.
@@ -71,15 +71,21 @@ html
                                         var s = document.getElementsByTagName('script')[0];
                                         s.parentNode.insertBefore(gcse, s);
                                       })();
-                                gcse:searchbox(gname="storesearch", disableWebSearch="true", enableImageSearch="true", image_lr="lang_en")
+                                gcse:searchbox(
+                                    gname="storesearch",
+                                    disableWebSearch="true",
+                                    enableImageSearch="true",
+                                    image_lr="lang_en",
+                                    imageSearchResultSetSize="7"
+                                    )
                             .row
                                 gcse:searchresults(gname="storesearch")
-                        .col-md-6
-                            .row
-                                .col-md-12
-                                    #chat-wrap
-                                        #chat-area
-                            .row
+                        .col-md-6(style="height: 100%")
+                            .row(style="height: 80%")
+                                .col-md-12(style="height: 100%")
+                                    #chat-wrap(style="height: 100%")
+                                        #chat-area(style="height: 100%")
+                            .row(style="height: 20%")
                                 block video
                                 .col-md-9
                                     #send-message-area

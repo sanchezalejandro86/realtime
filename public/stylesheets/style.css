@@ -35,8 +35,8 @@ body {
 .content-wrapper {
     //margin-top: 40px;
     margin-top: 5px;
-    min-height: 600px;
-    padding-bottom: 60px;
+    /*min-height: 600px;*/
+    /*padding-bottom: 60px;*/
 }
 
 .page-head-line {
@@ -442,8 +442,10 @@ header, content, footer{
     margin: 0;
 }
 header {
+    height: 172px;
 }
-content{
+content > *:first-child{
+    /*height: 75% !important;*/
 }
 footer{
     position: fixed;
