@@ -41,7 +41,7 @@ html(style="height: 100%")
             section.menu-section
                 .container
                     .row
-                        .col-md-12
+                        .col-xs-12
                             .navbar-collapse.collapse
                                 ul.nav.navbar-nav.navbar-right#menu-top
                                     li
@@ -54,11 +54,27 @@ html(style="height: 100%")
                                         a(href="#") Menu 4
                                     li
                                         a(href="#") Menu 5
+
         content(style="height: 100%")
-            .content-wrapper(style="height: 70%")
+            .content-wrapper(style="height: 63%")
                 .container(style="height: 100%")
                     .row(style="height: 100%")
-                        .col-md-6
+                        .col-xs-6(style="height: 100%")
+                            .row(style="height: 80%")
+                                .col-xs-12(style="height: 100%")
+                                    #chat-wrap(style="height: 100%")
+                                        #chat-area(style="height: 100%")
+                            .row(style="height: 20%")
+                                .col-xs-9
+                                    #send-message-area
+                                        textarea#sendie
+                                .col-xs-3
+                                    block video
+
+                            .row
+                                block videosExtra
+
+                        .col-xs-6
                             .row#search-panel
                                 script.
                                       (function() {
@@ -80,31 +96,11 @@ html(style="height: 100%")
                                     )
                             .row
                                 gcse:searchresults(gname="storesearch")
-                        .col-md-6(style="height: 100%")
-                            .row(style="height: 80%")
-                                .col-md-12(style="height: 100%")
-                                    #chat-wrap(style="height: 100%")
-                                        #chat-area(style="height: 100%")
-                            .row(style="height: 20%")
-                                block video
-                                .col-md-9
-                                    #send-message-area
-                                        textarea#sendie
-
-
-                    //.row
-                        .col-md-6
-                            #send-message-area
-                                textarea#sendie
-                        block video
-
-                    .row
-                        block videosExtra
 
         footer
             .container
                 .row
-                    .col-md-12 &copy; 2015 Unlimited Solutions
+                    .col-xs-12 &copy; 2015 Unlimited Solutions
 
         script(type='text/javascript', src='/javascripts/jquery-2.1.4.min.js')
         script(type='text/javascript', src='/javascripts/bootstrap.min.js')
