@@ -37,7 +37,7 @@ io.on('connection', function(socket){
     });
     socket.on('disconnect', function() {
         var peerId = socketsPeers[socket.id];
-        if(peerId != null){
+        if (peerId != null){
             io.sockets.emit('studentDisconnected', peerId);
         }
     });

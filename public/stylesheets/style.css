@@ -350,20 +350,13 @@ input.gsc-input,
 }
 
 #chat-area  {
-    height: 400px;
+    min-height: 400px;
+    max-height: 1600px;
     overflow: auto;
-    border: 1px solid #666;
+    border: 3px solid #999;
     padding: 5px;
-    /*background-color: #c7bcff;*/
+    background-color: #c7bcff;
 }
-/*#chat-area span {*/
-    /*color: white;*/
-    /*background: #333;*/
-    /*padding: 4px 8px;*/
-    /*-moz-border-radius: 5px;*/
-    /*-webkit-border-radius: 8px;*/
-    /*margin: 0 5px 0 0;*/
-/*}*/
 
 #sendie {
     border: 3px solid #999;
@@ -373,6 +366,7 @@ input.gsc-input,
     margin-bottom: 10px;
     height: 100px;
     resize: none;
+    background-color: #c7bcff;
 }
 
 /********************MENSAGES DEL CHAT******************/
@@ -416,7 +410,7 @@ input.gsc-input,
     border-color: #caa658 !important;
 }
 .msg-date{
-    color: #cccccc ;
+    color: #777777;
     font-size: 10px;
     background-color: transparent;
     line-height: 2;
@@ -466,6 +460,7 @@ content > *:first-child{
     /*height: 75% !important;*/
 }
 footer{
+    padding-top: 20px;
     position: fixed;
     bottom: 0;
     width: 100%;

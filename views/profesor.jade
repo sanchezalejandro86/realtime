@@ -61,8 +61,12 @@ block javascript
         });
 
         function createNewAlumnoVideoTag(stream, peerId){
-            var htmlAudio = '<div id="div_'+peerId+'" class="col-md-3"><audio style="width:250px;" id="'+peerId+'" autoplay controls/></div>';
+            var htmlAudio =
+                    '<div id="div_' + peerId + '" class="col-md-3">\
+                        <audio style="width:250px; display: block;" id="' + peerId + '" autoplay controls/>\
+                    </div>';
             $("#alumnos").append(htmlAudio);
+
             var alumnoAudio = document.getElementById(peerId);
             alumnoAudio.src = window.URL.createObjectURL(stream);
         }

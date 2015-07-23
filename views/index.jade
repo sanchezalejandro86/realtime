@@ -64,15 +64,15 @@ html(style="height: 100%")
                                 .col-xs-12
                                     #chat-wrap
                                         #chat-area
-                            .row
-                                .col-xs-9
+                            //.row
+                                //.col-xs-9
                                     #send-message-area
                                         textarea#sendie
-                                .col-xs-3(style="padding-left:0px;")
+                                //.col-xs-3(style="padding-left:0px;")
                                     block video
 
-                            .row
-                                block videosExtra
+                            //.row
+                            //    block videosExtra
 
                         .col-xs-6.google-side
                             .row#search-panel
@@ -100,7 +100,17 @@ html(style="height: 100%")
         footer
             .container
                 .row
-                    .col-xs-12 &copy; 2015 Unlimited Solutions
+                    .col-xs-6
+                        .col-xs-9
+                            #send-message-area
+                                textarea#sendie
+                        .col-xs-3(style="padding-left:0px;")
+                            block video
+                    .col-xs-6
+                        .col-xs-12
+                            block videosExtra
+                .row
+                    .col-xs-12 &copy; 2015 SolidWorks Solutions
 
         script(type='text/javascript', src='/javascripts/jquery-2.1.4.min.js')
         script(type='text/javascript', src='/javascripts/bootstrap.min.js')
