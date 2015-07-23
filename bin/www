@@ -46,7 +46,10 @@ io.on('connection', function(socket){
     });
     socket.on('messageChatChanged', function (data) {
         socket.broadcast.emit('messageChatChanged', data);
-        //io.sockets.emit('messageChatChanged', data);
+    });
+    socket.on('messageRemoved', function (data){
+        // TODO validar que lo haya enviado el profesor
+        socket.broadcast.emit('messageRemoved', data);
     });
 });
 

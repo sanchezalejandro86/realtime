@@ -9,6 +9,23 @@ block videosExtra
 
 block javascript
     script.
+
+        function getRemove() {
+            return '<span contenteditable="false" class="glyphicon glyphicon-remove msg-remove"></span>';
+        }
+
+        var key_code_send = 17;
+
+        $(document).on('ready', function(e){
+            $('#chat-area').on('click', '.msg-remove', function (e) {
+                var id = $(this).parent().attr('id');
+                socket.emit('messageRemoved', { inputId: id });
+
+                removeChatMsg(id);
+            });
+        });
+
+
         var studentsConnected = [];
         $(document).ready(function(){
 
@@ -49,5 +66,3 @@ block javascript
             var alumnoAudio = document.getElementById(peerId);
             alumnoAudio.src = window.URL.createObjectURL(stream);
         }
-
-

@@ -59,7 +59,7 @@ html(style="height: 100%")
             .content-wrapper
                 .container
                     .row
-                        .col-xs-6
+                        .col-xs-6.chat-side
                             .row
                                 .col-xs-12
                                     #chat-wrap
@@ -74,7 +74,7 @@ html(style="height: 100%")
                             .row
                                 block videosExtra
 
-                        .col-xs-6
+                        .col-xs-6.google-side
                             .row#search-panel
                                 script.
                                       (function() {
@@ -161,7 +161,7 @@ html(style="height: 100%")
 
             Kolich.Selector.mouseup = function(){
                 var st = Kolich.Selector.getSelected();
-                if (st == '') return;
+                if ((st + "").trim() == '' || $(st.focusNode.firstChild).hasClass('gsc-input')) return;
 
                 var input = $('input.gsc-input');
                 if (input.val() != "") //--Agregar coma
@@ -174,8 +174,9 @@ html(style="height: 100%")
 
             $(document).ready(function(){
                 activateSearchEvents();
+                var chat_area = $('#chat-area');
 
-                $('#chat-area,#sendie').bind("mouseup", Kolich.Selector.mouseup);
+                $(document).bind("mouseup", Kolich.Selector.mouseup);
 
                 //************SOCKET EVENTS********************//
                 socket.on('search changed', function(data){
@@ -198,23 +199,28 @@ html(style="height: 100%")
                         $("#" + data.inputId + ' .msg-text').text(data.message);
                     }
                 });
+
+                socket.on('messageRemoved', function (data) {
+                    removeChatMsg(data.inputId);
+                });
                 //**********************************************//
 
                 $('#sendie').keydown(function (e) {
-                    if (!(e.which == 13 && !e.shiftKey)) return; //--Con ENTER y sin SHIFT => enviar
+                    //if (!(e.which == 13 && !e.shiftKey)) return; //--Con ENTER y sin SHIFT => enviar
+                    if (e.which != key_code_send) return; //--Con CTRL => enviar
 
                     var sendie = $('#sendie');
                     var text = $.trim(sendie.val());
                     if (text == "") return;
 
-                    var data = { message: text, inputId: Date.now() , classRoom: classRoom, sender: $('#name').val()};
+                    var data = { message: text, inputId: Date.now() , classRoom: classRoom, sender: $('#name').val()}; //TODO este sender es provisorio
                     socket.emit('newMessageChat', data);
                     addChatMsg(data, true);
                     sendie.val("");
                     e.preventDefault();
                 });
 
-                $("#chat-area").on("keydown", ".chatInput .msg-text", function(e){
+                chat_area.on("keydown", ".chatInput .msg-text", function(e){
                     if (e.which != 13 || e.shiftKey) return;
 
                     var inputId = $(e.target).parent().attr('id');
@@ -227,8 +233,10 @@ html(style="height: 100%")
                     e.preventDefault();
                 });
 
-                $('#chat-area').on('input', '.chatInput .msg-text', function(e){
+                chat_area.on('input', '.chatInput .msg-text', function(e){
                     $(e.target).parent().addClass('msg-pending');
+                    if ($(e.target).text() == "")
+                        $(e.target).text(' ');
                 });
 
                 function addChatMsg(data, sent){
@@ -237,6 +245,7 @@ html(style="height: 100%")
                             '<div contentEditable="false" id="' + data.inputId + '" \
                                 class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.sender + '">\
                                 <span class="msg-text" contenteditable="true">' + data.message + '</span>\
+                                ' + getRemove() + '\
                                 <span contenteditable="false" class="msg-date">' +
                                 date.getDate() + "/" + (date.getMonth()+1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span>\
                             </div>';
@@ -254,6 +263,7 @@ html(style="height: 100%")
                     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
                 }
 
+
                 jQuery.fn.justtext = function () {
                     return $(this).clone()
                             .children()
@@ -262,5 +272,14 @@ html(style="height: 100%")
                             .text();
                 };
             });
+
+            function removeChatMsg(id) {
+                var msg = $('#' + id);
+                if (!msg.prev().hasClass('chatInput') && !msg.next().hasClass('chatInput')) {
+                    msg.prev().remove();
+                    msg.prev().remove();
+                }
+                msg.remove();
+            }
 
         block javascript

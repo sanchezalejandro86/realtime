@@ -354,7 +354,7 @@ input.gsc-input,
     overflow: auto;
     border: 1px solid #666;
     padding: 5px;
-    background: white;
+    /*background-color: #c7bcff;*/
 }
 /*#chat-area span {*/
     /*color: white;*/
@@ -377,7 +377,7 @@ input.gsc-input,
 
 /********************MENSAGES DEL CHAT******************/
 .msg-text{
-    max-width: 89%;
+    max-width: 75%;
     white-space: pre;
 }
 .msg-sent {
@@ -410,14 +410,15 @@ input.gsc-input,
     width: 90%;
     border-color: #3c763d !important;
     overflow: auto;
+    background-color: transparent;
 }
 .msg-pending {
     border-color: #caa658 !important;
 }
 .msg-date{
-    color: #cccccc !important;
-    font-size: 10px !important;
-    background-color: white !important;
+    color: #cccccc ;
+    font-size: 10px;
+    background-color: transparent;
     line-height: 2;
 }
 .msg-sender{
@@ -435,7 +436,20 @@ input.gsc-input,
         float: right;
         font-size: 10px;
     }
-
+.msg-remove{
+    cursor: pointer;
+    color: red;
+    font-size: 14px;
+    line-height: 1.4;
+}
+    .msg-sent .msg-remove {
+        margin-left: 10px;
+        float: right;
+    }
+    .msg-rcv .msg-remove {
+        margin-right: 10px;
+        float: left;
+    }
 
 
 div.separator {

@@ -17,6 +17,11 @@ block videosExtra
         br
 block javascript
     script.
+
+        var key_code_send = 13;
+
+        function getRemove() { return ''; }
+
         var peerId;
         $(document).ready(function(){
             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
