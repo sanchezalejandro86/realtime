@@ -59,43 +59,21 @@ html(style="height: 100%")
             .content-wrapper
                 .container
                     .row
-                        .col-xs-6.chat-side
+                        .col-xs-6
                             .row
                                 .col-xs-12
                                     #chat-wrap
                                         #chat-area
-                            //.row
-                                //.col-xs-9
-                                    #send-message-area
-                                        textarea#sendie
-                                //.col-xs-3(style="padding-left:0px;")
-                                    block video
 
-                            //.row
-                            //    block videosExtra
-
-                        .col-xs-6.google-side
-                            .row#search-panel
-                                script.
-                                      (function() {
-                                        var cx = '004468690808925015633:ehl2wqargfg';
-                                        var gcse = document.createElement('script');
-                                        gcse.type = 'text/javascript';
-                                        gcse.async = true;
-                                        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-                                            '//cse.google.com/cse.js?cx=' + cx;
-                                        var s = document.getElementsByTagName('script')[0];
-                                        s.parentNode.insertBefore(gcse, s);
-                                      })();
-                                gcse:searchbox(
-                                    gname="storesearch",
-                                    disableWebSearch="true",
-                                    enableImageSearch="true",
-                                    image_lr="lang_en",
-                                    imageSearchResultSetSize="7"
-                                    )
+                        .col-xs-6
                             .row
-                                gcse:searchresults(gname="storesearch")
+                                .col-xs-10
+                                    input#search-input.form-control(type="text")
+                                .col-xs-2
+                                    button#search-button.form-control.btn.btn-default
+                                        span.glyphicon.glyphicon-search
+                            .row#search-results
+
 
         footer
             .container
@@ -117,42 +95,87 @@ html(style="height: 100%")
         script(type='text/javascript', src='/javascripts/socket.io-1.3.5.js')
         script(type='text/javascript', src='/javascripts/peer.js')
         //script(type='text/javascript', src='/javascripts/etherpad.js')
+        //script(type="text/javascript", src="http://www.google.com/jsapi?key=ABQIAAAAhDMTsea4WL9PLX_5KwC52hQ1jaQ2TaivRXX48_aC4pu_gxy4kRQdkpHs9F5lZDm3w5fKd7dzNYf6Fw")
+        script(type='text/javascript', src="https://www.google.com/jsapi")
+
         script.
             var socket = io();
             var peer = new Peer({key: 'bp70suzmx5ok1emi'});
             var mediaStream = null;
             var classRoom = '#{classRoom}';
 
+            var color = "";
+            var suggest = "";
+
+            var sp = $("#search-panel"),
+                chat_area = $('#chat-area'),
+                search_input = $('#search-input'),
+                search_button = $('#search-button');
+
+            //**********************+BUSCADOR***********************//
+            google.load('search', '1', {"language": "pt_br"});
+
+            var imageSearch;
+            function OnLoad() {
+                // Our ImageSearch instance.
+                imageSearch = new google.search.ImageSearch();
+                imageSearch.setResultSetSize(6);
+                imageSearch.setSearchCompleteCallback(this, searchComplete, [imageSearch]);
+            }
+            google.setOnLoadCallback(OnLoad);
+
+            function searchComplete(searcher) {
+                if (!searcher.results) return;
+
+                var sr = $('#search-results');
+                sr.html('');
+
+                if (searcher.results.length > 0) {
+                    for (var i = 0; i < 6; i++) {
+                        var result = searcher.results[i];
+                            sr.append(
+                                '<div class="search-result">\
+                                    <a href="' + result.url + ' target="_blank"><img class="search-results-image" src="' + result.url + '"></a>\
+                                </div>'
+                        );
+                    }
+                } else {
+                    sr.html('Sem resultados');
+                }
+            }
+
             function onlySearch(){
                     deactivateSearchEvents();
-                    $('input.gsc-search-button').click();
+                    search_button.click();
                     activateSearchEvents();
             }
+
             function sendSearch(){
-                socket.emit('search changed', { text: $("input.gsc-input").val(), classRoom: classRoom});
+                socket.emit('search changed', { text: search_input.val(), classRoom: classRoom});
             }
+
             function searchKeyUp(e){
                 if (e.which == 17){ //Activa la busqueda con el CTRL
-                    $('input.gsc-search-button').click();
+                    search_button.click();
                 } else {
                     onlySearch();
                 }
             }
 
-            var sp = $("#search-panel");
-
             function activateSearchEvents(){
-                sp.on("click", "input.gsc-search-button", sendSearch);
-                sp.on("keyup", ".gsc-input", searchKeyUp);
-                //sp.on("input", "input.gsc-input", onlySearch);
+                sp.on("click", search_button, sendSearch);
+                sp.on("keyup", search_input, searchKeyUp);
             }
 
             function deactivateSearchEvents(){
-                sp.off("click", "input.gsc-search-button", sendSearch);
-                sp.off("keyup", ".gsc-input", searchKeyUp);
+                sp.off("click", search_button, sendSearch);
+                sp.off("keyup", search_input, searchKeyUp);
             }
 
-            if(!window.Kolich){
+            //******************************************************//
+
+            //*********************KOLICH********************//
+            if (!window.Kolich){
               Kolich = {};
             }
 
@@ -171,9 +194,9 @@ html(style="height: 100%")
 
             Kolich.Selector.mouseup = function(){
                 var st = Kolich.Selector.getSelected();
-                if ((st + "").trim() == '' || $(st.focusNode.firstChild).hasClass('gsc-input')) return;
+                if ((st + "").trim() == '' || $(st.focusNode.firstChild).attr('id') == search_input.attr('id')) return;
 
-                var input = $('input.gsc-input');
+                var input = search_input;
                 if (input.val() != "") //--Agregar coma
                     st = ", " + st;
 
@@ -181,19 +204,32 @@ html(style="height: 100%")
                 input.focus();
                 onlySearch();
             };
+            //**********************************************//
 
             $(document).ready(function(){
                 activateSearchEvents();
-                var chat_area = $('#chat-area');
+
+                search_button.on('click', function(){
+                    imageSearch.execute(search_input.val());
+                });
+                search_input.on('input', function(e){
+                    search_button.click();
+                });
+                search_input.on('keydown', function (e) {
+                    if (e.keyCode == 13) {
+                        search_button.click();
+                        e.preventDefault();
+                    }
+                });
 
                 $(document).bind("mouseup", Kolich.Selector.mouseup);
 
                 //************SOCKET EVENTS********************//
                 socket.on('search changed', function(data){
                     if (data.classRoom == classRoom){
-                        $('input.gsc-input').val(data.text);
+                        search_input.val(data.text);
                         deactivateSearchEvents();
-                        $('input.gsc-search-button').click();
+                        search_button.click();
                         activateSearchEvents();
                     }
                 });
@@ -216,7 +252,6 @@ html(style="height: 100%")
                 //**********************************************//
 
                 $('#sendie').keydown(function (e) {
-                    //if (!(e.which == 13 && !e.shiftKey)) return; //--Con ENTER y sin SHIFT => enviar
                     if (e.which != key_code_send) return; //--Con CTRL => enviar
 
                     var sendie = $('#sendie');
