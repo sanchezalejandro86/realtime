@@ -4,7 +4,7 @@ block video
     video#selfVideo(height="100px",autoplay, muted)
     input#name(type="hidden", value="Profesor")
 
-block videosExtra
+block extraLine1
     #alumnos
 
 block javascript
@@ -51,11 +51,17 @@ block javascript
                 }
             });
 
-            socket.on('studentDisconnected', function(peerIdDisconnected){
-                if(studentsConnected.indexOf(peerIdDisconnected) != -1){
-                    $("#" + peerIdDisconnected).remove();
-                    $("#div_" + peerIdDisconnected).remove();
-                    studentsConnected.splice(studentsConnected.indexOf(peerIdDisconnected), 1);
+            socket.on('studentDisconnected', function(data){
+                if(studentsConnected.indexOf(data.peerId) != -1){
+                    $("#" + data.peerId).remove();
+                    $("#div_" + data.peerId).remove();
+                    studentsConnected.splice(studentsConnected.indexOf(data.peerId), 1);
+                }
+            });
+
+            $('html').keyup(function (e) {
+                if(e.keyCode == 46){ //cuando el profesor toca SUPR se limpia la busqueda e imagenes en TODOS
+                    socket.emit('clear search images', { classRoom: classRoom});
                 }
             });
         });
@@ -63,7 +69,7 @@ block javascript
         function createNewAlumnoVideoTag(stream, peerId){
             var htmlAudio =
                     '<div id="div_' + peerId + '" class="col-md-3">\
-                        <audio style="width:250px; display: block;" id="' + peerId + '" autoplay controls/>\
+                        <audio style="width:250px;" id="' + peerId + '" autoplay controls/>\
                     </div>';
             $("#alumnos").append(htmlAudio);
 

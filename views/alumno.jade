@@ -1,28 +1,25 @@
 extends ./index.jade
 
 block video
-    .col-md-3
-        video#profesorVideo(height="100px",autoplay)
+    video#profesorVideo(height="100px",autoplay)
 
-block videosExtra
-    //.col-md-6
-        video#selfVideo(height="400px",autoplay,muted)
-    .row
-        .col-xs-3.col-xs-offset-2
-            label.ignore-kolich Nombre:
-        .col-xs-4
-            input.form-control.ignore-kolich#name(type="text", value="Alumno")
-    .row
-        br
-    .row
-        .col-xs-5.col-xs-offset-2
-            button.form-control.btn#conectar CONECTAR CON PROFESOR
-        .col-xs-5
-            button.form-control.btn#desconectar DESCONECTAR
+block extraLine1
+    .col-xs-2
+        label.ignore-kolich Nombre:
+    .col-xs-3
+        input.form-control.ignore-kolich#name(type="text", value="Alumno")
+
+block extraLine2
+    .col-xs-5.col-xs-offset-2
+        button.form-control.btn#conectar CONECTAR
+    .col-xs-5
+        button.form-control.btn#desconectar DESCONECTAR
+
 block javascript
     script.
 
         var key_code_send = 13;
+        var myCall;
 
         function getRemove() { return ''; }
 
@@ -55,8 +52,13 @@ block javascript
             });
 
             desconectar.click(function () {
+                if(myCall != null){
+                    myCall.close();
+                    myCall = null;
+                    socket.emit('studentDisconnected', { peerId: peerId });
+                }
                 //peer.disconnect();
-                socket.disconnect();
+                //socket.disconnect();
             });
 
             peer.on('call', function (call) {
@@ -64,6 +66,7 @@ block javascript
                 call.on('stream', function (stream) {
                     var profesorVideo = document.getElementById('profesorVideo');
                     profesorVideo.src = window.URL.createObjectURL(stream);
+                    myCall = call;
                 });
             });
         });

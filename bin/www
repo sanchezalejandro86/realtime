@@ -35,10 +35,13 @@ io.on('connection', function(socket){
         socketsPeers[socket.id] = data.peerId;
         io.sockets.emit('newStudentConnected', data);
     });
+    socket.on('studentDisconnected', function (data) {
+        io.sockets.emit('studentDisconnected', data);
+    });
     socket.on('disconnect', function() {
         var peerId = socketsPeers[socket.id];
         if (peerId != null){
-            io.sockets.emit('studentDisconnected', peerId);
+            io.sockets.emit('studentDisconnected', { peerId: peerId });
         }
     });
     socket.on('newMessageChat', function (data) {
@@ -50,6 +53,12 @@ io.on('connection', function(socket){
     socket.on('messageRemoved', function (data){
         // TODO validar que lo haya enviado el profesor
         socket.broadcast.emit('messageRemoved', data);
+    });
+    socket.on('full size image', function (data) {
+        io.sockets.emit('full size image', data);
+    });
+    socket.on('clear search images', function (data) {
+        io.sockets.emit('clear search images', data);
     });
 });
 

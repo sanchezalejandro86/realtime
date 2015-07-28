@@ -85,10 +85,13 @@ html(style="height: 100%")
                         .col-xs-3(style="padding-left:0px;")
                             block video
                     .col-xs-6
-                        .col-xs-12
-                            block videosExtra
-                .row
-                    .col-xs-12 &copy; 2015 SolidWorks Solutions
+                        .row
+                            block extraLine1
+                        .row
+                            block extraLine2
+                        .row
+                            .col-xs-5.col-xs-offset-7
+                                label &copy; 2015 SolidWorks Solutions
 
         script(type='text/javascript', src='/javascripts/jquery-2.1.4.min.js')
         script(type='text/javascript', src='/javascripts/bootstrap.min.js')
@@ -123,22 +126,60 @@ html(style="height: 100%")
             }
             google.setOnLoadCallback(OnLoad);
 
+            function removeImg(idRemove){
+                var elementToRemove = $("#" + idRemove);
+                if(elementToRemove != null){
+                    elementToRemove.remove();
+                }
+            }
+
+            function fullSizeImage(aImageId){
+                socket.emit('full size image', {urlImage: $('#img_'+aImageId).attr('src'), input: search_input.val(),classRoom: classRoom});
+            }
+
             function searchComplete(searcher) {
                 if (!searcher.results) return;
 
                 var sr = $('#search-results');
                 sr.html('');
 
+                var agregados = 0;
+
                 if (searcher.results.length > 0) {
+                    var randomSearchId = Math.floor(Math.random() * 1000000000) + 1;
                     for (var i = 0; i < searcher.results.length; i++) {
                         var result = searcher.results[i];
+
+                        var randomImageId = Math.floor(Math.random() * 1000000000) + 1;
                         sr.append(
                                 '<div class="col-xs-4 search-result">\
-                                    <a href="' + result.url + '" target="_blank"><img class="search-results-image" src="' + result.url + '"></a>\
-                            </div>'
+                                    <a id="'+randomImageId+'" href="javascript:fullSizeImage('+randomImageId+')" target="_blank"><img id="img_'+randomImageId+'" onerror="removeImg('+randomImageId+')" class="search-results-image" src="' + result.url + '"></a>\
+                                            </div>'
                         );
-                        if ((i + 1) % 3 == 0)
+                        agregados++;
+                        if ((agregados) % 3 == 0)
                             sr.append('<div class="separator"></div>');
+
+                       /* $.ajax({
+                            url: '/helper/testUrl',
+                            type: 'GET',
+                            contentType: 'application/json',
+                            data: {testUrl: result.url, searchId: randomSearchId}}
+                        ).success(function(data){
+                            if(data.searchId == randomSearchId){ //por si llegan ajax viejos
+                                var randomImageId = Math.floor(Math.random() * 1000000000) + 1;
+                                sr.append(
+                                            '<div class="col-xs-4 search-result">\
+                                                <a id="'+randomImageId+'" href="' + data.testUrl + '" target="_blank"><img onerror="removeImg('+randomImageId+')" class="search-results-image" src="' + data.testUrl + '"></a>\
+                                            </div>'
+                                         );
+                                agregados++;
+                                if ((agregados) % 3 == 0)
+                                    sr.append('<div class="separator"></div>');
+                            }
+                        }).fail(function(result1){
+                        }); */
+
                     }
                 } else {
                     sr.html('Sem resultados');
@@ -179,14 +220,15 @@ html(style="height: 100%")
                 input.val(input.val() + st);
                 input.focus();
                 search_button.click();
+                sendSearch(); //cuando selecciona del chat, busca y comparte automaticamente
             };
+
             //**********************************************//
+            function sendSearch() {
+                socket.emit('search changed', {text: search_input.val(), classRoom: classRoom});
+            }
 
             $(document).ready(function(){
-
-                function sendSearch() {
-                    socket.emit('search changed', { text: search_input.val(), classRoom: classRoom });
-                }
 
                 var event_search;
 
@@ -196,14 +238,15 @@ html(style="height: 100%")
                     imageSearch.execute(items[items.length - 1].trim());
                 });
 
-                search_input.on('keydown', function(e){
+                search_input.on('keydown', function(e) {
                     if (e.which == 17) { //--Comparte la búsqueda con CTRL
                         search_button.click();
                         sendSearch();
-                    } else if (e.keyCode == 13)
+                    } else if (e.keyCode == 13){
                         search_button.click();
+                    }
 
-                    e.preventDefault();
+                    //e.preventDefault();
                 });
 
                 search_input.on('input', function(e) {
@@ -238,6 +281,29 @@ html(style="height: 100%")
 
                 socket.on('messageRemoved', function (data) {
                     removeChatMsg(data.inputId);
+                });
+
+                socket.on('full size image', function (data) {
+                    if (data.classRoom == classRoom){
+                        search_input.val(data.input);
+                        var imageUrl = data.urlImage;
+                        var sr = $('#search-results');
+                        sr.empty();
+
+                        var myImage = new Image();
+                        myImage.className  = "search-results-big-image";
+                        myImage.src = imageUrl;
+
+                        sr.append(myImage);
+                    }
+                });
+
+                socket.on('clear search images', function (data) {
+                    if (data.classRoom == classRoom){
+                        search_input.val('');
+                        var sr = $('#search-results');
+                        sr.empty();
+                    }
                 });
                 //**********************************************//
 
