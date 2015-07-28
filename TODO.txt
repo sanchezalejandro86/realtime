@@ -1,0 +1,41 @@
+Cuando edito un chat, y lo vacio, no puedo seguir escribiendo. Sigue pasando. Si lo vacío, y saco el focus, ya no puedo volver a enfocarlo y por ende queda muerto ahi
+
+Ver de que se vaya manteniendo el chat para que cuando se loguea uno, le manda el chat actual
+
+Speech Recognition
+
+Guardar clase seria guardar el chat.. el profe despues lo puede editar.. el alumno solo ver y buscar
+por ahora hacerlo para el profe por url
+
+Realtime portugues -> Realtime portugues Efecto Brasil
+
+Ver si se puede hacer que el chat se estire siempre lo mas posible
+
+
+
+
+
+
+-- Permitir eliminar del chat (solo el profesor)
+
+-- Ponerle un background (azul violazio) al chat (e input)
+	al 50% de la pantalla (el lado del chat). Volarle el borde al cuadrado del chat  (POR AHORA NO)
+
+-- Con enter en el chat, el alumno envia. El profesor envia con CTRL (enter es nuevo renglon)
+
+-- TextArea + video + nombre + conectar.. al footer para que quede fijo
+
+-- Ocultar el control de audio
+
+-- El conectar que permita desconectar (desconecta solo el streaming de ida y de vuelta, pero el alumno sigue en el chat)
+	---El boton cambia de DESCONECTAR a CONECTAR y viceversa. Ver si se puede detectar cuando se cae el streaming estando conectado, para que se le habilite el CONECTAR y pueda reconectarse.. o quizas convenga que siempre esten los 2 botones
+
+--Ver de volar el input de google
+	--Sacar el tema de la coma.. que cuando doble clickea o selecciona, busque eso y listo (si vuela el input, ya no caliente)
+	--Volar el control
+	--EN BASE A ESOS 2 PUNTOS, QUIZAS CONVENGA NO USAR UN CUSTOMSEARCH SINO HACER POR ATRAS LA BUSQUEDA.. VER LA WEB DEL TIPO QUE AHI ESTA HECHO
+
+--Click en la imagen que abra la imagen en la misma pantalla y no la url. Conseguir imagenes mas grandes.
+	--Cuando clickea, se dispara el aviso para que todos vean esa imagen
+
+--Que el profesor con SUPR limpie su busqueda y las de todos
