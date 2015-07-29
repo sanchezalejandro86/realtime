@@ -14,7 +14,7 @@ var claseSchema = {
 
 var Clase = mongoose.model('clases', claseSchema);
 
-Clase.crearClase = function(id){
+Clase.createClass = function(id){
     //db.collection.find({_id: "myId"}, {_id: 1}).limit(1)
     Clase.update({clase_id: id}, { clase_id: id }, { upsert: true }).exec();
 };
@@ -31,6 +31,14 @@ Clase.addMessage = function addMessage(claseId, inputId, author, text, teacher){
 
 Clase.getClase = function(clase_id, f){
     Clase.find({clase_id: clase_id}, function(err, docs){ f(docs); });
+};
+
+Clase.removeMessage = function removeMessage(claseId, inputId){
+    Clase.update({ clase_id: claseId }, { $pull: { messages:  {inputId : inputId} } }).exec();
+};
+
+Clase.updateMessage = function removeMessage(claseId, inputId, text){
+    Clase.update({ clase_id: claseId, "messages.inputId" : inputId}, { $set: { "messages.$.text" : text } }).exec();
 };
 
 module.exports = Clase;

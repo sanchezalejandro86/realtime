@@ -29,10 +29,10 @@ server.listen(app.get('port'), function(){
 
 var socketsPeers = [];
 
-var claseId = 17; //--TODO provisorio
+//var claseId = 17; //--TODO provisorio
 
 io.on('connection', function(socket){
-    Clase.crearClase(claseId);
+
     socket.on('search changed', function(data){
         socket.broadcast.emit('search changed', data);
     });
@@ -51,13 +51,14 @@ io.on('connection', function(socket){
     });
     socket.on('newMessageChat', function (data) {
         socket.broadcast.emit('newMessageChat', data);
-        Clase.addMessage(claseId, data.inputId, data.author, data.text, data.teacher);
+        Clase.addMessage(data.classRoom, data.inputId, data.author, data.text, data.teacher);
     });
     socket.on('messageChatChanged', function (data) {
+        Clase.updateMessage(data.classRoom, data.inputId, data.text);
         socket.broadcast.emit('messageChatChanged', data);
     });
     socket.on('messageRemoved', function (data){
-        // TODO validar que lo haya enviado el profesor
+        Clase.removeMessage(data.classRoom, data.inputId);
         socket.broadcast.emit('messageRemoved', data);
     });
     socket.on('full size image', function (data) {

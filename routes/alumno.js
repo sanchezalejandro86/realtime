@@ -4,7 +4,13 @@ var Clases = require('../model/clase');
 
 /* GET users listing. */
 router.get('/:classRoom', function(req, res, next) {
-    Clases.getClase(17, function(d){ res.render('alumno', { classRoom: req.params.classRoom, messages: JSON.stringify(d) }); });
+    var classRoom = req.params.classRoom;
+
+    Clases.getClase(classRoom,
+        function(d){
+            res.render('alumno', { classRoom: req.params.classRoom, messages: JSON.stringify(d)
+        });
+    });
 });
 
 module.exports = router;

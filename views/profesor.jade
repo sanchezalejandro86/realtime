@@ -20,7 +20,7 @@ block javascript
         $(document).on('ready', function(e){
             $('#chat-area').on('click', '.msg-remove', function (e) {
                 var id = $(this).parent().attr('id');
-                socket.emit('messageRemoved', { inputId: id });
+                socket.emit('messageRemoved', { inputId: id, classRoom : classRoom });
 
                 removeChatMsg(id);
             });
