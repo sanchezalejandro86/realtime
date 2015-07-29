@@ -109,7 +109,11 @@ html(style="height: 100%")
             var color = "";
             var suggest = "";
 
-            var messages = JSON.parse('!{messages}')[0].messages;
+            var json = JSON.parse('!{messages}'),
+                messages;
+
+            if (json.length > 0)
+                messages = json[0].messages;
 
             var sp = $("#search-panel"),
                 chat_area = $('#chat-area'),
@@ -316,7 +320,7 @@ html(style="height: 100%")
                     var text = $.trim(sendie.val());
                     if (text == "") return;
 
-                    var data = { message: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val()}; //TODO este author es provisorio
+                    var data = { text: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val(), teacher: profesor}; //TODO este author es provisorio
                     socket.emit('newMessageChat', data);
                     addChatMsg(data, true);
                     sendie.val("");
@@ -343,8 +347,13 @@ html(style="height: 100%")
                 });
 
                 $(messages).each(function(i, data) {
-                    addChatMsg(data, data.author == $('#name').val());
-                    console.log(data);
+                    if (profesor && data.teacher) {
+                        addChatMsg(data, true);
+                    }else if (!(!profesor ^ data.teacher)) {
+                        addChatMsg(data, false);
+                    }else {
+                        addChatMsg(data, data.author == $('#name').val());
+                    }
                 });
 
                 function addChatMsg(data, sent){
@@ -355,7 +364,7 @@ html(style="height: 100%")
                                 <span class="msg-text" contenteditable="true">' + data.text + '</span>\
                                 ' + getRemove() + '\
                                 <span contenteditable="false" class="msg-date">' +
-                                date.getDate() + "/" + (date.getMonth()+1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span>\
+                                date.getDate() + "/" + (date.getMonth() + 1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span>\
                             </div>';
 
                     var chat_area = $('#chat-area');
@@ -370,15 +379,6 @@ html(style="height: 100%")
                     chat_area.append(msg);
                     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
                 }
-
-
-                jQuery.fn.justtext = function () {
-                    return $(this).clone()
-                            .children()
-                            .remove()
-                            .end()
-                            .text();
-                };
             });
 
             function removeChatMsg(id) {

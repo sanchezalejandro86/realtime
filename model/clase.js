@@ -7,7 +7,8 @@ var claseSchema = {
     messages: [{
         inputId: Number,
         author: String,
-        text: String
+        text: String,
+        teacher: Boolean
     }]
 };
 
@@ -18,11 +19,12 @@ Clase.crearClase = function(id){
     Clase.update({clase_id: id}, { clase_id: id }, { upsert: true }).exec();
 };
 
-Clase.addMessage = function addMessage(claseId, inputId, sender, content){
+Clase.addMessage = function addMessage(claseId, inputId, author, text, teacher){
     var msg = {
         inputId: inputId,
-        author: sender,
-        text: content
+        author: author,
+        text: text,
+        teacher: teacher
     };
     Clase.update({ clase_id: claseId }, { $push: { messages:  msg } }).exec();
 };

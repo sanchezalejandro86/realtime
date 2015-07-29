@@ -51,7 +51,7 @@ io.on('connection', function(socket){
     });
     socket.on('newMessageChat', function (data) {
         socket.broadcast.emit('newMessageChat', data);
-        Clase.addMessage(claseId, data.inputId, data.sender, data.message);
+        Clase.addMessage(claseId, data.inputId, data.author, data.text, data.teacher);
     });
     socket.on('messageChatChanged', function (data) {
         socket.broadcast.emit('messageChatChanged', data);
