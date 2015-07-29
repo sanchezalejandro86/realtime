@@ -8,6 +8,8 @@ var app = require('../app');
 var debug = require('debug')('realtime:server');
 var http = require('http');
 
+var Clase = require('../model/clase');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -27,7 +29,10 @@ server.listen(app.get('port'), function(){
 
 var socketsPeers = [];
 
+var claseId = 17; //--TODO provisorio
+
 io.on('connection', function(socket){
+    Clase.crearClase(claseId);
     socket.on('search changed', function(data){
         socket.broadcast.emit('search changed', data);
     });
@@ -46,6 +51,7 @@ io.on('connection', function(socket){
     });
     socket.on('newMessageChat', function (data) {
         socket.broadcast.emit('newMessageChat', data);
+        Clase.addMessage(claseId, data.inputId, data.sender, data.message);
     });
     socket.on('messageChatChanged', function (data) {
         socket.broadcast.emit('messageChatChanged', data);

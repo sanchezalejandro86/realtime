@@ -9,6 +9,8 @@ var routes = require('./routes/index');
 var alumno = require('./routes/alumno');
 var helper = require('./routes/helper');
 
+var mongoose = require('mongoose');
+
 var app = express();
 
 // view engine setup
@@ -57,5 +59,13 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
+mongoose.connect('localhost:27017/realtime',
+    function(error){
+        if (error) {
+            //TODO logear errores de conexion
+        }
+    });
 
 module.exports = app;

@@ -109,6 +109,8 @@ html(style="height: 100%")
             var color = "";
             var suggest = "";
 
+            var messages = JSON.parse('!{messages}')[0].messages;
+
             var sp = $("#search-panel"),
                 chat_area = $('#chat-area'),
                 search_input = $('#search-input'),
@@ -275,7 +277,7 @@ html(style="height: 100%")
 
                 socket.on('messageChatChanged', function (data) {
                     if (data.classRoom == classRoom){
-                        $("#" + data.inputId + ' .msg-text').text(data.message);
+                        $("#" + data.inputId + ' .msg-text').text(data.text);
                     }
                 });
 
@@ -314,7 +316,7 @@ html(style="height: 100%")
                     var text = $.trim(sendie.val());
                     if (text == "") return;
 
-                    var data = { message: text, inputId: Date.now() , classRoom: classRoom, sender: $('#name').val()}; //TODO este sender es provisorio
+                    var data = { message: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val()}; //TODO este author es provisorio
                     socket.emit('newMessageChat', data);
                     addChatMsg(data, true);
                     sendie.val("");
@@ -328,7 +330,7 @@ html(style="height: 100%")
                     var item = $("#" + inputId);
                     var inputValue = $(e.target).text();
 
-                    socket.emit('messageChatChanged', { message: inputValue, inputId: inputId, classRoom: classRoom});
+                    socket.emit('messageChatChanged', { text: inputValue, inputId: inputId, classRoom: classRoom});
 
                     item.removeClass('msg-pending');
                     e.preventDefault();
@@ -340,12 +342,17 @@ html(style="height: 100%")
                         $(e.target).text(' ');
                 });
 
+                $(messages).each(function(i, data) {
+                    addChatMsg(data, data.author == $('#name').val());
+                    console.log(data);
+                });
+
                 function addChatMsg(data, sent){
                     var date = new Date(data.inputId);
                     var msg =
                             '<div contentEditable="false" id="' + data.inputId + '" \
-                                class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.sender + '">\
-                                <span class="msg-text" contenteditable="true">' + data.message + '</span>\
+                                class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
+                                <span class="msg-text" contenteditable="true">' + data.text + '</span>\
                                 ' + getRemove() + '\
                                 <span contenteditable="false" class="msg-date">' +
                                 date.getDate() + "/" + (date.getMonth()+1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span>\
@@ -354,11 +361,11 @@ html(style="height: 100%")
                     var chat_area = $('#chat-area');
                     var last = $('#chat-area>*:last-child');
 
-                    if (last.length == 0 || data.sender != last.data('sender'))
+                    if (last.length == 0 || data.author != last.data('sender'))
                         chat_area.append('\
                                 <hr class="chat-separator">\
                                 <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
-                                data.sender.substring(0, 9) + '</span>');
+                                data.author.substring(0, 9) + '</span>');
 
                     chat_area.append(msg);
                     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
