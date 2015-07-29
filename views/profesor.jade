@@ -10,12 +10,49 @@ block extraLine1
 block javascript
     script.
 
+        var profesor = true;
+        //var key_code_send = 17;
+        var delta = 500; //medio segundo
+        var lastKeypressTime = 0;
+
         function getRemove() {
             return '<span contenteditable="false" class="glyphicon glyphicon-remove msg-remove"></span>';
         }
 
-        var profesor = true;
-        var key_code_send = 17;
+        function processKeyDownChat(e){
+            if(e.which == 32){ //con doble space bar, envia al chat
+                var thisKeypressTime = new Date();
+                if ( thisKeypressTime - lastKeypressTime <= delta ) {
+                    var sendie = $('#sendie');
+                    var text = $.trim(sendie.val());
+                    if (text == "") return;
+
+                    text = text.replace('\n','<br/>'); //TODO HACERLO DE UNA MANERA MENOS FEA
+
+                    var data = { text: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val(), teacher: profesor}; //TODO este author es provisorio
+                    socket.emit('newMessageChat', data);
+                    addChatMsg(data, true);
+                    sendie.val("");
+                    thisKeypressTime = 0;
+                }
+                lastKeypressTime = thisKeypressTime;
+                return;
+            }
+
+            if (e.which == 17){//--Con CTRL => busca y comparte
+                var sendie = $('#sendie');
+                var text = $.trim(sendie.val());
+                if (text == "") return;
+
+                var input = search_input;
+                input.val(text); //a pedido de Nicolas, cuando selecciona con el kolich queda eso solo en el input y busca y comparte
+                //input.focus();
+                search_button.click();
+                sendSearch();
+                return;
+            }
+        }
+
 
         $(document).on('ready', function(e){
             $('#chat-area').on('click', '.msg-remove', function (e) {

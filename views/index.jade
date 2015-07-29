@@ -220,13 +220,14 @@ html(style="height: 100%")
                         $(st.focusNode.firstChild).hasClass('ignore-kolich')) return;
 
                 var input = search_input;
-                if (input.val() != "") //--Agregar coma
-                    st = ", " + st;
+                //if (input.val() != "") //--Agregar coma
+                //    st = ", " + st;
+                //input.val(input.val() + st);
 
-                input.val(input.val() + st);
-                input.focus();
+                input.val(st); //a pedido de Nicolas, cuando selecciona con el kolich queda eso solo en el input y busca y comparte
+                //input.focus();
                 search_button.click();
-                sendSearch(); //cuando selecciona del chat, busca y comparte automaticamente
+                sendSearch();
             };
 
             //**********************************************//
@@ -377,17 +378,7 @@ html(style="height: 100%")
                 //*********************************************//
 
                 $('#sendie').keydown(function (e) {
-                    if (e.which != key_code_send) return; //--Con CTRL => enviar
-
-                    var sendie = $('#sendie');
-                    var text = $.trim(sendie.val());
-                    if (text == "") return;
-
-                    var data = { text: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val(), teacher: profesor}; //TODO este author es provisorio
-                    socket.emit('newMessageChat', data);
-                    addChatMsg(data, true);
-                    sendie.val("");
-                    e.preventDefault();
+                    processKeyDownChat(e);
                 });
 
                 chat_area.on("keydown", ".chatInput .msg-text", function(e){
@@ -410,38 +401,14 @@ html(style="height: 100%")
                 });
 
                 $(messages).each(function(i, data) {
-                    if (profesor && data.teacher) {
-                        addChatMsg(data, true);
-                    }else if (!(!profesor ^ data.teacher)) {
-                        addChatMsg(data, false);
+                    if (profesor) {
+                        addChatMsg(data, data.teacher);
                     }else {
-                        addChatMsg(data, data.author == $('#name').val());
+                        addChatMsg(data, false); //si no es profesor, se agregan como si fueran de otros porque no podemos identifcar alumnos aun
                     }
                 });
 
-                function addChatMsg(data, sent){
-                    var date = new Date(data.inputId);
-                    var msg =
-                            '<div contentEditable="false" id="' + data.inputId + '" \
-                                class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
-                                <span class="msg-text" contenteditable="true">' + data.text + '</span>\
-                                ' + getRemove() + '\
-                                <span contenteditable="false" class="msg-date">' +
-                                date.getDate() + "/" + (date.getMonth() + 1) + ' ' + date.getHours() + ':' + date.getMinutes() + '</span>\
-                            </div>';
 
-                    var chat_area = $('#chat-area');
-                    var last = $('#chat-area>*:last-child');
-
-                    if (last.length == 0 || data.author != last.data('sender'))
-                        chat_area.append('\
-                                <hr class="chat-separator">\
-                                <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
-                                data.author.substring(0, 9) + '</span>');
-
-                    chat_area.append(msg);
-                    document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
-                }
             });
 
             function removeChatMsg(id) {
@@ -451,6 +418,34 @@ html(style="height: 100%")
                     msg.prev().remove();
                 }
                 msg.remove();
+            }
+
+            function padLeft(nr, n, str) {
+                return Array(n - String(nr).length + 1).join(str || '0') + nr;
+            }
+
+            function addChatMsg(data, sent){
+                var date = new Date(data.inputId);
+                var msg =
+                        '<div contentEditable="false" id="' + data.inputId + '" \
+                                class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
+                                <span class="msg-text" contenteditable="true">' + data.text + '</span>\
+                                ' + getRemove() + '\
+                                <span contenteditable="false" class="msg-date">' +
+                        padLeft(date.getDate(),2) + "/" + padLeft(date.getMonth() + 1, 2) + "/" + padLeft(date.getYear() + 1900, 4) + ' ' + padLeft(date.getHours(),2) + ':' + padLeft(date.getMinutes(),2) + '</span>\
+                            </div>';
+
+                var chat_area = $('#chat-area');
+                var last = $('#chat-area>*:last-child');
+
+                if (last.length == 0 || data.author != last.data('sender'))
+                    chat_area.append('\
+                                <hr class="chat-separator">\
+                                <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
+                            data.author.substring(0, 9) + '</span>');
+
+                chat_area.append(msg);
+                document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
             }
 
         block javascript

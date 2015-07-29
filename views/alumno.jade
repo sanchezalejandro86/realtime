@@ -19,12 +19,30 @@ block javascript
     script.
 
         var profesor = false;
-        var key_code_send = 13;
+        //var key_code_send = 13;
         var myCall;
+        var peerId;
 
         function getRemove() { return ''; }
 
-        var peerId;
+        function processKeyDownChat(e){ //--Con ENTER => enviar
+            if (e.which == 13){
+                var sendie = $('#sendie');
+                var text = $.trim(sendie.val());
+                if (text == "") return;
+
+                text = text.replace('\n','<br/>'); //TODO HACERLO DE UNA MANERA MENOS FEA
+
+                var data = { text: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val(), teacher: profesor}; //TODO este author es provisorio
+                socket.emit('newMessageChat', data);
+                addChatMsg(data, true);
+                sendie.val("");
+                e.preventDefault();
+            }
+
+
+        }
+
         $(document).ready(function(){
             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             navigator.getUserMedia({audio: true, video:false},
