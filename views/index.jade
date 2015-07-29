@@ -17,7 +17,7 @@ html(style="height: 100%")
                             span.icon-bar
                             span.icon-bar
                         a.navbar-brand(href="/")
-                            img(src="images/logo.png")
+                            img(src="/images/logo.png")
                     .left-div
                         .user-settings-wrapper
                             ul.nav
@@ -27,7 +27,7 @@ html(style="height: 100%")
                                     .dropdown-menu.dropdown-settings
                                         .media
                                             a.media-left(href="#")
-                                                img.img-rounded(src="images/64-64.jpg", alt="")
+                                                img.img-rounded(src="/images/64-64.jpg", alt="")
                                             .media-body
                                                 h4.media-heading Alejandro Sánchez
                                                 h5 Administrador
@@ -67,11 +67,15 @@ html(style="height: 100%")
 
                         .col-xs-6#search-panel
                             .row
-                                .col-xs-10
+                                .col-xs-8
                                     input#search-input.form-control.ignore-kolich(type="text")
                                 .col-xs-2
                                     button#search-button.form-control.btn.btn-default
                                         span.glyphicon.glyphicon-search
+                                .col-xs-2
+                                    button#start_recognition_button(style="background-color:transparent;border:0;")
+                                        img#mic_on(alt="Start", src="/images/mic_off.png", height="40px", style="display:none")
+                                        img#mic_off(alt="End", src="/images/mic_on.png", height="40px", style="display:none")
                             .row#search-results
 
 
@@ -120,6 +124,22 @@ html(style="height: 100%")
                 search_input = $('#search-input'),
                 search_button = $('#search-button');
 
+            var recognition = null;
+
+            if(!('webkitSpeechRecognition' in window)){
+                $("#mic_off").show();
+                $("#mic_on").hide();
+                alert('SU BROWSER NO TIENE HABILITADO EL RECONOCIMIENTO DE VOZ. POR FAVOR ACTUALICELO, DE LO CONTRARIO NO PODRA UTILIZAR ESA FUNCIONALIDAD');
+            } else {
+                recognition = new webkitSpeechRecognition();
+                recognition.lang = 'es-AR';
+                //recognition.lang = 'pt-BR';
+                //recognition.continuous = true;
+                //recognition.interimResults = true;
+                $("#mic_on").show();
+                $("#mic_off").hide();
+            }
+
             //**********************+BUSCADOR***********************//
             google.load('search', '1', {"language": "pt_br"});
 
@@ -163,29 +183,9 @@ html(style="height: 100%")
                                             </div>'
                         );
                         agregados++;
-                        if ((agregados) % 3 == 0)
+                        if ((agregados) % 3 == 0){
                             sr.append('<div class="separator"></div>');
-
-                       /* $.ajax({
-                            url: '/helper/testUrl',
-                            type: 'GET',
-                            contentType: 'application/json',
-                            data: {testUrl: result.url, searchId: randomSearchId}}
-                        ).success(function(data){
-                            if(data.searchId == randomSearchId){ //por si llegan ajax viejos
-                                var randomImageId = Math.floor(Math.random() * 1000000000) + 1;
-                                sr.append(
-                                            '<div class="col-xs-4 search-result">\
-                                                <a id="'+randomImageId+'" href="' + data.testUrl + '" target="_blank"><img onerror="removeImg('+randomImageId+')" class="search-results-image" src="' + data.testUrl + '"></a>\
-                                            </div>'
-                                         );
-                                agregados++;
-                                if ((agregados) % 3 == 0)
-                                    sr.append('<div class="separator"></div>');
-                            }
-                        }).fail(function(result1){
-                        }); */
-
+                        }
                     }
                 } else {
                     sr.html('Sem resultados');
@@ -312,6 +312,69 @@ html(style="height: 100%")
                     }
                 });
                 //**********************************************//
+
+                //************VOICE RECOGNITION********************//
+                if(recognition != null){
+                    recognition.onstart = function() {
+                        $("#mic_on").hide();
+                        $("#mic_off").show();
+                    }
+
+                    var final_transcript = '';
+
+                    recognition.onresult = function(event) {
+                        var interim_transcript = '';
+
+                        for (var i = 0; i < event.results.length; ++i) {
+                            if (event.results[i].isFinal) {
+                                final_transcript += event.results[i][0].transcript;
+                            } else {
+                                interim_transcript += event.results[i][0].transcript;
+                            }
+                        }
+
+                        if(final_transcript != ''){
+                            var input = search_input;
+                            if (input.val() != "") //--Agregar coma
+                                final_transcript = ", " + final_transcript;
+
+                            input.val(input.val() + final_transcript);
+                            input.focus();
+                            final_transcript = '';
+                            search_button.click();
+                        }
+
+                        //final_transcript = capitalize(final_transcript);
+                        //final_span.innerHTML = linebreak(final_transcript);
+                        //interim_span.innerHTML = linebreak(interim_transcript);
+
+                        //alert(final_transcript);
+                    }
+
+                    recognition.onerror = function(event) {
+                        alert('ERROR SPEECH RECOGNITION');
+                        $("#mic_off").hide();
+                        $("#mic_on").show();
+                    }
+
+                    recognition.onend = function() {
+                        $("#mic_off").hide();
+                        $("#mic_on").show();
+                    }
+
+                    $("#mic_on").click(function(){
+                        recognition.start();
+                        $("#mic_on").hide();
+                        $("#mic_off").show();
+                    });
+
+                    $("#mic_off").click(function(){
+                        recognition.stop();
+                        $("#mic_off").hide();
+                        $("#mic_on").show();
+                    });
+                }
+                //*********************************************//
 
                 $('#sendie').keydown(function (e) {
                     if (e.which != key_code_send) return; //--Con CTRL => enviar
