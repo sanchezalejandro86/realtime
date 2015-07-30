@@ -7,6 +7,7 @@ html(style="height: 100%")
         link(href='/stylesheets/bootstrap.min.css', rel='stylesheet', media='screen')
         link(href='/stylesheets/font-awesome.min.css', rel='stylesheet', media='screen')
         link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/stylesheets/jquery.cleditor.css')
     body
         header
             .navbar.navbar-inverse.set-radius-zero
@@ -103,6 +104,8 @@ html(style="height: 100%")
         script(type='text/javascript', src='/javascripts/peer.js')
         //script(type='text/javascript', src='/javascripts/etherpad.js')
         script(type='text/javascript', src="https://www.google.com/jsapi")
+        script(type='text/javascript', src="/javascripts/jquery.cleditor.js")
+        script(type='text/javascript', src="/javascripts/jquery.browser.min.js")
 
         script.
             var socket = io();
@@ -132,8 +135,8 @@ html(style="height: 100%")
                 alert('SU BROWSER NO TIENE HABILITADO EL RECONOCIMIENTO DE VOZ. POR FAVOR ACTUALICELO, DE LO CONTRARIO NO PODRA UTILIZAR ESA FUNCIONALIDAD');
             } else {
                 recognition = new webkitSpeechRecognition();
-                recognition.lang = 'es-AR';
-                //recognition.lang = 'pt-BR';
+                //recognition.lang = 'es-AR';
+                recognition.lang = 'pt-BR';
                 //recognition.continuous = true;
                 //recognition.interimResults = true;
                 $("#mic_on").show();
@@ -236,6 +239,12 @@ html(style="height: 100%")
             }
 
             $(document).ready(function(){
+
+               /* var options = {
+                    controls: "bold italic underline strikethrough"
+                };
+
+                var editor = $("#sendie").cleditor(options)[0]; */
 
                 var event_search;
 

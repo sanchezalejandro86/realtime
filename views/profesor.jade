@@ -27,7 +27,9 @@ block javascript
                     var text = $.trim(sendie.val());
                     if (text == "") return;
 
-                    text = text.replace('\n','<br/>'); //TODO HACERLO DE UNA MANERA MENOS FEA
+                    while(text.indexOf('\n') != -1){
+                        text = text.replace('\n','<br/>'); //TODO HACERLO DE UNA MANERA MENOS FEA
+                    }
 
                     var data = { text: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val(), teacher: profesor}; //TODO este author es provisorio
                     socket.emit('newMessageChat', data);

@@ -1,7 +1,7 @@
-ARREGLAR QUE DE ALGUNA FORMA ESCAPEE EN EL JSON DE MENSAJES PORQUE CUANDO HAY UN \n ROMPE
-
-Guardar clase seria guardar el chat.. el profe despues lo puede editar.. el alumno solo ver y buscar
-por ahora hacerlo para el profe por url
+Hacer una pantalla para ver la clase guardada (calendario de jquery).
+	Si es alumo, la ve pero no puede tocar el chat
+	Si es profesor, la ve libremente
+(por ahora hacerlo por url para diferenciar alumno de profesor)
 
 Realtime portugues -> Realtime portugues Efecto Brasil
 
@@ -49,3 +49,5 @@ Ver si se puede hacer que el chat se estire siempre lo mas posible
 --Ver que cuando levanta el chat, salvo para el profesor, el resto lo ve como si lo hubieran escrito otros
 
 --Ver el chat de nico y cambiar el tema del comportamiento del input (profesor con ctrl busca y comparte..con doble barra manda al chat
+
+--ARREGLAR QUE DE ALGUNA FORMA ESCAPEE EN EL JSON DE MENSAJES PORQUE CUANDO HAY UN \n ROMPE
