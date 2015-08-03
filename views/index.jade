@@ -24,7 +24,7 @@ block footer-content
     .col-xs-6
         .col-xs-9
             #send-message-area
-                textarea#sendie
+                textarea#sendie(style="font-size: 16px;")
         .col-xs-3(style="padding-left:0px;")
             block video
     .col-xs-6
@@ -50,7 +50,7 @@ block script
         var peer = new Peer({key: 'bp70suzmx5ok1emi'});
         var mediaStream = null;
         var classRoom = '#{classRoom}';
-        var locked = #{locked};
+        //var imageBackHtml;
 
         var color = "";
         var suggest = "";
@@ -180,8 +180,6 @@ block script
         }
 
         $(document).ready(function(){
-
-            if (locked) $('#sendie').attr('disabled', 'true');
 
            /* var options = {
                 controls: "bold italic underline strikethrough"
@@ -394,10 +392,16 @@ block script
                     '<div contentEditable="false" id="' + data.inputId + '" \
                             class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
                             <span class="msg-text" contenteditable="' + !locked + '">' + data.text + '</span>\
+                            <span class="msg-text" contenteditable="true" style="word-break:keep-all;">' + data.text + '</span>\
+                            ' + getRemove() + '\
+                        </div>';
+                   /* '<div contentEditable="false" id="' + data.inputId + '" \
+                            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
+                            <span class="msg-text" contenteditable="true">' + data.text + '</span>\
                             ' + getRemove() + '\
                             <span contenteditable="false" class="msg-date">' +
                     padLeft(date.getDate(),2) + "/" + padLeft(date.getMonth() + 1, 2) + "/" + padLeft(date.getYear() + 1900, 4) + ' ' + padLeft(date.getHours(),2) + ':' + padLeft(date.getMinutes(),2) + '</span>\
-                        </div>';
+                        </div>'; */
 
             var chat_area = $('#chat-area');
             var last = $('#chat-area>*:last-child');
