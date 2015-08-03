@@ -25,26 +25,19 @@ block script
     script.
         $(document).ready(function() {
 
-            /*var events = {
-             '07-23-2015': '<a href="http://tympanus.net/codrops/2012/11/23/three-script-updates/">Three Script Updates</a>',
-             '07-24-2015': '<a href="http://tympanus.net/codrops/2012/11/21/adaptive-thumbnail-pile-effect-with-automatic-grouping/">Adaptive Thumbnail Pile Effect with Automatic Grouping</a>',
-             '07-25-2015': '<span>Christmas Day</span><span>Christmas Day2</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span>',
-             '07-31-2015': '<span>New Year\'s Eve</span>'
-             };*/
-
-            var events = !{events};
+            var events = !{events},
+                prof = !{prof};
 
             Object.keys(events).forEach(
                 function (dia) {
-                    events[dia] = events[dia].split(',').map(
+                    events[dia] = events[dia].toString().split(',').map(
                         function(clase){
-                            return '<a href="">' + clase + '</a>';
+                            return '<a href="' + ('calendar') + '">' + clase + '</a>';
                         }
                     ).join().replace(',','');
 
                 }
             );
-            console.log(events);
 
             var transEndEventNames = {
                         'WebkitTransition': 'webkitTransitionEnd',
