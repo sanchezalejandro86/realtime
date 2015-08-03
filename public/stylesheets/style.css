@@ -383,7 +383,8 @@ input.gsc-input,
 
 /********************MENSAGES DEL CHAT******************/
 .msg-text{
-    max-width: 75%;
+    max-width: 95%;
+    /*max-width: 75%;*/
     /*white-space: pre;*/
     font-size: 16px;
 }
