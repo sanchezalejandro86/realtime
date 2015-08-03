@@ -22,19 +22,20 @@ block content
 
 block footer-content
     .col-xs-6
-        .col-xs-9
+        .col-xs-12(style="padding-left:0px;padding-right:0px;")
             #send-message-area
                 textarea#sendie(style="font-size: 16px;")
-        .col-xs-3(style="padding-left:0px;")
-            block video
     .col-xs-6
-        .row
-            block extraLine1
-        .row
-            block extraLine2
-        .row
-            .col-xs-5.col-xs-offset-7
-                label &copy; 2015 SolidWorks Solutions
+        .col-xs-3(style="padding-left:0px;margin-top:5px;")
+            block video
+        .col-xs-9
+            .row(style="margin-top:5px;")
+                block extraLine1
+            .row
+                block extraLine2
+            .row
+                .col-xs-5.col-xs-offset-7
+                    //label &copy; 2015 SolidWorks Solutions
 
 block script
     block script-2

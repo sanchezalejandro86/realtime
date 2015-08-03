@@ -355,7 +355,7 @@ input.gsc-input,
 
 #chat-wrap  {
     border: 1px solid #eee;
-    margin: 0 0 170px 0;
+    margin: 0 0 110px 0;
 }
 
 #chat-area  {
@@ -378,6 +378,7 @@ input.gsc-input,
     height: 100px;
     resize: none;
     background-color: #c7bcff;
+    margin-top: 5px;
 }
 
 /********************MENSAGES DEL CHAT******************/
@@ -495,7 +496,7 @@ audio {
 }
 
 .container{
-    margin: 5px 0;
+    margin : 5px;
     width: 100%;
 }
 
