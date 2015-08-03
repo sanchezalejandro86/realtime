@@ -4,16 +4,25 @@ block video
     video#profesorVideo(height="100px",autoplay)
 
 block extraLine1
-    .col-xs-2
+    .col-xs-2.col-xs-offset-2
         label.ignore-kolich Nombre:
-    .col-xs-3
+    .col-xs-4
         input.form-control.ignore-kolich#name(type="text", value="Alumno")
+    .col-xs-4
+        button#conectar(style="background-color: transparent;border: 0;")
+            img(src="/images/conectar.png",style="height:35px;",alt="CONECTAR",title="CONECTAR")
+        button#desconectar(style="background-color: transparent;border: 0;",alt="DESCONECTAR",title="DESCONECTAR")
+            img(src="/images/desconectar.png",style="height:35px;")
 
-block extraLine2
+//block extraLine2
     .col-xs-5.col-xs-offset-2
-        button.form-control.btn#conectar CONECTAR
+        button#conectar
+            img(src="/images/conectar.png",style="height:35px;")
+        //button.form-control.btn#conectar CONECTAR
     .col-xs-5
-        button.form-control.btn#desconectar DESCONECTAR
+        button#desconectar
+            img(src="/images/desconectar.png",style="height:35px;")
+        //button.form-control.btn#desconectar DESCONECTAR
 
 block script-2
     script.
