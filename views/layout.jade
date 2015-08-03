@@ -1,6 +1,5 @@
 doctype html
-//html(style="height: 100%")
-html
+html(style="height: 100%")
     head
         title Realtime Portugués - Efecto Brasil
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
@@ -11,7 +10,7 @@ html
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='/stylesheets/jquery.cleditor.css')
         block style
-    body
+    body(style="height: 100%")
         header
             //.navbar.navbar-inverse.set-radius-zero
                 .container
@@ -58,19 +57,16 @@ html
                                         a(href="#") Menu 4
                                     li
                                         a(href="#") Menu 5
-                .navbar.navbar-inverse.set-radius-zero
-                    .container
-                        .navbar-header
-                            button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
-                                span.icon-bar
-                                span.icon-bar
-                                span.icon-bar
-        content
-            .content-wrapper
                 .container
-                    .row
+                    .navbar-header
+                        button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+                            span Men&uacute;
+        content(style="height: 100%")
+            .content-wrapper(style="height: 80%")
+                .container(style="height: 100%")
+                    .row(style="height: 100%")
                         block content
-        footer
+        footer(style="height: 15%; min-height: 120px")
             .container
                 .row
                     block footer-content
