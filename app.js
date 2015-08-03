@@ -70,4 +70,8 @@ mongoose.connect('localhost:27017/realtime',
         }
     });
 
+mongoose.set('debug', function (coll, method, query, doc) {
+    console.log(coll + ' - ' + method + '- ' + JSON.stringify(query));
+});
+
 module.exports = app;

@@ -1,11 +1,115 @@
-extends ./client.jade
+extends ./layout.jade
 
+block style
+    link(rel='stylesheet', href='/stylesheets/calendar.css')
+    style.
+        #custom-inner {
+            border: 1px solid lightgray;
+        }
 
 block content
-    #calendar.fc-calendar-container
+    .custom-calendar-wrap
+        #custom-inner.custom-inner
+            .custom-header.clearfix
+                nav
+                    span#custom-prev.custom-prev
+                    span#custom-next.custom-next
+                h2#custom-month.custom-month
+                h3#custom-year.custom-year
+            #calendar.fc-calendar-container
 
-block javascript
+block script
+    script(type='text/javascript', src='/javascripts/modernizr.custom.63321.js')
+    script(type='text/javascript', src='/javascripts/jquery.calendario.js')
+
     script.
-        $( '#calendar' ).calendario();
+        $(document).ready(function() {
 
+            /*var events = {
+             '07-23-2015': '<a href="http://tympanus.net/codrops/2012/11/23/three-script-updates/">Three Script Updates</a>',
+             '07-24-2015': '<a href="http://tympanus.net/codrops/2012/11/21/adaptive-thumbnail-pile-effect-with-automatic-grouping/">Adaptive Thumbnail Pile Effect with Automatic Grouping</a>',
+             '07-25-2015': '<span>Christmas Day</span><span>Christmas Day2</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span><span>Christmas Day</span>',
+             '07-31-2015': '<span>New Year\'s Eve</span>'
+             };*/
 
+            var events = !{events};
+
+            Object.keys(events).forEach(
+                function (dia) {
+                    events[dia] = events[dia].split(',').map(
+                        function(clase){
+                            return '<a href="">' + clase + '</a>';
+                        }
+                    ).join().replace(',','');
+
+                }
+            );
+            console.log(events);
+
+            var transEndEventNames = {
+                        'WebkitTransition': 'webkitTransitionEnd',
+                        'MozTransition': 'transitionend',
+                        'OTransition': 'oTransitionEnd',
+                        'msTransition': 'MSTransitionEnd',
+                        'transition': 'transitionend'
+                    },
+                    transEndEventName = transEndEventNames[Modernizr.prefixed('transition')],
+                    $wrapper = $('#custom-inner'),
+                    $calendar = $('#calendar'),
+                    cal = $calendar.calendario({
+                        onDayClick: function ($el, $contentEl, dateProperties) {
+                            if ($contentEl.length > 0) {
+                                showEvents($contentEl, dateProperties);
+                            }
+                        },
+                        caldata: events,
+                        displayWeekAbbr: true
+                    }),
+                    $month = $('#custom-month').html(cal.getMonthName()),
+                    $year = $('#custom-year').html(cal.getYear());
+            $('#custom-next').on('click', function () {
+                cal.gotoNextMonth(updateMonthYear);
+                updateEvents();
+            });
+            $('#custom-prev').on('click', function () {
+                cal.gotoPreviousMonth(updateMonthYear);
+                updateEvents();
+            });
+
+            function updateEvents(){
+                //console.log(cal.getYear() + ' - ' + cal.getMonth());
+                /*$.get('/calendar/getMonth/' + cal.getYear() + '/' + cal.getMonth())
+                    .done(function(data) {
+                        JSON.parse(data).forEach(function(e, i){
+                            console.log(e);
+                            d = new Date(e.date);
+                            events[d.getMonth() + '-' + d.getDate() + '-' + d.getFullYear()] = e.clase_id;
+                        });
+                    });*/
+            }
+
+            function updateMonthYear() {
+                $month.html(cal.getMonthName());
+                $year.html(cal.getYear());
+            }
+
+            function showEvents($contentEl, dateProperties) {
+                hideEvents();
+                var $events = $('<div id="custom-content-reveal" class="custom-content-reveal"><h4>Events for ' + dateProperties.monthname + ' ' + dateProperties.day + ', ' + dateProperties.year + '</h4></div>'),
+                        $close = $('<span class="custom-content-close"></span>').on('click', hideEvents);
+                $events.append($contentEl.html(), $close).insertAfter($wrapper);
+                setTimeout(function () {
+                    $events.css('top', '0%');
+                }, 25);
+            }
+
+            function hideEvents() {
+                var $events = $('#custom-content-reveal');
+                if ($events.length > 0) {
+                    $events.css('top', '100%');
+                    Modernizr.csstransitions ? $events.on(transEndEventName, function () {
+                        $(this).remove();
+                    }) : $events.remove();
+                }
+            }
+        });

@@ -1,11 +1,72 @@
 doctype html
-html
-  head
-    //title= title
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    meta(http-equiv='content-language', content='es')
-    meta(name="robots" content="INDEX,FOLLOW")
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    block style
-  body
-    block content
+html(style="height: 100%")
+    head
+        title Realtime Portugués - Efecto Brasil
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='content-language', content='es')
+        meta(name="robots" content="INDEX,FOLLOW")
+        link(href='/stylesheets/bootstrap.min.css', rel='stylesheet', media='screen')
+        link(href='/stylesheets/font-awesome.min.css', rel='stylesheet', media='screen')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/stylesheets/jquery.cleditor.css')
+        block style
+    body
+        header
+            .navbar.navbar-inverse.set-radius-zero
+                .container
+                    .navbar-header
+                        button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a.navbar-brand(href="/")
+                            img(src="/images/logo.png")
+                    .left-div
+                        .user-settings-wrapper
+                            ul.nav
+                                li.dropdown(style="margin-right: 60px;")
+                                    a.dropdown-toggle(data-toggle="dropdown", href="#", aria-expanded="false")
+                                        span.glyphicon.glyphicon-user(style="font-size: 25px")
+                                    .dropdown-menu.dropdown-settings
+                                        .media
+                                            a.media-left(href="#")
+                                                img.img-rounded(src="/images/64-64.jpg", alt="")
+                                            .media-body
+                                                h4.media-heading Alejandro Sánchez
+                                                h5 Administrador
+                                        hr
+                                        h5
+                                            strong(style="color:black;") Biografía
+                                        span(style="color:black;") Ingeniero en Sistemas de Información
+                                        hr
+                                        a.btn.btn-info.btn-sm(href="#") Perfil &nbsp;
+                                        a.btn.btn-danger.btn-sm(href="#") Cerrar Sesión
+            section.menu-section
+                .container
+                    .row
+                        .col-xs-12
+                            .navbar-collapse.collapse
+                                ul.nav.navbar-nav.navbar-right#menu-top
+                                    li
+                                        a.menu-top-active(href="#") Realtime
+                                    li
+                                        a(href="#") Menu 2
+                                    li
+                                        a(href="#") Menu 3
+                                    li
+                                        a(href="#") Menu 4
+                                    li
+                                        a(href="#") Menu 5
+        content
+            .content-wrapper
+                .container
+                    .row
+                        block content
+        footer
+            .container
+                .row
+                    block footer-content
+
+        script(type='text/javascript', src='/javascripts/jquery-2.1.4.min.js')
+        script(type='text/javascript', src='/javascripts/bootstrap.min.js')
+        block script
