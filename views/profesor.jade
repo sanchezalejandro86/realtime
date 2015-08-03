@@ -39,6 +39,8 @@ block script-2
                 }
                 lastKeypressTime = thisKeypressTime;
                 return;
+            } else {
+                lastKeypressTime = 0; //para que si escribe rapido 2 palabras y las separa con la barra (normal), no tome como doble space bar
             }
 
             if (e.which == 17){//--Con CTRL => busca y comparte

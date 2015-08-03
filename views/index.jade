@@ -24,7 +24,7 @@ block footer-content
     .col-xs-6
         .col-xs-9
             #send-message-area
-                textarea#sendie
+                textarea#sendie(style="font-size: 16px;")
         .col-xs-3(style="padding-left:0px;")
             block video
     .col-xs-6
@@ -40,7 +40,6 @@ block script
     block script-2
     script(type='text/javascript', src='/javascripts/socket.io-1.3.5.js')
     script(type='text/javascript', src='/javascripts/peer.js')
-    //script(type='text/javascript', src='/javascripts/etherpad.js')
     script(type='text/javascript', src="https://www.google.com/jsapi")
     script(type='text/javascript', src="/javascripts/jquery.cleditor.js")
     script(type='text/javascript', src="/javascripts/jquery.browser.min.js")
@@ -50,7 +49,6 @@ block script
         var peer = new Peer({key: 'bp70suzmx5ok1emi'});
         var mediaStream = null;
         var classRoom = '#{classRoom}';
-        //var imageBackHtml;
 
         var color = "";
         var suggest = "";
@@ -245,7 +243,6 @@ block script
                     search_input.val(data.input);
                     var imageUrl = data.urlImage;
                     var sr = $('#search-results');
-                    //imageBackHtml = sr.html();
                     sr.empty();
 
                     var myImage = new Image();
@@ -363,10 +360,6 @@ block script
             });
 
             $("#search-results").on("click", ".returnImageList", function(e){
-                /*var sr = $('#search-results');
-                sr.empty();
-                sr.append(imageBackHtml);
-                imageBackHtml = null;*/
                 search_button.click();
             })
 
@@ -391,11 +384,16 @@ block script
             var msg =
                     '<div contentEditable="false" id="' + data.inputId + '" \
                             class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
+                            <span class="msg-text" contenteditable="true" style="word-break:keep-all;">' + data.text + '</span>\
+                            ' + getRemove() + '\
+                        </div>';
+                   /* '<div contentEditable="false" id="' + data.inputId + '" \
+                            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
                             <span class="msg-text" contenteditable="true">' + data.text + '</span>\
                             ' + getRemove() + '\
                             <span contenteditable="false" class="msg-date">' +
                     padLeft(date.getDate(),2) + "/" + padLeft(date.getMonth() + 1, 2) + "/" + padLeft(date.getYear() + 1900, 4) + ' ' + padLeft(date.getHours(),2) + ':' + padLeft(date.getMinutes(),2) + '</span>\
-                        </div>';
+                        </div>'; */
 
             var chat_area = $('#chat-area');
             var last = $('#chat-area>*:last-child');
