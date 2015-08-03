@@ -10,7 +10,7 @@ block content
     .col-xs-6#search-panel
         .row
             .col-xs-8
-                input#search-input.form-control.ignore-kolich(type="text")
+                input#search-input.form-control.ignore-kolich(type="text",style="font-size: 20px;")
             .col-xs-2
                 button#search-button.form-control.btn.btn-default
                     span.glyphicon.glyphicon-search
@@ -50,6 +50,7 @@ block script
         var peer = new Peer({key: 'bp70suzmx5ok1emi'});
         var mediaStream = null;
         var classRoom = '#{classRoom}';
+        //var imageBackHtml;
 
         var color = "";
         var suggest = "";
@@ -161,12 +162,14 @@ block script
                     $(st.focusNode.firstChild).hasClass('ignore-kolich')) return;
 
             var input = search_input;
-            //if (input.val() != "") //--Agregar coma
-            //    st = ", " + st;
-            //input.val(input.val() + st);
-
             input.val(st); //a pedido de Nicolas, cuando selecciona con el kolich queda eso solo en el input y busca y comparte
-            //input.focus();
+
+            var str = input.val();
+            if(str.indexOf(",") != -1){
+                str = $.trim(str.substr(str.indexOf(",") + 1 ));
+            }
+            input.val(str);
+
             search_button.click();
             sendSearch();
         };
@@ -242,13 +245,17 @@ block script
                     search_input.val(data.input);
                     var imageUrl = data.urlImage;
                     var sr = $('#search-results');
+                    //imageBackHtml = sr.html();
                     sr.empty();
 
                     var myImage = new Image();
                     myImage.className  = "search-results-big-image";
                     myImage.src = imageUrl;
 
+                    var buttonReturn = '<input type="button" class="returnImageList" value="Back" />';
+
                     sr.append(myImage);
+                    sr.append(buttonReturn);
                 }
             });
 
@@ -354,6 +361,14 @@ block script
                     addChatMsg(data, false); //si no es profesor, se agregan como si fueran de otros porque no podemos identifcar alumnos aun
                 }
             });
+
+            $("#search-results").on("click", ".returnImageList", function(e){
+                /*var sr = $('#search-results');
+                sr.empty();
+                sr.append(imageBackHtml);
+                imageBackHtml = null;*/
+                search_button.click();
+            })
 
 
         });
