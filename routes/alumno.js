@@ -6,7 +6,7 @@ var Clases = require('../model/clase');
 router.get('/:classRoom/:locked?', function(req, res, next) {
 
     if (req.params.locked === undefined)
-        req.params.locked = true;
+        req.params.locked = false;
 
     var classRoom = req.params.classRoom;
 

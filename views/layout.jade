@@ -20,9 +20,9 @@ html
                             span.icon-bar
                             span.icon-bar
                             span.icon-bar
-                        a.navbar-brand(href="/")
+                        //a.navbar-brand(href="/")
                             img(src="/images/logo.png")
-                    .left-div
+                    //.left-div
                         .user-settings-wrapper
                             ul.nav
                                 li.dropdown(style="margin-right: 60px;")
@@ -58,6 +58,13 @@ html
                                         a(href="#") Menu 4
                                     li
                                         a(href="#") Menu 5
+                .navbar.navbar-inverse.set-radius-zero
+                    .container
+                        .navbar-header
+                            button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
+                                span.icon-bar
+                                span.icon-bar
+                                span.icon-bar
         content
             .content-wrapper
                 .container

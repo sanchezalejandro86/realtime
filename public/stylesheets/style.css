@@ -84,6 +84,8 @@ header {
     color: #fff;
     padding: 10px;
     text-align: right;
+    width: 100%;
+    margin: 0;
 }
 
 
@@ -493,6 +495,11 @@ audio {
 }
 
 .container{
-    margin : 5px;
+    margin: 5px 0;
     width: 100%;
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
 }

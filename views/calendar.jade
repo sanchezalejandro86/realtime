@@ -33,7 +33,7 @@ block script
                     events[dia] = events[dia].toString().split(',').map(
                         function(clase){
                             return (prof)?
-                                '<a href="/class/' + clase + '/' + prof + '">' + clase + '</a>':
+                                '<a href="/class/' + clase + '">' + clase + '</a>':
                                 '<a href="/alumno/' + clase + '/true">' + clase + '</a>';
 
                         }

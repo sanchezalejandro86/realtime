@@ -67,6 +67,7 @@ block script
             search_button = $('#search-button');
 
         var recognition = null;
+        var locked = #{locked};
 
         if(!('webkitSpeechRecognition' in window)){
             $("#mic_off").show();
@@ -181,7 +182,9 @@ block script
 
         $(document).ready(function(){
 
-           /* var options = {
+            if (locked) $('#sendie').attr('disabled', 'true');
+
+            /* var options = {
                 controls: "bold italic underline strikethrough"
             };
 
@@ -391,8 +394,7 @@ block script
             var msg =
                     '<div contentEditable="false" id="' + data.inputId + '" \
                             class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
-                            <span class="msg-text" contenteditable="' + !locked + '">' + data.text + '</span>\
-                            <span class="msg-text" contenteditable="true" style="word-break:keep-all;">' + data.text + '</span>\
+                            <span class="msg-text" contenteditable="' + !locked + '" style="word-break:keep-all;">' + data.text + '</span>\
                             ' + getRemove() + '\
                         </div>';
                    /* '<div contentEditable="false" id="' + data.inputId + '" \
