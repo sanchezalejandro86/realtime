@@ -3,16 +3,18 @@ var router = express.Router();
 var Clases = require('../model/clase');
 
 /* GET home page. */
-router.get('/class/:classRoom', function(req, res, next) { //--TODO con '?' el parametro es opcional
+router.get('/class/:classRoom/:prof?', function(req, res, next) {
     var classRoom = req.params.classRoom;
 
     Clases.createClass(classRoom);
 
     Clases.getClase(classRoom,
         function(d){
-            res.render('profesor', { classRoom: classRoom,
-                messages: JSON.stringify(d) });
-                //messages: jsonEscape(JSON.stringify(d)) });
+            res.render('profesor', {
+                classRoom: classRoom,
+                messages: JSON.stringify(d),
+                locked: false
+            });
         });
 });
 

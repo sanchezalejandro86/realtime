@@ -32,7 +32,10 @@ block script
                 function (dia) {
                     events[dia] = events[dia].toString().split(',').map(
                         function(clase){
-                            return '<a href="' + ('calendar') + '">' + clase + '</a>';
+                            return (prof)?
+                                '<a href="/class/' + clase + '/' + prof + '">' + clase + '</a>':
+                                '<a href="/alumno/' + clase + '/true">' + clase + '</a>';
+
                         }
                     ).join().replace(',','');
 

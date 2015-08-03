@@ -3,7 +3,11 @@ var router = express.Router();
 var Clases = require('../model/clase');
 
 /* GET calendar page. */
-router.get('/', function(req, res, next) {
+router.get('/:prof?', function(req, res, next) {
+
+    if (req.params.prof === undefined)
+        req.params.prof = true;
+
     Clases.getClases(
         function (e, d) {
             var result = {};
@@ -24,9 +28,11 @@ router.get('/', function(req, res, next) {
                 }
             );
 
-            return res.render('calendar', { events: JSON.stringify(result)});
-        }
-    )
+            return res.render('calendar', {
+                events: JSON.stringify(result),
+                prof: req.params.prof
+            });
+        });
 });
 
 module.exports = router;

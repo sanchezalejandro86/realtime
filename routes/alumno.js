@@ -3,16 +3,21 @@ var router = express.Router();
 var Clases = require('../model/clase');
 
 /* GET users listing. */
-router.get('/:classRoom', function(req, res, next) {
+router.get('/:classRoom/:locked?', function(req, res, next) {
+
+    if (req.params.locked === undefined)
+        req.params.locked = true;
+
     var classRoom = req.params.classRoom;
 
     Clases.getClase(classRoom,
         function(d){
-            res.render('alumno', { classRoom: req.params.classRoom
-                , messages: JSON.stringify(d)
-                //, messages: jsonEscape(JSON.stringify(d))
+            res.render('alumno', {
+                classRoom: req.params.classRoom,
+                messages: JSON.stringify(d),
+                locked: req.params.locked
+            });
         });
-    });
 });
 
 /*function jsonEscape(str)  {
