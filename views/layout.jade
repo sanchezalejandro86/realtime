@@ -62,13 +62,13 @@ html(style="height: 100%")
                         button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-collapse")
                             span Men&uacute;
         content(style="height: 100%")
-            .content-wrapper(style="height: 60%")
+            .content-wrapper(style="height: 80%; margin-bottom: 10%")
                 .container(style="height: 100%")
                     .row(style="height: 100%")
                         block content
-        footer(style="height: 15%; min-height: 120px")
-            .container
-                .row
+        footer(style="height: 15%")
+            .container(style="height: 100%")
+                .row(style="height: 100%")
                     block footer-content
 
         script(type='text/javascript', src='/javascripts/jquery-2.1.4.min.js')

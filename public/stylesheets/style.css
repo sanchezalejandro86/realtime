@@ -375,7 +375,8 @@ input.gsc-input,
     padding: 10px;
     font: 12px "Lucida Grande", Sans-Serif;
     margin-bottom: 10px;
-    height: 100px;
+    /*height: 100px;*/
+    height: 100%;
     resize: none;
     background-color: #c7bcff;
     margin-top: 5px;
