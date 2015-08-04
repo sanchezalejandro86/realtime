@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var claseSchema = {
-    clase_id: Number,
+    clase_id: String,
     date: Number, //--Timestamp
     messages: [{
         inputId: Number,
