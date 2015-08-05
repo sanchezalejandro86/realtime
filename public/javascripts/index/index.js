@@ -1,5 +1,5 @@
 var socket = io();
-var peer = new Peer({key: 'bp70suzmx5ok1emi'});
+var peer = new Peer({key: 'bp70suzmx5ok1emi', secure: true});
 var mediaStream = null;
 var messages;
 
@@ -141,7 +141,7 @@ $(document).ready(function(){
     });
 
     search_input.on('keydown', function(e) {
-        if (e.which == 17) { //--Comparte la búsqueda con CTRL
+        if (e.which == 17) { //--Comparte la bï¿½squeda con CTRL
             search_button.click();
             sendSearch();
         } else if (e.keyCode == 13){

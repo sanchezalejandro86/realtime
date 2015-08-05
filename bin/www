@@ -18,12 +18,6 @@ var port = normalizePort(process.env.PORT || '5000'),
     ip = process.env.IP;
 
 /**
- * Create HTTP server.
- */
-
-//var server = http.createServer(app);
-
-/**
  * Create HTTPS server.
  */
 
@@ -31,11 +25,14 @@ var https = require('https');
 var fs = require('fs');
 
 var options = {
-    key: fs.readFileSync('./ssl/key.pem'),
-    cert: fs.readFileSync('./ssl/cert.pem')
+    //key: fs.readFileSync('./ssl/key.pem'),
+    //cert: fs.readFileSync('./ssl/cert.pem')
 };
 
 var socketsPeers = [];
+
+var server = http.createServer(app);
+//var server = https.createServer(options, app);
 
 var io = require('socket.io')
     .listen(server);
@@ -81,9 +78,6 @@ io.on('connection', function(socket){
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-
-var server = https.createServer(options, app);
 
 server.listen(port, ip, function(){
     console.log('Express server listening on ' + ip + ':' + port);
