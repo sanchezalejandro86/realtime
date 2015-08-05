@@ -63,10 +63,10 @@ app.use(function(err, req, res, next) {
 });
 
 
-mongoose.connect('localhost:27017/realtime',
+mongoose.connect(process.env.IP + ':' + process.env.MONGO_PORT + '/' + process.env.MONGO_DB,
     function(error){
         if (error) {
-            //TODO logear errores de conexion
+            console.log(error);
         }
     });
 
