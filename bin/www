@@ -34,6 +34,10 @@ var socketsPeers = [];
 var server = http.createServer(app);
 //var server = https.createServer(options, app);
 
+var ExpressPeerServer = require('peer').ExpressPeerServer;
+
+app.use('/peerjs', ExpressPeerServer(server));
+
 var io = require('socket.io')
     .listen(server);
 
