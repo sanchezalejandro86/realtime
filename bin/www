@@ -14,12 +14,13 @@ var Clase = require('../model/clase');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '5000'),
-    ip = process.env.IP;
+var port = normalizePort(process.env.PORT || '5000');
+//var ip = process.env.IP;
+app.set('port', port);
 
 /**
  * Create HTTPS server.
- */
+
 
 var https = require('https');
 var fs = require('fs');
@@ -27,19 +28,19 @@ var fs = require('fs');
 var options = {
     //key: fs.readFileSync('./ssl/key.pem'),
     //cert: fs.readFileSync('./ssl/cert.pem')
-};
+}; */
 
-var socketsPeers = [];
 
-var server = http.createServer(app);
 //var server = https.createServer(options, app);
 
-var ExpressPeerServer = require('peer').ExpressPeerServer;
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+server.listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+});
 
-app.use('/peerjs', ExpressPeerServer(server));
 
-var io = require('socket.io')
-    .listen(server);
+var socketsPeers = [];
 
 io.on('connection', function(socket){
 
@@ -81,11 +82,14 @@ io.on('connection', function(socket){
 
 /**
  * Listen on provided port, on all network interfaces.
- */
 
-server.listen(port, ip, function(){
+
+server.listen(port, function(){
     console.log('Express server listening on ' + ip + ':' + port);
-});
+}); */
+/*server.listen(port, ip, function(){
+    console.log('Express server listening on ' + ip + ':' + port);
+});*/
 
 server.on('error', onError);
 server.on('listening', onListening);
