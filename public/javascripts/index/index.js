@@ -1,6 +1,11 @@
 var socket = io();
-var peer = new Peer({key: 'bp70suzmx5ok1emi'});
-//var peer = new Peer({key: 'bp70suzmx5ok1emi', secure: true});
+//var peer = new Peer({key: 'bp70suzmx5ok1emi', secured: true});
+var peer = new Peer('bp70suzmx5ok1emi', {
+    host: 'localhost',
+    port: 5000,
+    path: '/peerjs'
+});
+
 var mediaStream = null;
 var messages;
 

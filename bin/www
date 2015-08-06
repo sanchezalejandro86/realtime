@@ -28,6 +28,15 @@ server.listen(port, function(){
     console.log('Express server listening on ' + port);
 });
 
+server.on('connection', function(id) {
+    console.log('conn ' + id);
+});
+
+server.on('disconnect', function(id) {
+    console.log('disc ' + id);
+});
+
+
 var socketsPeers = [];
 var io = require('socket.io').listen(server);
 
