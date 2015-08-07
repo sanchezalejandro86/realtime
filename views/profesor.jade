@@ -86,7 +86,7 @@ block script-2
                     if(studentsConnected.indexOf(data.peerId) == -1){ //me fijo que no este ya conectado a ese alumno
                         var call = peer.call(data.peerId, mediaStream);
 
-                        var stream = function(){
+                        var stream = function(call){
                             call.on('stream', function (stream) {
                                 createNewAlumnoVideoTag(stream, data.peerId);
                                 studentsConnected.push(data.peerId);
@@ -97,8 +97,9 @@ block script-2
                             if (call) {
                                 console.log('reconectado');
                                 connect();
+                                call = peer.call(data.peerId, mediaStream);
                             }
-                            resolve();
+                            resolve(call);
                         });
 
                         p.then(function(){ stream(); });
