@@ -101,6 +101,10 @@ block script-2
                 }
             });
 
+            socket.on('disconnected', function(data){
+                console.log('desconectadirijillo');
+            })
+
             $('html').keyup(function (e) {
                 if(e.keyCode == 46){ //cuando el profesor toca SUPR se limpia la busqueda e imagenes en TODOS
                     socket.emit('clear search images', { classRoom: classRoom});
