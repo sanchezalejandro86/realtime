@@ -1,10 +1,20 @@
 var socket = io();
+//var peer = new Peer('', {
+//    key: 'peerjs',
+//    host: 'peer-jlavera.c9.io',
+//    port: 8080,
+//    path: '/peerjs',
+//    debug: 3,
+//    secure: false
+//});
+
 var peer = new Peer('', {
-    key: 'peerjs',
-    host: 'peer-jlavera.c9.io',
-    port: 8080,
-    path: '/peerjs',
-    debug: 3
+    //key: 'peerjs',
+    host: 'testsnail.herokuapp.com',
+    port: '',
+    //path: '/peerjs',
+    debug: 3,
+    secure: true
 });
 
 var mediaStream = null;
