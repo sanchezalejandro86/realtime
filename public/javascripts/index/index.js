@@ -356,10 +356,10 @@ function addChatMsg(data, sent){
     var date = new Date(data.inputId);
     var msg =
         '<div contentEditable="false" id="' + data.inputId + '" \
-                            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
-                            <span class="msg-text" contenteditable="' + !locked + '" style="word-break:keep-all;">' + data.text + '</span>\
-                            ' + getRemove() + '\
-                        </div>';
+            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
+            <span class="msg-text" contenteditable="' + (!locked && profesor) + '" style="word-break:keep-all;">' + data.text + '</span>\
+            ' + getRemove() + '\
+        </div>';
     /* '<div contentEditable="false" id="' + data.inputId + '" \
      class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
      <span class="msg-text" contenteditable="true">' + data.text + '</span>\
