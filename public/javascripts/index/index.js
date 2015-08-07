@@ -8,9 +8,7 @@ var socket = io();
 //    secure: false
 //});
 
-var peer;
-
-function connect(){
+function setConnection(){
     peer = new Peer('', {
         //key: 'peerjs',
         host: 'testsnail.herokuapp.com',
@@ -19,9 +17,11 @@ function connect(){
         debug: 3,
         secure: true
     });
+    return peer;
 }
 
-connect();
+var peer;
+setConnection();
 
 var mediaStream = null;
 var messages;
