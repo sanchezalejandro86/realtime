@@ -85,6 +85,11 @@ block script-2
                 if(data.classRoom == classRoom){
                     if(studentsConnected.indexOf(data.peerId) == -1){ //me fijo que no este ya conectado a ese alumno
                         var call = peer.call(data.peerId, mediaStream);
+                        if (!call) {
+                            console.log('reconectado');
+                            connect();
+                        }
+
                         call.on('stream', function (stream) {
                             createNewAlumnoVideoTag(stream, data.peerId);
                             studentsConnected.push(data.peerId);
@@ -100,10 +105,6 @@ block script-2
                     studentsConnected.splice(studentsConnected.indexOf(data.peerId), 1);
                 }
             });
-
-            socket.on('disconnected', function(data){
-                console.log('desconectadirijillo');
-            })
 
             $('html').keyup(function (e) {
                 if(e.keyCode == 46){ //cuando el profesor toca SUPR se limpia la busqueda e imagenes en TODOS

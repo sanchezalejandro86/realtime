@@ -8,14 +8,20 @@ var socket = io();
 //    secure: false
 //});
 
-var peer = new Peer('', {
-    //key: 'peerjs',
-    host: 'testsnail.herokuapp.com',
-    port: '',
-    //path: '/peerjs',
-    debug: 3,
-    secure: true
-});
+var peer;
+
+function connect(){
+    peer = new Peer('', {
+        //key: 'peerjs',
+        host: 'testsnail.herokuapp.com',
+        port: '',
+        //path: '/peerjs',
+        debug: 3,
+        secure: true
+    });
+}
+
+connect();
 
 var mediaStream = null;
 var messages;
