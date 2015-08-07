@@ -66,7 +66,7 @@ app.use(function(err, req, res, next) {
 mongoose.connect(process.env.MONGO_IP + ':' + process.env.MONGO_PORT + '/' + process.env.MONGO_DB,
     function(error){
         if (error)
-            console.log(error);
+            console.log(error + 'address: { ' + process.env.MONGO_IP + ':' + process.env.MONGO_PORT + '/' + process.env.MONGO_DB + '}');
         else
             console.log('Conectado a MongoDB.');
     });
