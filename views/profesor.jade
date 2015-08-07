@@ -87,7 +87,7 @@ block script-2
                         var call = peer.call(data.peerId, mediaStream);
 
                         new Promise(function(resolve, reject){
-                            if (call) {
+                            if (!call) {
                                 console.log('reconectado');
                                 call = connect().call(data.peerId, mediaStream);
                             }
