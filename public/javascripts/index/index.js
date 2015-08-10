@@ -8,6 +8,8 @@ var socket = io();
 //    secure: false
 //});
 
+
+//wop
 function setConnection(){
     peer = new Peer('', {
         //key: 'peerjs',
