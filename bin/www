@@ -29,11 +29,11 @@ server.listen(port, function(){
 });
 
 server.on('connection', function(id) {
-    console.log('conn ' + id);
+    //console.log('conn ' + id);
 });
 
 server.on('disconnect', function(id) {
-    console.log('disc ' + id);
+    //console.log('disc ' + id);
 });
 
 

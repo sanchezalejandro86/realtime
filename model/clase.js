@@ -41,14 +41,6 @@ Clase.updateMessage = function (claseId, inputId, text){
     Clase.update({ clase_id: claseId, "messages.inputId" : inputId}, { $set: { "messages.$.text" : text } }).exec();
 };
 
-//Clase.getByMonth = function (month, year, f) {
-//    month--; //--Porque para mongo enero es el mes 0
-//    Clase.find(
-//        { date: { $gt: new Date(year, month, 1).getTime(), $lte: new Date(year, month + 1, 1).getTime() } },
-//        { clase_id: 1, date: 1 }
-//    ).exec(f);
-//};
-
 Clase.getClases = function (f) {
     Clase.find(
         { },

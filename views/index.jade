@@ -41,8 +41,7 @@ block script
     script.
         var classRoom = '#{classRoom}';
         var locked = #{locked};
-        var json = JSON.parse('!{messages}');
-
+        var json = !{messages};
 
     block script-2
     script(type='text/javascript', src='/javascripts/socket.io-1.3.5.js')

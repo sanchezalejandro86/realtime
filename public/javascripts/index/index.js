@@ -29,8 +29,8 @@ var messages;
 var color = "";
 var suggest = "";
 
-if (json.length > 0)
-    messages = json[0].messages;
+if (json && json.length > 0)
+    messages = json;
 
 var sp = $("#search-panel"),
     chat_area = $('#chat-area'),

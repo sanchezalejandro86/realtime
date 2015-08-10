@@ -12,7 +12,7 @@ router.get('/class/:classRoom/:prof?', function(req, res, next) {
         function(d){
             res.render('profesor', {
                 classRoom: classRoom,
-                messages: JSON.stringify(d),
+                messages: JSON.stringify(d[0].messages),
                 locked: false
             });
         });
