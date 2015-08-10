@@ -1,27 +1,10 @@
 var socket = io();
-//var peer = new Peer('', {
-//    key: 'peerjs',
-//    host: 'peer-jlavera.c9.io',
-//    port: 8080,
-//    path: '/peerjs',
-//    debug: 3,
-//    secure: false
-//});
-
-function setConnection(){
-    peer = new Peer('', {
-        //key: 'peerjs',
-        host: 'testsnail.herokuapp.com',
-        port: '',
-        //path: '/peerjs',
-        debug: 3,
-        secure: true
-    });
-    return peer;
-}
-
-var peer;
-setConnection();
+//var peer = new Peer({key: 'bp70suzmx5ok1emi', secured: true});
+var peer = new Peer('sss12312',{
+    host: 'localhost',
+    port: 5000,
+    path: '/peerjs'
+});
 
 var mediaStream = null;
 var messages;
@@ -29,8 +12,8 @@ var messages;
 var color = "";
 var suggest = "";
 
-if (json && json.length > 0)
-    messages = json;
+if (json.length > 0)
+    messages = json[0].messages;
 
 var sp = $("#search-panel"),
     chat_area = $('#chat-area'),
@@ -356,10 +339,10 @@ function addChatMsg(data, sent){
     var date = new Date(data.inputId);
     var msg =
         '<div contentEditable="false" id="' + data.inputId + '" \
-            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
-            <span class="msg-text" contenteditable="' + (!locked && profesor) + '" style="word-break:keep-all;">' + data.text + '</span>\
-            ' + getRemove() + '\
-        </div>';
+                            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
+                            <span class="msg-text" contenteditable="' + !locked + '" style="word-break:keep-all;">' + data.text + '</span>\
+                            ' + getRemove() + '\
+                        </div>';
     /* '<div contentEditable="false" id="' + data.inputId + '" \
      class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
      <span class="msg-text" contenteditable="true">' + data.text + '</span>\
