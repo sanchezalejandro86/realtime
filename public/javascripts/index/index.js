@@ -9,6 +9,7 @@ var socket = io();
 //});
 
 function setConnection(){
+    // peer = new Peer({key: 'bp70suzmx5ok1emi'});
     peer = new Peer('', {
         //key: 'peerjs',
         host: 'testsnail.herokuapp.com',
