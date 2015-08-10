@@ -387,7 +387,7 @@ input.gsc-input,
     max-width: 90%;
     width: 90%;
     /*max-width: 75%;*/
-    /*white-space: pre;*/
+    white-space: pre-wrap;
     font-size: 16px;
 }
 .msg-sent {
