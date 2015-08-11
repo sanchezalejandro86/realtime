@@ -195,6 +195,10 @@ header {
 .navbar-toggle {
     background-color: #F0677C;
     border: 1px solid #fff;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .navbar {
