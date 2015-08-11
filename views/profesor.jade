@@ -89,18 +89,17 @@ block script-2
                         new Promise(function(resolve, reject){
                             if (!call) {
                                 console.log('reconectado');
-                                resolve(setConnection().call(data.peerId, mediaStream));
+                                resolve(setConnection());
                             } else {
-                                resolve(call);
+                                resolve(peer);
                             }
-                        }).then(function(_call){
-                            call = _call;
-                            _call.on('stream', function (stream) {
+                        }).then(function(_peer){
+                            _peer.call(data.peerId, mediaStream)
+                            _peer.on('stream', function (stream) {
                                 createNewAlumnoVideoTag(stream, data.peerId);
                                 studentsConnected.push(data.peerId);
                             });
                         });
-
                     }
                 }
             });
