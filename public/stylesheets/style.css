@@ -394,6 +394,9 @@ input.gsc-input,
     white-space: pre-wrap;
     font-size: 16px;
 }
+.msg-text[contenteditable=true]:focus{
+    outline: none;
+}
 .msg-sent {
     margin-left: 10% !important;
 }
