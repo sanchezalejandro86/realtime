@@ -18,13 +18,4 @@ router.get('/class/:classRoom/:prof?', function(req, res, next) {
         });
 });
 
-/*function jsonEscape(str)  {
-    //return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
-    //return str.replace(/\n/g, "\\n")
-      //  .replace(/\r/g, "\\r")
-        //.replace(/\t/g, "\\t")
-        //.replace(/\f/g, "\\f");
-    //return str.replace("\\,'\\\');
-}*/
-
 module.exports = router;

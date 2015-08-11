@@ -63,7 +63,8 @@ io.on('connection', function(socket){
         Clase.addMessage(data.classRoom, data.inputId, data.author, data.text, data.teacher);
     });
     socket.on('messageChatChanged', function (data) {
-        Clase.updateMessage(data.classRoom, data.inputId, data.text);
+        if (data.update)
+            Clase.updateMessage(data.classRoom, data.inputId, data.text);
         socket.broadcast.emit('messageChatChanged', data);
     });
     socket.on('messageRemoved', function (data){

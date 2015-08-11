@@ -303,16 +303,17 @@ $(document).ready(function(){
     });
 
     chat_area.on("keydown", ".chatInput .msg-text", function(e){
-        if (e.which != 13 || e.shiftKey) return;
+        if (e.which == 46) e.preventDefault(); //--El SUPR no suprime
 
         var inputId = $(e.target).parent().attr('id');
         var item = $("#" + inputId);
         var inputValue = $(e.target).text();
+        var update = (e.which == 13 && !e.shiftKey);
 
-        socket.emit('messageChatChanged', { text: inputValue, inputId: inputId, classRoom: classRoom});
+        socket.emit('messageChatChanged', { text: inputValue, inputId: inputId, classRoom: classRoom, update: update });
 
         item.removeClass('msg-pending');
-        e.preventDefault();
+        if (update) e.preventDefault();
     });
 
     chat_area.on('input', '.chatInput .msg-text', function(e){
@@ -320,6 +321,10 @@ $(document).ready(function(){
         if ($(e.target).text() == "")
             $(e.target).text(' ');
     });
+
+    function sendUpdate(udate){
+
+    }
 
     $(messages).each(function(i, data) {
         if (profesor) {
