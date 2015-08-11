@@ -239,7 +239,10 @@ $(document).ready(function(){
             myImage.className  = "search-results-big-image";
             myImage.src = imageUrl;
 
-            var buttonReturn = '<input type="button" class="returnImageList" value="Back" />';
+            var buttonReturn = '<button class="returnImageList" style="background-color: transparent;border: 0;">\
+                                    <img src="/images/back_button.png" style="height:60px;" alt="BACK" title="BACK">\
+                                </button>';
+            //var buttonReturn = '<input type="button" class="returnImageList" value="Back" />';
 
             sr.append(myImage);
             sr.append(buttonReturn);
