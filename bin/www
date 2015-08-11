@@ -21,7 +21,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
-app.use('/peerjs', ExpressPeerServer(server));
+// app.use('/peerjs', ExpressPeerServer(server));
 
 server.listen(port, function(){
     //console.log('Express server listening on ' + ip + ':' + port);
