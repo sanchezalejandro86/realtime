@@ -94,8 +94,10 @@ function searchComplete(searcher) {
             var randomImageId = Math.floor(Math.random() * 1000000000) + 1;
             sr.append(
                 '<div class="col-xs-4 search-result">\
-                    <a id="'+randomImageId+'" href="javascript:fullSizeImage('+randomImageId+')" target="_blank"><img id="img_'+randomImageId+'" onerror="removeImg('+randomImageId+')" class="search-results-image" src="' + result.url + '"></a>\
-                                        </div>'
+                    <a id="' + randomImageId + '" href="javascript:fullSizeImage(' + randomImageId + ')" target="_blank">\
+                        <img id="img_' + randomImageId + '" onerror="removeImg('+randomImageId+')" class="search-results-image" src="' + result.url + '" />\
+                    </a>\
+                </div>'
             );
             agregados++;
             if ((agregados) % 3 == 0){
@@ -117,24 +119,26 @@ if (!window.Kolich){
 Kolich.Selector = {};
 Kolich.Selector.getSelected = function(){
     var t = '';
-    if(window.getSelection){
+    if(window.getSelection) {
         t = window.getSelection();
-    }else if(document.getSelection){
+    }else if(document.getSelection) {
         t = document.getSelection();
-    }else if(document.selection){
+    }else if(document.selection) {
         t = document.selection.createRange().text;
     }
     return t;
 };
 
 Kolich.Selector.mouseup = function(){
+    var input = search_input;
     var st = Kolich.Selector.getSelected();
+
     if ((st + "").trim() == '' ||
+        st == input.val() ||
         $(st.focusNode).hasClass('ignore-kolich') ||
         $(st.focusNode.parentNode).hasClass('ignore-kolich') ||
         $(st.focusNode.firstChild).hasClass('ignore-kolich')) return;
 
-    var input = search_input;
     input.val(st); //a pedido de Nicolas, cuando selecciona con el kolich queda eso solo en el input y busca y comparte
 
     var str = input.val();
@@ -154,9 +158,10 @@ function sendSearch() {
 
 $(document).ready(function(){
 
-    if (locked) $('#sendie').attr('disabled', 'true');
+    var event_search,
+        sendie = $('#sendie');
 
-    var event_search;
+    if (locked) sendie.attr('disabled', 'true');
 
     search_button.on('click', function(){
         clearTimeout(event_search);
@@ -321,32 +326,52 @@ $(document).ready(function(){
     }
     //*********************************************//
 
-    $('#sendie').keydown(function (e) {
+    var search_results = $('#search-results');
+
+    search_results.on('click', '.search-result a img').click(function(e){
+        alert(123);
+    });
+
+    sendie.keydown(function (e) {
         processKeyDownChat(e);
     });
 
     chat_area.on("keydown", ".chatInput .msg-text", function(e){
-        if (e.which == 46) e.preventDefault(); //--El SUPR no suprime
+        if (e.which == 46){
+            e.preventDefault(); //--El SUPR no suprime
+            return;
+        }
 
-        var inputId = $(e.target).parent().attr('id');
-        var item = $("#" + inputId);
-        var inputValue = $(e.target).text();
-        var update = (e.which == 13 && !e.shiftKey);
+        if (e.which == 13 && !e.shiftKey) {
+            var inputId = $(e.target).parent().attr('id');
+            var item = $("#" + inputId);
 
-        socket.emit('messageChatChanged', { text: inputValue, inputId: inputId, classRoom: classRoom, update: update });
+            sendUpdate(e, true);
 
-        item.removeClass('msg-pending');
-        if (update) e.preventDefault();
+            item.removeClass('msg-pending');
+            e.preventDefault();
+        }
+
     });
 
-    chat_area.on('input', '.chatInput .msg-text', function(e){
+    chat_area.on('input', '.chatInput .msg-text', function(e) {
+        sendUpdate(e, false);
+
         $(e.target).parent().addClass('msg-pending');
         if ($(e.target).text() == "")
             $(e.target).text(' ');
     });
 
-    function sendUpdate(udate){
+    function sendUpdate(e, persist){
+        var inputId = $(e.target).parent().attr('id');
+        var inputValue = $(e.target).text();
 
+        socket.emit('messageChatChanged', {
+            text: inputValue,
+            inputId: inputId,
+            classRoom: classRoom,
+            update: persist
+        });
     }
 
     $(messages).each(function(i, data) {
@@ -357,7 +382,7 @@ $(document).ready(function(){
         }
     });
 
-    $("#search-results").on("click", ".returnImageList", function(e){
+    search_results.on("click", ".returnImageList", function(e){
         /*var sr = $('#search-results');
          sr.empty();
          sr.append(imageBackHtml);

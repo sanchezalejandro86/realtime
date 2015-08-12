@@ -501,6 +501,10 @@ content > *:first-child{
     max-height: 400px;
     margin: 2px;
 }
+#search-panel {
+    overflow: auto;
+    height: 100%;
+}
 
 audio {
     display:none;
@@ -511,7 +515,7 @@ audio {
     width: 100%;
 }
 
-html, body{
+html, body {
     margin: 0;
     padding: 0;
 }

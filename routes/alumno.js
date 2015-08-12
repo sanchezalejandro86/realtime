@@ -5,7 +5,7 @@ var Clases = require('../model/clase');
 /* GET users listing. */
 router.get('/:classRoom/:locked?', function(req, res, next) {
 
-    if (req.params.locked === undefined)
+    if (req.params.locked === undefined || req.params.locked == "false")
         req.params.locked = false;
 
     var classRoom = req.params.classRoom;
@@ -19,9 +19,5 @@ router.get('/:classRoom/:locked?', function(req, res, next) {
             });
         });
 });
-
-/*function jsonEscape(str)  {
-    return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
-}*/
 
 module.exports = router;

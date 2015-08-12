@@ -8,15 +8,15 @@ block style
         }
 
 block content
-    .custom-calendar-wrap
-        #custom-inner.custom-inner
-            .custom-header.clearfix
+    .custom-calendar-wrap(style="height: 100%")
+        #custom-inner.custom-inner(style="height: 100%")
+            .custom-header.clearfix(style="height: 15%")
                 nav
                     span#custom-prev.custom-prev
                     span#custom-next.custom-next
                 h2#custom-month.custom-month
                 h3#custom-year.custom-year
-            #calendar.fc-calendar-container
+            #calendar.fc-calendar-container(style="height: 85%")
 
 block script
     script(type='text/javascript', src='/javascripts/modernizr.custom.63321.js')
