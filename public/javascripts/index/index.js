@@ -21,8 +21,10 @@ function setConnection(){
     return peer;
 }
 
+var getConnOpts = { key: 'bp70suzmx5ok1emi' };
+
 var peer;
-setConnection();
+//setConnection();
 
 var mediaStream = null;
 var messages;

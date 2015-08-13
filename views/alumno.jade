@@ -25,27 +25,28 @@ block script-2
 
         function getRemove() { return ''; }
 
-        function processKeyDownChat(e){ //--Con ENTER => enviar
-            if (e.which == 13){
-                var sendie = $('#sendie');
-                var text = $.trim(sendie.val());
-                if (text == "") return;
+        function processKeyDownChat(e) { //--Con ENTER => enviar
+            if (e.which != 13) return;
+            var sendie = $('#sendie');
+            var text = $.trim(sendie.val());
+            if (text == "") return;
 
-                //while(text.indexOf('\n') != -1){
-                //    text = text.replace('\n','<br/>'); //TODO HACERLO DE UNA MANERA MENOS FEA
-                //}
+            var data = {
+                text: text,
+                inputId: Date.now(),
+                classRoom: classRoom,
+                author: $('#name').val(),
+                teacher: profesor
+            }; //TODO este author es provisorio
 
-                var data = { text: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val(), teacher: profesor}; //TODO este author es provisorio
-                socket.emit('newMessageChat', data);
-                addChatMsg(data, true);
-                sendie.val("");
-                e.preventDefault();
-            }
-
-
+            socket.emit('newMessageChat', data);
+            addChatMsg(data, true);
+            sendie.val("");
+            e.preventDefault();
         }
 
         $(document).ready(function(){
+
             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             navigator.getUserMedia({audio: true, video:false},
                 function(localMediaStream) {
@@ -56,6 +57,8 @@ block script-2
                         console.log('The following error occurred when trying to use getUserMedia: ' + err);
                     });
 
+            peer = new Peer(peerId, getConnOpts);
+
             var conectar = $('#conectar'),
                 desconectar = $('#desconectar');
 
@@ -63,10 +66,12 @@ block script-2
             $("#profesorVideo").hide();
 
             peer.on('open', function (id) {
+                console.log('open');
                 peerId = id;
                 conectar.show();
                 $("#profesorVideo").show();
             });
+
 
             conectar.click(function(){
                 socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
@@ -78,8 +83,6 @@ block script-2
                     myCall = null;
                     socket.emit('studentDisconnected', { peerId: peerId });
                 }
-                //peer.disconnect();
-                //socket.disconnect();
             });
 
             peer.on('call', function (call) {
@@ -90,4 +93,5 @@ block script-2
                     myCall = call;
                 });
             });
+
         });
