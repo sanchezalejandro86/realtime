@@ -23,7 +23,7 @@ block script-2
         var myCall;
         var peerId;
 
-        function getRemove() { return ''; }
+        function canRemove(author) { return author.toUpperCase() != "PROFESOR"; }
 
         function processKeyDownChat(e) { //--Con ENTER => enviar
             if (e.which != 13) return;

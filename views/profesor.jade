@@ -15,9 +15,7 @@ block script-2
         var delta = 500; //medio segundo
         var lastKeypressTime = 0;
 
-        function getRemove() {
-            return '<span contenteditable="false" class="glyphicon glyphicon-remove msg-remove"></span>';
-        }
+        function canRemove() { return true; }
 
         function processKeyDownChat(e){
             if(e.which == 32){ //con doble space bar, envia al chat
@@ -59,12 +57,6 @@ block script-2
 
 
         $(document).on('ready', function(e){
-            $('#chat-area').on('click', '.msg-remove', function (e) {
-                var id = $(this).parent().attr('id');
-                socket.emit('messageRemoved', { inputId: id, classRoom : classRoom });
-
-                removeChatMsg(id);
-            });
         });
 
 

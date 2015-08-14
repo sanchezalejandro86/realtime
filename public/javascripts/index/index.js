@@ -226,7 +226,7 @@ $(document).ready(function(){
 
     socket.on('messageChatChanged', function (data) {
         if (data.classRoom == classRoom){
-            $("#" + data.inputId + ' .msg-text').text(data.text);
+            $("#" + data.inputId).text(data.text);
         }
     });
 
@@ -330,23 +330,19 @@ $(document).ready(function(){
 
     var search_results = $('#search-results');
 
-    search_results.on('click', '.search-result a img').click(function(e){
-        alert(123);
-    });
-
     sendie.keydown(function (e) {
         processKeyDownChat(e);
     });
 
-    chat_area.on("keydown", ".chatInput .msg-text", function(e){
+    chat_area.on("keydown", "li .messages p", function(e){
         if (e.which == 46){
             e.preventDefault(); //--El SUPR no suprime
             return;
         }
 
         if (e.which == 13 && !e.shiftKey) {
-            var inputId = $(e.target).parent().attr('id');
-            var item = $("#" + inputId);
+            var inputId = $(e.target).attr('id');
+            var item = $("#" + inputId).parent();
 
             sendUpdate(e, true);
 
@@ -356,7 +352,7 @@ $(document).ready(function(){
 
     });
 
-    chat_area.on('input', '.chatInput .msg-text', function(e) {
+    chat_area.on('input', 'li .messages p', function(e) {
         sendUpdate(e, false);
 
         $(e.target).parent().addClass('msg-pending');
@@ -365,7 +361,7 @@ $(document).ready(function(){
     });
 
     function sendUpdate(e, persist){
-        var inputId = $(e.target).parent().attr('id');
+        var inputId = $(e.target).attr('id');
         var inputValue = $(e.target).text();
 
         socket.emit('messageChatChanged', {
@@ -379,7 +375,7 @@ $(document).ready(function(){
     $(messages).each(function(i, data) {
         if (profesor) {
             addChatMsg(data, data.teacher);
-        }else {
+        } else {
             addChatMsg(data, false); //si no es profesor, se agregan como si fueran de otros porque no podemos identifcar alumnos aun
         }
     });
@@ -392,16 +388,23 @@ $(document).ready(function(){
         search_button.click();
     })
 
+    $('#chat-area').on('click', '.msg-remove', function (e) {
+        var id = $(this).siblings('.messages').children('p').attr('id');
+        socket.emit('messageRemoved', { inputId: id, classRoom : classRoom });
+
+        removeChatMsg(id);
+    });
 
 });
 
 function removeChatMsg(id) {
     var msg = $('#' + id);
-    if (!msg.prev().hasClass('chatInput') && !msg.next().hasClass('chatInput')) {
-        msg.prev().remove();
-        msg.prev().remove();
-    }
-    msg.remove();
+    //if (!msg.prev().hasClass('chatInput') && !msg.next().hasClass('chatInput')) {
+    //    msg.prev().remove();
+    //    msg.prev().remove();
+    //}
+    //msg.remove();
+    msg.parent().parent().remove();
 }
 
 function padLeft(nr, n, str) {
@@ -410,29 +413,35 @@ function padLeft(nr, n, str) {
 
 function addChatMsg(data, sent){
     var date = new Date(data.inputId);
+
+    //var msg =
+    //    '<div contentEditable="false" id="' + data.inputId + '" \
+    //        class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
+    //        <span class="msg-text" contenteditable="' + (!locked && profesor) + '" style="word-break:keep-all;">' + data.text + '</span>\
+    //        ' + getRemove() + '\
+    //    </div>';
+
     var msg =
-        '<div contentEditable="false" id="' + data.inputId + '" \
-            class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
-            <span class="msg-text" contenteditable="' + (!locked && profesor) + '" style="word-break:keep-all;">' + data.text + '</span>\
-            ' + getRemove() + '\
-        </div>';
-    /* '<div contentEditable="false" id="' + data.inputId + '" \
-     class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
-     <span class="msg-text" contenteditable="true">' + data.text + '</span>\
-     ' + getRemove() + '\
-     <span contenteditable="false" class="msg-date">' +
-     padLeft(date.getDate(),2) + "/" + padLeft(date.getMonth() + 1, 2) + "/" + padLeft(date.getYear() + 1900, 4) + ' ' + padLeft(date.getHours(),2) + ':' + padLeft(date.getMinutes(),2) + '</span>\
-     </div>'; */
+        '<li class="' + (sent?'self':'other') + '" data.sender="' + data.author + '">\
+            ' + (canRemove(data.author)? '<span class="glyphicon glyphicon-remove msg-remove"></span>': '') + '\
+            <div class="triangle"></div>\
+            <div class="messages">\
+                <p id="' + data.inputId + '" contenteditable="true" style="word-break:keep-all;">' + data.text + '</p>\
+                <span class="sender ignore-kolich">' + data.author + '</span>\
+            </div>\
+        </li>';
 
-    var chat_area = $('#chat-area');
-    var last = $('#chat-area>*:last-child');
+    $('#chat-area').append(msg);
 
-    if (last.length == 0 || data.author != last.data('sender'))
-        chat_area.append('\
-                            <hr class="chat-separator">\
-                            <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
-            data.author.substring(0, 9) + '</span>');
+    //var chat_area = $('#chat-area');
+    //var last = $('#chat-area>*:last-child');
+    //
+    //if (last.length == 0 || data.author != last.data('sender'))
+    //    chat_area.append('\
+    //                        <hr class="chat-separator">\
+    //                        <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
+    //        data.author.substring(0, 9) + '</span>');
 
-    chat_area.append(msg);
+    //chat_area.append(msg);
     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
 }

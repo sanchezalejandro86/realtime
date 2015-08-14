@@ -352,25 +352,116 @@ input.gsc-input,
     padding: 0 !important;
 }
 
-/*#page-wrap  {
-    position: relative;
-    background: url(../images/bg.png);
-}*/
-
+/********************MENSAJES DEL CHAT******************/
 #chat-wrap  {
     border: 1px solid #eee;
-    /*margin: 0 0 110px 0;*/
 }
 
 #chat-area  {
-    /*min-height: 400px;
-    max-height: 1600px;*/
-    /*min-height: 450px;*/
-    /*max-height: 450px;*/
     overflow: auto;
     border: 3px solid #999;
-    padding: 5px;
-    background-color: #c7bcff;
+    /*padding: 5px;*/
+    /*background-color: #c7bcff;*/
+}
+
+#chat-area {
+    list-style: none;
+    background: #e5e5e5;
+    margin: 0;
+    padding: 0 0 50px 0;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#chat-area li {
+    padding: 0.5rem;
+    overflow: hidden;
+    display: flex;
+    line-height: 1.5em;
+}
+#chat-area .triangle {
+    width: 5%;
+    position: relative;
+}
+
+.other .triangle:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border: 5px solid white;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.self {
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.self .messages {
+    order: 1;
+    border-bottom-right-radius: 0;
+}
+.self .triangle {
+    order: 2;
+}
+.self .triangle:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border: 5px solid white;
+    border-right-color: transparent;
+    border-top-color: transparent;
+}
+
+.messages {
+    background: white;
+    padding: 3px 10px;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.messages p {
+    line-height: normal;
+    margin: 0;
+    white-space: pre-wrap;
+}
+.messages p[contenteditable=true]:focus{
+    outline: none;
+}
+.messages .sender {
+    /*font-size: 0.7rem;*/
+    font-size: 1rem;
+    color: #ccc;
+}
+#chat-area li {
+    position: relative;
+}
+
+#chat-area li .messages.msg-pending {
+    background-color: #FFBF2E !important;
+}
+
+#chat-area li .msg-remove {
+    cursor: pointer;
+    color: red;
+    width: 5%;
+    z-index: 10;
+}
+#chat-area li.self .msg-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#chat-area li.other .msg-remove {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #sendie {
@@ -382,93 +473,15 @@ input.gsc-input,
     /*height: 100px;*/
     height: 100%;
     resize: none;
-    background-color: #c7bcff;
+    /*background-color: #c7bcff;*/
+    background-color: #e5e5e5;
     margin-top: 5px;
+    color: black;
 }
 
-/********************MENSAGES DEL CHAT******************/
-.msg-text{
-    max-width: 100%;
-    width: 100%;
-    /*max-width: 75%;*/
-    white-space: pre-wrap;
-    font-size: 16px;
-}
-.msg-text[contenteditable=true]:focus{
-    outline: none;
-}
-.msg-sent {
-    margin-left: 10% !important;
-}
-    .msg-sent .msg-date{
-        float: right;
-    }
-    .msg-sent .msg-text{
-        /*float: left;*/
-    }
-.msg-rcv {
-    margin-right: 10% !important;
-}
-    .msg-rcv .msg-date{
-        float: left;
-    }
-    .msg-rcv .msg-text{
-        /*float: right;*/
-    }
-.chat-separator {
-    margin: 0 0 5px 0;
-    line-height: 1.42857143;
-}
-.chatInput {
-    resize: none;
-    height: auto !important;
-    margin: 2px;
-    border-width: 2px;
-    width: 90%;
-    border-color: #3c763d !important;
-    overflow: auto;
-    background-color: transparent;
-}
 .msg-pending {
     border-color: #caa658 !important;
 }
-.msg-date{
-    color: #777777;
-    font-size: 10px;
-    background-color: transparent;
-    line-height: 2;
-}
-.msg-sender{
-    float: left;
-    font-size: 10px;
-    margin-bottom: 0;
-    padding-bottom: 0;
-    color: #777777;
-}
-    .msg-sender.msg-sender-sent{
-        float: left;
-        font-size: 10px;
-    }
-    .msg-sender.msg-sender-rcv{
-        float: right;
-        font-size: 10px;
-    }
-.msg-remove{
-    cursor: pointer;
-    color: red;
-    font-size: 14px;
-    line-height: 1.4;
-    width: 5%;
-}
-    .msg-sent .msg-remove {
-        margin-left: 1%;
-        float: right;
-    }
-    .msg-rcv .msg-remove {
-        margin-right: 1%;
-        float: left;
-    }
-
 
 div.separator {
     clear: both;
