@@ -73,10 +73,25 @@ block script-2
                console.log('The following error occurred when trying to use getUserMedia: ' + err);
             });
 
-            peer = new Peer(getConnOpts);
+            peer.on('open', function(){
+                console.log('open');
+            });
+
+            peer.on('error', function (err) {
+                console.log(err.message);
+            });
 
             socket.on('newStudentConnected', function(data){
-                if(data.classRoom != classRoom) return;
+                if (data.classRoom != classRoom) return;
+                if (studentsConnected.indexOf(data.peerId) != -1) return; //me fijo que no este ya conectado a ese alumno
+
+                var call = peer.call(data.peerId, mediaStream);
+                /*call.on('stream', function (stream) {
+                    createNewAlumnoVideoTag(stream, data.peerId);
+                    studentsConnected.push(data.peerId);
+                });*/
+
+                /*if(data.classRoom != classRoom) return;
                 if(studentsConnected.indexOf(data.peerId) != -1) return; //me fijo que no este ya conectado a ese alumno
 
                 var call = peer.call(data.peerId, mediaStream);
@@ -94,7 +109,10 @@ block script-2
                         createNewAlumnoVideoTag(stream, data.peerId);
                         studentsConnected.push(data.peerId);
                     });
-                });
+                    _peer.on('disconnected', function(){
+                        console.log('chau');
+                    });
+                });*/
             });
 
             socket.on('studentDisconnected', function(data){

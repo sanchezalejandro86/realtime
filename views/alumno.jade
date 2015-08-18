@@ -57,7 +57,7 @@ block script-2
                         console.log('The following error occurred when trying to use getUserMedia: ' + err);
                     });
 
-            peer = new Peer(peerId, getConnOpts);
+            //peer = new Peer(peerId, getConnOpts);
 
             var conectar = $('#conectar'),
                 desconectar = $('#desconectar');
@@ -66,7 +66,7 @@ block script-2
             $("#profesorVideo").hide();
 
             peer.on('open', function (id) {
-                console.log('open');
+                console.log('open: ' + id);
                 peerId = id;
                 conectar.show();
                 $("#profesorVideo").show();
@@ -92,6 +92,10 @@ block script-2
                     profesorVideo.src = window.URL.createObjectURL(stream);
                     myCall = call;
                 });
+            });
+
+            peer.on('error', function(err){
+                console.log(err);
             });
 
         });

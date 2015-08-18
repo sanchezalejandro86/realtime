@@ -1,30 +1,15 @@
+var connOpts = { key: 'bp70suzmx5ok1emi' };
+
 var socket = io();
-//var peer = new Peer('', {
-//    key: 'peerjs',
-//    host: 'peer-jlavera.c9.io',
-//    port: 8080,
-//    path: '/peerjs',
-//    debug: 3,
-//    secure: false
-//});
 
 function setConnection(){
-     peer = new Peer({key: 'bp70suzmx5ok1emi'});
-//    peer = new Peer('', {
-//        //key: 'peerjs',
-//        host: 'testsnail.herokuapp.com',
-//        port: '',
-//        //path: '/peerjs',
-//        debug: 3,
-//        secure: true
-//    });
+    peer = new Peer(connOpts);
     return peer;
 }
 
-var getConnOpts = { key: 'bp70suzmx5ok1emi' };
-
 var peer;
-//setConnection();
+
+setConnection();
 
 var mediaStream = null;
 var messages;
