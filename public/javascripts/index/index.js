@@ -1,16 +1,19 @@
 var connOpts = { key: 'bp70suzmx5ok1emi' };
+var herokuOpts= {
+    //key: 'peerjs',
+    host: 'testsnail.herokuapp.com',
+    port: '',
+    //path: '/peerjs',
+    debug: 3,
+    secure: true
+};
+
+function getNewPeer(){
+    return new Peer(herokuOpts);
+}
+var peer = getNewPeer();
 
 var socket = io();
-
-function setConnection(){
-    peer = new Peer(connOpts);
-    return peer;
-}
-
-var peer;
-
-setConnection();
-
 var mediaStream = null;
 var messages;
 

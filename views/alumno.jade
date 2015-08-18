@@ -65,23 +65,43 @@ block script-2
                         console.log('The following error occurred when trying to use getUserMedia: ' + err);
                     });
 
-            //peer = new Peer(peerId, getConnOpts);
-
             var conectar = $('#conectar'),
-                desconectar = $('#desconectar');
+                desconectar = $('#desconectar'),
+                addEvents = function(_peer){
+
+                    _peer.on('open', function (id) {
+                        console.log('open: ' + id);
+                        peerId = id;
+                        conectar.show();
+                        $("#profesorVideo").show();
+                    });
+
+                    _peer.on('call', function (call) {
+                        call.answer(mediaStream);
+                        call.on('stream', function (stream) {
+                            var profesorVideo = document.getElementById('profesorVideo');
+                            profesorVideo.src = window.URL.createObjectURL(stream);
+                            myCall = call;
+                        });
+                    });
+
+                    _peer.on('error', function (err) {
+                        console.log(err);
+                    });
+
+                };
+
+            addEvents(peer);
 
             conectar.hide();
             $("#profesorVideo").hide();
 
-            peer.on('open', function (id) {
-                console.log('open: ' + id);
-                peerId = id;
-                conectar.show();
-                $("#profesorVideo").show();
-            });
-
-
             conectar.click(function(){
+                if (peer.disconnected){
+                    peer = getNewPeer();
+                    addEvents(peer);
+                }
+
                 socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
             });
 
@@ -91,19 +111,6 @@ block script-2
                     myCall = null;
                     socket.emit('studentDisconnected', { peerId: peerId });
                 }
-            });
-
-            peer.on('call', function (call) {
-                call.answer(mediaStream);
-                call.on('stream', function (stream) {
-                    var profesorVideo = document.getElementById('profesorVideo');
-                    profesorVideo.src = window.URL.createObjectURL(stream);
-                    myCall = call;
-                });
-            });
-
-            peer.on('error', function(err){
-                console.log(err);
             });
 
         });

@@ -87,11 +87,26 @@ block script-2
                 if (data.classRoom != classRoom) return;
                 if (studentsConnected.indexOf(data.peerId) != -1) return; //me fijo que no este ya conectado a ese alumno
 
-                var call = peer.call(data.peerId, mediaStream);
-                /*call.on('stream', function (stream) {
-                    createNewAlumnoVideoTag(stream, data.peerId);
-                    studentsConnected.push(data.peerId);
-                });*/
+                var call,
+                    addEvent = function(_call){
+                        _call = peer.call(data.peerId, mediaStream);
+                        _call.on('stream', function (stream) {
+                            createNewAlumnoVideoTag(stream, data.peerId);
+                            studentsConnected.push(data.peerId);
+                        });
+                    };
+
+                if (peer.disconnected){
+                    peer = getNewPeer();
+
+                    peer.on('open', function () {
+                        console.log('re-open');
+                        addEvent(call);
+                    });
+                } else {
+                    addEvent(call);
+                }
+
 
                 /*if(data.classRoom != classRoom) return;
                 if(studentsConnected.indexOf(data.peerId) != -1) return; //me fijo que no este ya conectado a ese alumno
