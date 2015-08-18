@@ -234,7 +234,6 @@ $(document).ready(function(){
             var buttonReturn = '<button class="returnImageList" style="background-color: transparent;border: 0;">\
                                     <img src="/images/back_button.png" style="height:60px;" alt="BACK" title="BACK">\
                                 </button>';
-            //var buttonReturn = '<input type="button" class="returnImageList" value="Back" />';
 
             sr.append(myImage);
             sr.append(buttonReturn);
@@ -280,12 +279,6 @@ $(document).ready(function(){
                 final_transcript = '';
                 search_button.click();
             }
-
-            //final_transcript = capitalize(final_transcript);
-            //final_span.innerHTML = linebreak(final_transcript);
-            //interim_span.innerHTML = linebreak(interim_transcript);
-
-            //alert(final_transcript);
         }
 
         recognition.onerror = function(event) {
@@ -366,10 +359,6 @@ $(document).ready(function(){
     });
 
     search_results.on("click", ".returnImageList", function(e){
-        /*var sr = $('#search-results');
-         sr.empty();
-         sr.append(imageBackHtml);
-         imageBackHtml = null;*/
         search_button.click();
     })
 
@@ -384,11 +373,6 @@ $(document).ready(function(){
 
 function removeChatMsg(id) {
     var msg = $('#' + id);
-    //if (!msg.prev().hasClass('chatInput') && !msg.next().hasClass('chatInput')) {
-    //    msg.prev().remove();
-    //    msg.prev().remove();
-    //}
-    //msg.remove();
     msg.parent().parent().remove();
 }
 
@@ -399,34 +383,17 @@ function padLeft(nr, n, str) {
 function addChatMsg(data, sent){
     var date = new Date(data.inputId);
 
-    //var msg =
-    //    '<div contentEditable="false" id="' + data.inputId + '" \
-    //        class="form-control chatInput ' + (sent? 'msg-sent' : 'msg-rcv')+ '" data-sender="' + data.author + '">\
-    //        <span class="msg-text" contenteditable="' + (!locked && profesor) + '" style="word-break:keep-all;">' + data.text + '</span>\
-    //        ' + getRemove() + '\
-    //    </div>';
-
     var msg =
         '<li class="' + (sent?'self':'other') + '" data.sender="' + data.author + '">\
             ' + (canRemove(data.author)? '<span class="glyphicon glyphicon-remove msg-remove"></span>': '') + '\
             <div class="triangle"></div>\
             <div class="messages">\
-                <p id="' + data.inputId + '" contenteditable="true" style="word-break:keep-all;">' + data.text + '</p>\
+                <p id="' + data.inputId + '" contenteditable="' + canEdit(data.author) + '" style="word-break:keep-all;">' + data.text + '</p>\
                 <span class="sender ignore-kolich">' + data.author + '</span>\
             </div>\
         </li>';
 
     $('#chat-area').append(msg);
 
-    //var chat_area = $('#chat-area');
-    //var last = $('#chat-area>*:last-child');
-    //
-    //if (last.length == 0 || data.author != last.data('sender'))
-    //    chat_area.append('\
-    //                        <hr class="chat-separator">\
-    //                        <span class="msg-sender ' + (sent? 'msg-sender-sent' : 'msg-sender-rcv') + '">' +
-    //        data.author.substring(0, 9) + '</span>');
-
-    //chat_area.append(msg);
     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
 }

@@ -17,6 +17,8 @@ block script-2
 
         function canRemove() { return true; }
 
+        function canEdit() { return true; }
+
         function processKeyDownChat(e){
             if(e.which == 32){ //con doble space bar, envia al chat
                 var thisKeypressTime = new Date();

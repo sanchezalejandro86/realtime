@@ -22,8 +22,11 @@ block script-2
         //var key_code_send = 13;
         var myCall;
         var peerId;
+        var name = $('#name');
 
-        function canRemove(author) { return author.toUpperCase() != "PROFESOR"; }
+        function canEdit(author) { return author.toUpperCase() != "PROFESOR"; }
+
+        function canRemove(author) { return false; }
 
         function processKeyDownChat(e) { //--Con ENTER => enviar
             if (e.which != 13) return;
@@ -31,11 +34,16 @@ block script-2
             var text = $.trim(sendie.val());
             if (text == "") return;
 
+            if (name.val().toUpperCase() == "PROFESOR") {
+                alert("El nombre de usuario elegido ya se encuentra tomado.");
+                return;
+            }
+
             var data = {
                 text: text,
                 inputId: Date.now(),
                 classRoom: classRoom,
-                author: $('#name').val(),
+                author: name.val(),
                 teacher: profesor
             }; //TODO este author es provisorio
 
