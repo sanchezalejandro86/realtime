@@ -22,7 +22,6 @@ block script-2
         //var key_code_send = 13;
         var myCall;
         var peerId;
-        var name = $('#name');
 
         function canEdit(author) { return author.toUpperCase() != "PROFESOR"; }
 
@@ -34,7 +33,7 @@ block script-2
             var text = $.trim(sendie.val());
             if (text == "") return;
 
-            if (name.val().toUpperCase() == "PROFESOR") {
+            if ($('#name').val().toUpperCase() == "PROFESOR") {
                 alert("El nombre de usuario elegido ya se encuentra tomado.");
                 return;
             }
@@ -43,7 +42,7 @@ block script-2
                 text: text,
                 inputId: Date.now(),
                 classRoom: classRoom,
-                author: name.val(),
+                author: $('#name').val(),
                 teacher: profesor
             }; //TODO este author es provisorio
 
