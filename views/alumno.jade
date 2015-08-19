@@ -22,7 +22,6 @@ block script-2
         //var key_code_send = 13;
         var myCall;
         var peerId;
-        var name = $('#name');
 
         function canEdit(author) { return author.toUpperCase() != "PROFESOR"; }
 
@@ -34,7 +33,7 @@ block script-2
             var text = $.trim(sendie.val());
             if (text == "") return;
 
-            if (name.val().toUpperCase() == "PROFESOR") {
+            if ($('#name').val().toUpperCase() == "PROFESOR") {
                 alert("El nombre de usuario elegido ya se encuentra tomado.");
                 return;
             }
@@ -43,7 +42,7 @@ block script-2
                 text: text,
                 inputId: Date.now(),
                 classRoom: classRoom,
-                author: name.val(),
+                author: $('#name').val(),
                 teacher: profesor
             }; //TODO este author es provisorio
 
@@ -92,6 +91,10 @@ block script-2
                         console.log(err);
                     });
 
+                    _peer.on('disconnected', function(){
+                        console.log('desconectado');
+                    });
+
                 };
 
             conectar.hide();
@@ -100,11 +103,12 @@ block script-2
             addEvents(peer, false);
 
             conectar.click(function(){
+                desconectar.click();
                 if (peer.disconnected){
                     peer = getNewPeer();
                     addEvents(peer, true);
                 } else {
-                    socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
+                    socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom });
                 }
             });
 
