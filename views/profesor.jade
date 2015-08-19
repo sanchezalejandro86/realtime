@@ -96,16 +96,16 @@ block script-2
                         });
                     };
 
-                if (peer.disconnected){
+                /*if (peer.disconnected){
                     peer = getNewPeer();
 
                     peer.on('open', function () {
                         console.log('re-open');
                         addEvent(call);
                     });
-                } else {
+                } else {*/
                     addEvent(call);
-                }
+                //}
 
 
                 /*if(data.classRoom != classRoom) return;
