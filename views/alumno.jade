@@ -91,6 +91,10 @@ block script-2
                         console.log(err);
                     });
 
+                    _peer.on('disconnected', function(){
+                        console.log('desconectado');
+                    });
+
                 };
 
             conectar.hide();
@@ -99,11 +103,12 @@ block script-2
             addEvents(peer, false);
 
             conectar.click(function(){
+                desconectar.click();
                 if (peer.disconnected){
                     peer = getNewPeer();
                     addEvents(peer, true);
                 } else {
-                    socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
+                    socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom });
                 }
             });
 
