@@ -67,13 +67,16 @@ block script-2
 
             var conectar = $('#conectar'),
                 desconectar = $('#desconectar'),
-                addEvents = function(_peer){
+                addEvents = function(_peer, emit){
 
                     _peer.on('open', function (id) {
                         console.log('open: ' + id);
                         peerId = id;
                         conectar.show();
                         $("#profesorVideo").show();
+                        if(emit){
+                            socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
+                        }
                     });
 
                     _peer.on('call', function (call) {
@@ -91,18 +94,18 @@ block script-2
 
                 };
 
-            addEvents(peer);
-
             conectar.hide();
             $("#profesorVideo").hide();
+
+            addEvents(peer, false);
 
             conectar.click(function(){
                 if (peer.disconnected){
                     peer = getNewPeer();
-                    addEvents(peer);
+                    addEvents(peer, true);
+                } else {
+                    socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
                 }
-
-                socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom});
             });
 
             desconectar.click(function () {
