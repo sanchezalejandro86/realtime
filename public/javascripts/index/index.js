@@ -16,7 +16,7 @@ var herokuOpts= {
 };
 
 function getNewPeer(){
-    return new Peer(herokuOpts);
+    return new Peer(connOpts);
 }
 var peer = getNewPeer();
 
