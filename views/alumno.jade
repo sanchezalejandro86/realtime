@@ -104,7 +104,12 @@ block script-2
             addEvents(peer, false);
 
             conectar.click(function(){
-                //desconectar.click();
+
+                //--Desconectar si hay conexión previa
+                try {
+                    desconectar.click();
+                }catch (ex){}
+
                 if (peer.disconnected){
                     peer = getNewPeer();
                     addEvents(peer, true);
