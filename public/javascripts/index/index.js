@@ -20,6 +20,21 @@ function getNewPeer(){
 }
 var peer = getNewPeer();
 
+var ping;
+
+function startPing(_peer) {
+    ping = setInterval(
+        function(){
+            if (_peer == null) {
+                console.log('no more ping');
+                clearInterval(ping);
+                return;
+            }
+            console.log('pinging');
+            _peer.socket.send({ type: 'ping' });
+        }, 20000);
+}
+
 var socket = io();
 var mediaStream = null;
 var messages;

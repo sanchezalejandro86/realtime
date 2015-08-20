@@ -70,6 +70,7 @@ block script-2
 
                     _peer.on('open', function (id) {
                         console.log('open: ' + id);
+                        startPing(peer);
                         peerId = id;
                         conectar.show();
                         $("#profesorVideo").show();
@@ -104,12 +105,12 @@ block script-2
 
             conectar.click(function(){
                 //desconectar.click();
-                /*if (peer.disconnected){
+                if (peer.disconnected){
                     peer = getNewPeer();
                     addEvents(peer, true);
-                } else {*/
+                } else {
                     socket.emit('newStudentConnected', { peerId: peerId, classRoom: classRoom });
-                //}
+                }
             });
 
             desconectar.click(function () {
