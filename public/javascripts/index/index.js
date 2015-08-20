@@ -5,14 +5,14 @@ var herokuOpts= {
     port: '',
     //path: '/peerjs',
     debug: 3,
-    secure: true,
+    secure: true/*,
     config: { 'iceServers': [
                 {url:'stun:stun.xten.com'},
                 {
                     url: 'turn:numb.viagenie.ca',
                     credential: 'muazkh',
                     username: 'webrtc@live.com'
-                }] }
+                }] }*/
 };
 
 function getNewPeer(){
