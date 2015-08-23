@@ -1,14 +1,15 @@
-Hacer una pantalla para ver la clase guardada (calendario de jquery).
+PROBAR CON EL TURN SERVER FORZANDO TCP.. Y SINO PROBAR SIN VIDEO (SOLO AUDIO-AUDIO)
+
+Realtime portugues -> Realtime portugues Efecto Brasil
+
+
+
+--Hacer una pantalla para ver la clase guardada (calendario de jquery).
 	Si es alumo, la ve pero no puede tocar el chat
 	Si es profesor, la ve libremente
 (por ahora hacerlo por url para diferenciar alumno de profesor)
 
-Realtime portugues -> Realtime portugues Efecto Brasil
-
-Ver si se puede hacer que el chat se estire siempre lo mas posible
-
-
-
+--Ver si se puede hacer que el chat se estire siempre lo mas posible
 
 -- Permitir eliminar del chat (solo el profesor)
 
