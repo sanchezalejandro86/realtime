@@ -27,10 +27,8 @@ block script-2
                     var text = $.trim(sendie.val());
                     if (text == "") return;
 
-                    var data = { text: text, inputId: Date.now() , classRoom: classRoom, author: $('#name').val(), teacher: profesor}; //TODO este author es provisorio
-                    socket.emit('newMessageChat', data);
-                    addChatMsg(data, true);
-                    sendie.val("");
+                    sendMessage(text);
+
                     thisKeypressTime = 0;
                 }
                 lastKeypressTime = thisKeypressTime;
@@ -57,10 +55,8 @@ block script-2
             }
         }
 
-
         $(document).on('ready', function(e){
         });
-
 
         var studentsConnected = [];
         $(document).ready(function(){

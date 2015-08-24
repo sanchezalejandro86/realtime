@@ -537,7 +537,7 @@ html, body {
 #mic-icon {
     position: absolute;
     top: 15px;
-    right: 15px;
+    right: 20px;
     cursor: pointer;
 }
     #mic-icon.active{

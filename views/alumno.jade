@@ -38,17 +38,8 @@ block script-2
                 return;
             }
 
-            var data = {
-                text: text,
-                inputId: Date.now(),
-                classRoom: classRoom,
-                author: $('#name').val(),
-                teacher: profesor
-            }; //TODO este author es provisorio
+            sendMessage(text);
 
-            socket.emit('newMessageChat', data);
-            addChatMsg(data, true);
-            sendie.val("");
             e.preventDefault();
         }
 

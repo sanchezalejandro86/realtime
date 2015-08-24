@@ -56,19 +56,6 @@ var sp = $("#search-panel"),
     search_input = $('#search-input'),
     search_button = $('#search-button');
 
-var recognition = null;
-
-
-if(!('webkitSpeechRecognition' in window)){
-    alert('SU BROWSER NO TIENE HABILITADO EL RECONOCIMIENTO DE VOZ. POR FAVOR ACTUALICELO, DE LO CONTRARIO NO PODRA UTILIZAR ESA FUNCIONALIDAD');
-} else {
-    recognition = new webkitSpeechRecognition();
-    recognition.lang = 'es-AR';
-    //recognition.lang = 'pt-BR';
-    recognition.continuous = true;
-    recognition.interimResults = true;
-}
-
 //**********************+BUSCADOR***********************//
 google.load('search', '1', {"language": "pt_br"});
 
@@ -295,15 +282,14 @@ $(document).ready(function(){
 
         removeChatMsg(id);
     });
-
 });
 
 function removeChatMsg(id) {
     var msg = $('#' + id);
     msg.parent().parent().remove();
 }
-
 function addChatMsg(data, sent){
+
     var date = new Date(data.inputId);
 
     var msg =
@@ -317,6 +303,20 @@ function addChatMsg(data, sent){
         </li>';
 
     $('#chat-area').append(msg);
-
     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
+}
+
+function sendMessage(text){
+
+    var data = {
+        text: text,
+        inputId: Date.now(),
+        classRoom: classRoom,
+        author: $('#name').val(),
+        teacher: profesor
+    };
+
+    socket.emit('newMessageChat', data);
+    addChatMsg(data, true);
+    $('#sendie').val("");
 }
