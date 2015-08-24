@@ -54,17 +54,13 @@ var recognition = null;
 
 
 if(!('webkitSpeechRecognition' in window)){
-    $("#mic_off").show();
-    $("#mic_on").hide();
     alert('SU BROWSER NO TIENE HABILITADO EL RECONOCIMIENTO DE VOZ. POR FAVOR ACTUALICELO, DE LO CONTRARIO NO PODRA UTILIZAR ESA FUNCIONALIDAD');
 } else {
     recognition = new webkitSpeechRecognition();
-    //recognition.lang = 'es-AR';
-    recognition.lang = 'pt-BR';
-    //recognition.continuous = true;
-    //recognition.interimResults = true;
-    $("#mic_on").show();
-    $("#mic_off").hide();
+    recognition.lang = 'es-AR';
+    //recognition.lang = 'pt-BR';
+    recognition.continuous = true;
+    recognition.interimResults = true;
 }
 
 //**********************+BUSCADOR***********************//
@@ -123,47 +119,6 @@ function searchComplete(searcher) {
 
 //******************************************************//
 
-//*********************KOLICH********************//
-if (!window.Kolich){
-    Kolich = {};
-}
-
-Kolich.Selector = {};
-Kolich.Selector.getSelected = function(){
-    var t = '';
-    if(window.getSelection) {
-        t = window.getSelection();
-    }else if(document.getSelection) {
-        t = document.getSelection();
-    }else if(document.selection) {
-        t = document.selection.createRange().text;
-    }
-    return t;
-};
-
-Kolich.Selector.mouseup = function(){
-    var input = search_input;
-    var st = Kolich.Selector.getSelected();
-
-    if ((st + "").trim() == '' ||
-        st == input.val() ||
-        $(st.focusNode).hasClass('ignore-kolich') ||
-        $(st.focusNode.parentNode).hasClass('ignore-kolich') ||
-        $(st.focusNode.firstChild).hasClass('ignore-kolich')) return;
-
-    input.val(st); //a pedido de Nicolas, cuando selecciona con el kolich queda eso solo en el input y busca y comparte
-
-    var str = input.val();
-    if(str.indexOf(",") != -1){
-        str = $.trim(str.substr(str.indexOf(",") + 1 ));
-    }
-    input.val(str);
-
-    search_button.click();
-    sendSearch();
-};
-
-//**********************************************//
 function sendSearch() {
     socket.emit('search changed', {text: search_input.val(), classRoom: classRoom});
 }
@@ -197,8 +152,6 @@ $(document).ready(function(){
             console.log(search_input.val());
         }, 1000);
     });
-
-    $(document).bind("mouseup", Kolich.Selector.mouseup);
 
     $("#fullScreen").click(function(e){
         if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
@@ -274,63 +227,6 @@ $(document).ready(function(){
     });
     //**********************************************//
 
-    //************VOICE RECOGNITION********************//
-    if(recognition != null){
-        recognition.onstart = function() {
-            $("#mic_on").hide();
-            $("#mic_off").show();
-        }
-
-        var final_transcript = '';
-
-        recognition.onresult = function(event) {
-            var interim_transcript = '';
-
-            for (var i = 0; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) {
-                    final_transcript += event.results[i][0].transcript;
-                } else {
-                    interim_transcript += event.results[i][0].transcript;
-                }
-            }
-
-            if(final_transcript != ''){
-                var input = search_input;
-                if (input.val() != "") //--Agregar coma
-                    final_transcript = ", " + final_transcript;
-
-                input.val(input.val() + final_transcript);
-                input.focus();
-                final_transcript = '';
-                search_button.click();
-            }
-        }
-
-        recognition.onerror = function(event) {
-            alert('ERROR SPEECH RECOGNITION');
-            $("#mic_off").hide();
-            $("#mic_on").show();
-        }
-
-        recognition.onend = function() {
-            $("#mic_off").hide();
-            $("#mic_on").show();
-        }
-
-        $("#mic_on").click(function(){
-            recognition.start();
-            $("#mic_on").hide();
-            $("#mic_off").show();
-        });
-
-        $("#mic_off").click(function(){
-            recognition.stop();
-            $("#mic_off").hide();
-            $("#mic_on").show();
-        });
-    }
-    //*********************************************//
-
     var search_results = $('#search-results');
 
     sendie.keydown(function (e) {
@@ -399,10 +295,6 @@ $(document).ready(function(){
 function removeChatMsg(id) {
     var msg = $('#' + id);
     msg.parent().parent().remove();
-}
-
-function padLeft(nr, n, str) {
-    return Array(n - String(nr).length + 1).join(str || '0') + nr;
 }
 
 function addChatMsg(data, sent){

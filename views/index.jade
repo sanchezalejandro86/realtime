@@ -25,6 +25,7 @@ block footer-content
         .col-xs-12(style="padding-left:0px; padding-right:0px; height: 100%")
             #send-message-area(style="height: 100%")
                 textarea#sendie(style="font-size: 16px;")
+                span#mic-icon.fa.fa-microphone.inactive
     .col-xs-6(style="height: 100%")
         .col-xs-3(style="padding-left:0px; margin-top:5px; height: 100%")
             block video
@@ -52,4 +53,5 @@ block script
     script(type='text/javascript', src="/javascripts/jquery.cleditor.js")
     script(type='text/javascript', src="/javascripts/jquery.browser.min.js")
     script(type='text/javascript', src="/javascripts/index/index.js")
-
+    script(type='text/javascript', src="/javascripts/index/voice-recognition.js")
+    script(type='text/javascript', src="/javascripts/index/kolich.js")

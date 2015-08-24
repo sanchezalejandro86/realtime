@@ -533,3 +533,16 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
+#mic-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+}
+    #mic-icon.active{
+        color: red;
+    }
+    #mic-icon.inactive{
+        color: darkgray;
+    }
