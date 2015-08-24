@@ -66,7 +66,7 @@ block script-2
         $(document).ready(function(){
 
             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            navigator.getUserMedia({audio: true, video:true},
+            navigator.getUserMedia({audio: true, video: false},
             function(localMediaStream){
                mediaStream = localMediaStream;
                var selfVideo = document.getElementById('selfVideo');
