@@ -4,8 +4,8 @@ if(!('webkitSpeechRecognition' in window)){
     alert('SU BROWSER NO TIENE HABILITADO EL RECONOCIMIENTO DE VOZ. POR FAVOR ACTUALICELO, DE LO CONTRARIO NO PODRA UTILIZAR ESA FUNCIONALIDAD');
 } else {
     recognition = new webkitSpeechRecognition();
-    recognition.lang = 'es-AR';
-    //recognition.lang = 'pt-BR';
+    //recognition.lang = 'es-AR';
+    recognition.lang = 'pt-BR';
     recognition.continuous = true;
     recognition.interimResults = true;
 }
