@@ -33,8 +33,8 @@ if (recognition != null){
 
     var to_comma,
         to_send,
-        time_comma = 2000,
-        time_send = 4000,
+        time_comma = 500,
+        time_send = 1000 + time_comma,
         append_comma = ', ',
         started = false;
 
@@ -82,6 +82,9 @@ if (recognition != null){
         var input = $(sendie);
         input.val(input.val() + final_transcript);
         input.focus();
+
+        input.scrollTop(input[0].scrollHeight);
+
         final_transcript = '';
 
         startTimeouts();
