@@ -17,6 +17,7 @@
     "connect": "*",
     "mongoose": "*",
     "request" : "*",
-    "peer": "*"
+    "peer": "*",
+    "ip": "*"
   }
 }
