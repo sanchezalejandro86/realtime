@@ -43,7 +43,7 @@ function getNewPeer(){
         conn.config = customConfig;
     }
 
-    return new Peer(herokuOpts);
+    return new Peer(conn);
 }
 var peer = getNewPeer();
 
