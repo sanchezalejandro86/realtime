@@ -1,4 +1,4 @@
-function initializePeerStunTurnOptions(){
+function initializePeerStunTurnOptions() {
     // Call XirSys ICE servers
     $.ajax({
         url: "https://service.xirsys.com/ice",
@@ -19,35 +19,28 @@ function initializePeerStunTurnOptions(){
     });
 }
 
-
 var connOpts = { key: 'bp70suzmx5ok1emi' };
-var herokuOpts= {
-    //key: 'peerjs',
+var herokuOpts = {
     host: 'testsnail.herokuapp.com',
     port: '',
-    //path: '/peerjs',
     debug: 3,
     secure: true
-    /*config: customConfig*/
-    /*config: { 'iceServers': [
-     {url:'stun:stun.xten.com'},
-     /* {
-     url: 'turn:numb.viagenie.ca',
-     credential: 'muazkh',
-     username: 'webrtc@live.com'
-     }*//*
-     {
-     url: 'turn:192.158.29.39:3478?transport=tcp',
-     credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-     username: '28224511:1379330808'
-     }
-     ] }*/
+};
+var localOpts = {
+    key: 'peerjs',
+    host: 'localhost',
+    port: '',
+    path: '/peerjs',
+    debug: 3,
+    secure: true
 };
 
 function getNewPeer(){
-    if(herokuOpts.config == null){
+    var conn = localOpts;
+
+    if(conn.config == null){
         initializePeerStunTurnOptions();
-        herokuOpts.config = customConfig;
+        conn.config = customConfig;
     }
 
     return new Peer(herokuOpts);
