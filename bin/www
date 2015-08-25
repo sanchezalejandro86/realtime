@@ -23,7 +23,7 @@ app.set('ip', ip);
 
 var server = http.createServer(app);
 
-app.use('/peerjs', expressPeerServer(server, { proxied: true }));
+app.use('/peerjs', expressPeerServer(server, { proxied: true, debug: true }));
 
 server.listen(port, function(){
     console.log('Express server listening on ' + port);
