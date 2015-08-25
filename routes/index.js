@@ -13,7 +13,8 @@ router.get('/class/:classRoom/:prof?', function(req, res, next) {
             res.render('profesor', {
                 classRoom: classRoom,
                 messages: JSON.stringify(d[0].messages),
-                locked: false
+                locked: false,
+                port: process.env.PORT
             });
         });
 });

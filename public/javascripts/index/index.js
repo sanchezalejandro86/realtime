@@ -29,7 +29,7 @@ var herokuOpts = {
 var localOpts = {
     key: 'peerjs',
     host: 'localhost',
-    port: '',
+    port: port,
     path: '/peerjs',
     debug: 3,
     secure: true

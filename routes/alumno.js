@@ -15,7 +15,8 @@ router.get('/:classRoom/:locked?', function(req, res, next) {
             res.render('alumno', {
                 classRoom: req.params.classRoom,
                 messages: JSON.stringify(d[0]? d[0].messages : {}),
-                locked: req.params.locked
+                locked: req.params.locked,
+                port: process.env.PORT
             });
         });
 });

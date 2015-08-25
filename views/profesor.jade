@@ -104,29 +104,6 @@ block script-2
                     addEvent(call);
                 }
 
-
-                /*if(data.classRoom != classRoom) return;
-                if(studentsConnected.indexOf(data.peerId) != -1) return; //me fijo que no este ya conectado a ese alumno
-
-                var call = peer.call(data.peerId, mediaStream);
-
-                new Promise(function(resolve, reject){
-                    if (!call) {
-                        console.log('reconectado');
-                        resolve(setConnection());
-                    } else {
-                        resolve(peer);
-                    }
-                }).then(function(_peer){
-                    _peer.call(data.peerId, mediaStream)
-                    _peer.on('stream', function (stream) {
-                        createNewAlumnoVideoTag(stream, data.peerId);
-                        studentsConnected.push(data.peerId);
-                    });
-                    _peer.on('disconnected', function(){
-                        console.log('chau');
-                    });
-                });*/
             });
 
             socket.on('studentDisconnected', function(data){
