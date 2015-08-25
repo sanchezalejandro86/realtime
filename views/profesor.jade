@@ -1,7 +1,7 @@
 extends ./index.jade
 
 block video
-    audio#selfVideo(height="100%",autoplay, muted)
+    video#selfVideo(height="100%",autoplay, muted)
     input#name(type="hidden", value="Profesor")
 
 block extraLine1
@@ -61,7 +61,7 @@ block script-2
         var studentsConnected = [];
         $(document).ready(function(){
             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            navigator.getUserMedia({audio: true, video: false},
+            navigator.getUserMedia({audio: true, video: true},
             function(localMediaStream){
                mediaStream = localMediaStream;
                var selfVideo = document.getElementById('selfVideo');
