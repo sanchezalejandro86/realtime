@@ -1,3 +1,25 @@
+function initializePeerStunTurnOptions(){
+    // Call XirSys ICE servers
+    $.ajax({
+        url: "https://service.xirsys.com/ice",
+        data: {
+            ident: "fedetemoli",
+            secret: "39f3ecf8-4b42-11e5-816c-568c2a156275",
+            domain: "www.snailtest.com",
+            application: "default",
+            room: "default",
+            secure: 1
+        },
+        success: function (data, status) {
+            // data.d is where the iceServers object lives
+            customConfig = data.d;
+            console.log(customConfig);
+        },
+        async: false
+    });
+}
+
+
 var connOpts = { key: 'bp70suzmx5ok1emi' };
 var herokuOpts= {
     //key: 'peerjs',
@@ -5,23 +27,29 @@ var herokuOpts= {
     port: '',
     //path: '/peerjs',
     debug: 3,
-    secure: true/*,
-    config: { 'iceServers': [
-                {url:'stun:stun.xten.com'},
-               /* {
-                    url: 'turn:numb.viagenie.ca',
-                    credential: 'muazkh',
-                    username: 'webrtc@live.com'
-                }
-                {
-                    url: 'turn:192.158.29.39:3478?transport=tcp',
-                    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                    username: '28224511:1379330808'
-                }
-            ] }*/
+    secure: true
+    /*config: customConfig*/
+    /*config: { 'iceServers': [
+     {url:'stun:stun.xten.com'},
+     /* {
+     url: 'turn:numb.viagenie.ca',
+     credential: 'muazkh',
+     username: 'webrtc@live.com'
+     }*//*
+     {
+     url: 'turn:192.158.29.39:3478?transport=tcp',
+     credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+     username: '28224511:1379330808'
+     }
+     ] }*/
 };
 
 function getNewPeer(){
+    if(herokuOpts.config == null){
+        initializePeerStunTurnOptions();
+        herokuOpts.config = customConfig;
+    }
+
     return new Peer(herokuOpts);
 }
 var peer = getNewPeer();
