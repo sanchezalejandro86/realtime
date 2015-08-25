@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Clases = require('../model/clase');
+var node_ip = require("ip");
 
 /* GET users listing. */
 router.get('/:classRoom/:locked?', function(req, res, next) {
@@ -16,7 +17,8 @@ router.get('/:classRoom/:locked?', function(req, res, next) {
                 classRoom: req.params.classRoom,
                 messages: JSON.stringify(d[0]? d[0].messages : {}),
                 locked: req.params.locked,
-                port: process.env.PORT
+                port: process.env.PORT,
+                ip: node_ip.address()
             });
         });
 });

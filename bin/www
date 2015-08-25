@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('realtime:server');
 var http = require('http');
-var ip = require("ip");
+var node_ip = require("ip");
 var expressPeerServer = require('peer').ExpressPeerServer;
 
 var Clase = require('../model/clase');
@@ -15,9 +15,11 @@ var Clase = require('../model/clase');
 /**
  * Get port from environment and store in Express.
  */
-var port = normalizePort(process.env.PORT || '5000');
+var port = normalizePort(process.env.PORT || '5000'),
+    ip = node_ip.address();
 
 app.set('port', port);
+app.set('ip', ip);
 
 var server = http.createServer(app);
 
@@ -25,7 +27,7 @@ app.use('/peerjs', expressPeerServer(server));
 
 server.listen(port, function(){
     console.log('Express server listening on ' + port);
-    console.log('Express server listening on ' + ip.address());
+    console.log('Express server listening on ' + ip);
 });
 
 server.on('connection', function(id) {

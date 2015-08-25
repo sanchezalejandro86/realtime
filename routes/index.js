@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Clases = require('../model/clase');
+var node_ip = require("ip");
 
 /* GET home page. */
 router.get('/class/:classRoom/:prof?', function(req, res, next) {
@@ -14,7 +15,8 @@ router.get('/class/:classRoom/:prof?', function(req, res, next) {
                 classRoom: classRoom,
                 messages: JSON.stringify(d[0].messages),
                 locked: false,
-                port: process.env.PORT
+                port: process.env.PORT,
+                ip: node_ip.address()
             });
         });
 });
