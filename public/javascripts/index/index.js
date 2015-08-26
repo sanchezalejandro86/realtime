@@ -20,20 +20,23 @@ function initializePeerStunTurnOptions() {
 }
 
 var connOpts = { key: 'bp70suzmx5ok1emi' };
+
 var herokuOpts = {
     host: 'testsnail.herokuapp.com',
     port: '',
     debug: 3,
     secure: true
 };
+
 var localOpts = {
     key: 'peerjs',
-    host: ip,
-    port: port,
-    path: '/peerjs',
+    host: '/',
+    port: 443,
+    path: '/api',
     debug: 3,
     secure: true
 };
+
 
 function getNewPeer(){
     var conn = localOpts;
