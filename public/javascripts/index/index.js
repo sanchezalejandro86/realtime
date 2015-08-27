@@ -1,4 +1,16 @@
 function initializePeerStunTurnOptions(){
+    customConfig = [
+        {
+            url: 'stun:numb.viagenie.ca',
+            credential: 'fincaflichman',
+            username: 'fedetemoli02@gmail.com'
+        }, {
+            url: 'turn:numb.viagenie.ca',
+            credential: 'fincaflichman',
+            username: 'fedetemoli02@gmail.com'
+        }];
+    return;
+
     // Call XirSys ICE servers
     $.ajax({
         url: "https://service.xirsys.com/ice",
