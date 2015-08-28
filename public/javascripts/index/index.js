@@ -134,7 +134,7 @@ function searchComplete(searcher) {
 
             var randomImageId = Math.floor(Math.random() * 1000000000) + 1;
             sr.append(
-                '<div class="col-xs-4 search-result">\
+                '<div class="col-md-4 search-result">\
                     <a id="' + randomImageId + '" href="javascript:fullSizeImage(' + randomImageId + ')" target="_blank">\
                         <img id="img_' + randomImageId + '" onerror="removeImg('+randomImageId+')" class="search-results-image" src="' + result.url + '" />\
                     </a>\
