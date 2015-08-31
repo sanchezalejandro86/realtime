@@ -58,8 +58,7 @@ if (recognition != null){
     var interim_span = $('#interim_span');
 
     var trigger_sendMessage = function() {
-            //var text = getSendieText().replace(new RegExp(append_comma + '$'), '');
-            var text = final_transcript.replace(new RegExp(append_comma + '$'), '');
+            var text = getSendieText().replace(new RegExp(append_comma + '$'), '');
             sendMessage(text);
             final_transcript = '';
             console.log('sending: ' + text);

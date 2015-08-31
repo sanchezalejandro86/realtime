@@ -20,11 +20,11 @@ block script-2
         function canEdit() { return true; }
 
         function processKeyDownChat(e){
+            var sendie = $('#sendie');
             if(e.which == 32){ //con doble space bar, envia al chat
                 var thisKeypressTime = new Date();
                 if ( thisKeypressTime - lastKeypressTime <= delta ) {
-                    var sendie = $('#sendie');
-                    var text = $.trim(sendie.val());
+                    var text = $.trim(sendie.text());
                     if (text == "") return;
 
                     sendMessage(text);
@@ -38,8 +38,7 @@ block script-2
             }
 
             if (e.which == 17){//--Con CTRL => busca y comparte
-                var sendie = $('#sendie');
-                var text = $.trim(sendie.val());
+                var text = $.trim(sendie.text());
                 if (text == "") return;
 
                 var input = search_input;
@@ -103,30 +102,6 @@ block script-2
                 } else {
                     addEvent(call);
                 }
-
-
-                /*if(data.classRoom != classRoom) return;
-                if(studentsConnected.indexOf(data.peerId) != -1) return; //me fijo que no este ya conectado a ese alumno
-
-                var call = peer.call(data.peerId, mediaStream);
-
-                new Promise(function(resolve, reject){
-                    if (!call) {
-                        console.log('reconectado');
-                        resolve(setConnection());
-                    } else {
-                        resolve(peer);
-                    }
-                }).then(function(_peer){
-                    _peer.call(data.peerId, mediaStream)
-                    _peer.on('stream', function (stream) {
-                        createNewAlumnoVideoTag(stream, data.peerId);
-                        studentsConnected.push(data.peerId);
-                    });
-                    _peer.on('disconnected', function(){
-                        console.log('chau');
-                    });
-                });*/
             });
 
             socket.on('studentDisconnected', function(data){

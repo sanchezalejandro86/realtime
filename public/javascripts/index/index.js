@@ -363,10 +363,12 @@ function sendMessage(text){
 }
 
 function getSendieText(){
-    return sendie.children('#final_span').text();
+    return sendie.text();
+    //return sendie.children('#final_span').text();
 }
 
 function clearSendieText(){
+    document.getElementById('sendie').firstChild.data = '';
     sendie.children('span').each(function(i, e){
         $(e).text('');
     })
