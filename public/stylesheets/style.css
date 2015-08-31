@@ -549,3 +549,7 @@ html, body {
 #bienvenido{
     text-align: center;
 }
+
+#final_span{
+    font-weight: bold;
+}

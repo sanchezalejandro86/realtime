@@ -33,8 +33,8 @@ if (recognition != null){
 
     var to_comma,
         to_send,
-        time_comma = 2500,
-        time_send = 3000 + time_comma,
+        time_comma = 1000,
+        time_send = 1000 + time_comma,
         append_comma = ', ',
         started = false;
 
@@ -65,7 +65,8 @@ if (recognition != null){
             console.log('sending: ' + text);
         },
         trigger_addComa = function() {
-            setSendieText(getSendieText() + append_comma);
+            final_transcript += append_comma;
+            setSendieText(final_transcript);
         };
 
     recognition.onstart = function() {
