@@ -546,3 +546,6 @@ html, body {
     #mic-icon.inactive{
         color: darkgray;
     }
+#bienvenido{
+    text-align: center;
+}
