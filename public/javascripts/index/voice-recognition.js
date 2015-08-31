@@ -52,7 +52,6 @@ if (recognition != null){
 
     var final_transcript = '';
     var sendie = $('#sendie');
-    var recognizing = false;
     var ignore_onend = false;
     var final_span = $('#final_span');
     var interim_span = $('#interim_span');
@@ -71,7 +70,6 @@ if (recognition != null){
     recognition.onstart = function() {
         started = true;
         activarMic();
-        recognizing = true;
         ignore_onend = false;
     };
 
@@ -118,7 +116,6 @@ if (recognition != null){
         }
 
         started = false;
-        recognizing = false;
 
         recognition.start();
     };
