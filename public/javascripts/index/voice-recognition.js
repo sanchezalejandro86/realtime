@@ -33,61 +33,67 @@ if (recognition != null){
 
     var to_comma,
         to_send,
-        time_comma = 500,
-        time_send = 1000 + time_comma,
+        time_comma = 2500,
+        time_send = 3000 + time_comma,
         append_comma = ', ',
         started = false;
 
     function clearTimeouts(){
         clearTimeout(to_comma);
         clearTimeout(to_send);
-        console.log('clear');
+        //console.log('clear');
     }
 
     function startTimeouts(){
-        console.log('start');
+        //console.log('start');
         to_comma = setTimeout(trigger_addComa, time_comma);
         to_send = setTimeout(trigger_sendMessage, time_send);
     }
 
+    var final_transcript = '';
+    var sendie = $('#sendie');
+    var recognizing = false;
+    var ignore_onend = false;
+    var final_span = $('#final_span');
+    var interim_span = $('#interim_span');
+
+    var trigger_sendMessage = function() {
+            //var text = getSendieText().replace(new RegExp(append_comma + '$'), '');
+            var text = final_transcript.replace(new RegExp(append_comma + '$'), '');
+            sendMessage(text);
+            final_transcript = '';
+            console.log('sending: ' + text);
+        },
+        trigger_addComa = function() {
+            setSendieText(getSendieText() + append_comma);
+        };
+
     recognition.onstart = function() {
         started = true;
         activarMic();
+        recognizing = true;
+        ignore_onend = false;
     };
-
-    var final_transcript = '';
-    var sendie = $('#sendie');
-
-    var trigger_sendMessage = function() {
-            var text = sendie.val().replace(new RegExp(append_comma + '$'), '');
-            sendMessage(text);
-            console.log('sending: ' + text);
-        },
-        trigger_addComa = function(){
-            sendie.val(sendie.val() + append_comma);
-        };
 
     recognition.onresult = function(event) {
         clearTimeouts();
 
-        var result = event.results[event.results.length - 1];
-        console.log(event.results);
-
-        if (!result.isFinal) return;
-
-        final_transcript = result[0].transcript;
-
-        if (final_transcript == '') return;
-
-        var input = $(sendie);
-        input.val(input.val() + final_transcript);
-        input.focus();
-
-        input.scrollTop(input[0].scrollHeight);
-
-        final_transcript = '';
-
-        startTimeouts();
+        var interim_transcript = '';
+        if (typeof(event.results) == 'undefined') {
+            recognition.onend = null;
+            recognition.stop();
+            return;
+        }
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+                final_transcript += event.results[i][0].transcript;
+                startTimeouts();
+            } else
+                interim_transcript += event.results[i][0].transcript;
+        }
+        final_transcript = capitalize(final_transcript);
+        final_span.html(linebreak(final_transcript));
+        interim_span.html(linebreak(interim_transcript));
     };
 
     recognition.onerror = function(event) {
@@ -96,27 +102,35 @@ if (recognition != null){
         desactivarMic();
         started = false;
         clearTimeouts();
+        ignore_onend = true;
     };
 
     recognition.onend = function() {
+        if (ignore_onend) return;
         console.log('end speech recognition');
         desactivarMic();
+
+        if (window.getSelection) {
+            window.getSelection().removeAllRanges();
+            var range = document.createRange();
+            range.selectNode(document.getElementById('final_span'));
+            window.getSelection().addRange(range);
+        }
+
         started = false;
+        recognizing = false;
+
+        recognition.start();
     };
 
-    //recognition.onspeechstart = function(){
-    //    console.log('speech start');
-    //};
-    //
-    //recognition.onspeechend = function(){
-    //    console.log('speech end');
-    //};
-    //
-    //recognition.onaudiostart = function(){
-    //    console.log('audio start');
-    //};
-    //
-    //recognition.onaudioend = function(){
-    //    console.log('audio end');
-    //};
+    var two_line = /\n\n/g;
+    var one_line = /\n/g;
+    function linebreak(s) {
+        return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+    }
+
+    var first_char = /\S/;
+    function capitalize(s) {
+        return s.replace(first_char, function(m) { return m.toUpperCase(); });
+    }
 }

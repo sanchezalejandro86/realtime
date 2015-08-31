@@ -314,7 +314,7 @@ $(document).ready(function(){
 
     search_results.on("click", ".returnImageList", function(e){
         search_button.click();
-    })
+    });
 
     $('#chat-area').on('click', '.msg-remove', function (e) {
         var id = $(this).siblings('.messages').children('p').attr('id');
@@ -322,12 +322,14 @@ $(document).ready(function(){
 
         removeChatMsg(id);
     });
+
 });
 
 function removeChatMsg(id) {
     var msg = $('#' + id);
     msg.parent().parent().remove();
 }
+
 function addChatMsg(data, sent){
 
     var date = new Date(data.inputId);
@@ -347,7 +349,6 @@ function addChatMsg(data, sent){
 }
 
 function sendMessage(text){
-
     var data = {
         text: text,
         inputId: Date.now(),
@@ -358,5 +359,19 @@ function sendMessage(text){
 
     socket.emit('newMessageChat', data);
     addChatMsg(data, true);
-    $('#sendie').val("");
+    clearSendieText();
+}
+
+function getSendieText(){
+    return sendie.children('#final_span').text();
+}
+
+function clearSendieText(){
+    sendie.children('span').each(function(i, e){
+        $(e).text('');
+    })
+}
+
+function setSendieText(text){
+    sendie.children('#final_span').text(text);
 }
