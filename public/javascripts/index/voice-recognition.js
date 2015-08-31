@@ -23,9 +23,11 @@ function desactivarMic(){
 }
 
 mic_button.click(function(){
-    if ($(this).hasClass('active'))
+    if ($(this).hasClass('active')){
+        ignore_onend = false;
+        restart = false;
         recognition.stop();
-    else if (!started)
+    } else if (!started)
         recognition.start();
 });
 
@@ -53,6 +55,7 @@ if (recognition != null){
     var final_transcript = '';
     var sendie = $('#sendie');
     var ignore_onend = false;
+    var restart = true;
     var final_span = $('#final_span');
     var interim_span = $('#interim_span');
 
@@ -69,6 +72,7 @@ if (recognition != null){
 
     recognition.onstart = function() {
         started = true;
+        restart = true;
         activarMic();
         ignore_onend = false;
     };
@@ -105,6 +109,7 @@ if (recognition != null){
 
     recognition.onend = function() {
         if (ignore_onend) return;
+
         console.log('end speech recognition');
         desactivarMic();
 
@@ -117,7 +122,7 @@ if (recognition != null){
 
         started = false;
 
-        recognition.start();
+        if (restart) recognition.start();
     };
 
     var two_line = /\n\n/g;
