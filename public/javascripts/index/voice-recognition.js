@@ -109,18 +109,18 @@ if (recognition != null){
 
     var to_comma,
         to_send,
-        time_comma = 1000,
-        time_send = 1000 + time_comma,
+        //time_comma = 0,
+        time_send = 0,
         append_comma = ', ',
         started = false;
 
     function clearTimeouts(){
-        clearTimeout(to_comma);
+        //clearTimeout(to_comma);
         clearTimeout(to_send);
     }
 
     function startTimeouts(){
-        to_comma = setTimeout(trigger_addComma, time_comma);
+        //to_comma = setTimeout(trigger_addComma, time_comma);
         to_send = setTimeout(trigger_sendMessage, time_send);
     }
 
