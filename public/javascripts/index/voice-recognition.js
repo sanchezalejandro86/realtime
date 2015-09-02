@@ -1,13 +1,19 @@
 var recognition = null;
 
-if(!('webkitSpeechRecognition' in window)){
-    alert('SU BROWSER NO TIENE HABILITADO EL RECONOCIMIENTO DE VOZ. POR FAVOR ACTUALICELO, DE LO CONTRARIO NO PODRA UTILIZAR ESA FUNCIONALIDAD');
-} else {
+function setRecognition() {
     recognition = new webkitSpeechRecognition();
     //recognition.lang = 'es-AR';
     recognition.lang = 'pt-BR';
     recognition.continuous = true;
     recognition.interimResults = true;
+
+    addEvents(recognition);
+}
+
+if(!('webkitSpeechRecognition' in window)){
+    alert('SU BROWSER NO TIENE HABILITADO EL RECONOCIMIENTO DE VOZ. POR FAVOR ACTUALICELO, DE LO CONTRARIO NO PODRA UTILIZAR ESA FUNCIONALIDAD');
+} else {
+    setRecognition();
 }
 
 var mic_button = $('#mic-icon');
@@ -22,68 +28,39 @@ function desactivarMic(){
     mic_button.addClass('inactive');
 }
 
+function startRec(){
+    setRecognition();
+    recognition.start();
+}
+function stopRec(){
+    recognition.stop();
+}
+
 mic_button.click(function(){
     if ($(this).hasClass('active')){
         ignore_onend = false;
         restart = false;
-        recognition.stop();
+        stopRec();
     } else if (!started)
-        recognition.start();
+        startRec();
 });
 
-if (recognition != null){
+function addEvents(rec){
 
-    var to_comma,
-        to_send,
-        time_comma = 1000,
-        time_send = 1000 + time_comma,
-        append_comma = ', ',
-        started = false;
-
-    function clearTimeouts(){
-        clearTimeout(to_comma);
-        clearTimeout(to_send);
-        //console.log('clear');
-    }
-
-    function startTimeouts(){
-        //console.log('start');
-        to_comma = setTimeout(trigger_addComa, time_comma);
-        to_send = setTimeout(trigger_sendMessage, time_send);
-    }
-
-    var final_transcript = '';
-    var sendie = $('#sendie');
-    var ignore_onend = false;
-    var restart = true;
-    var final_span = $('#final_span');
-    var interim_span = $('#interim_span');
-
-    var trigger_sendMessage = function() {
-            var text = getSendieText().replace(new RegExp(append_comma + '$'), '');
-            sendMessage(text);
-            final_transcript = '';
-            console.log('sending: ' + text);
-        },
-        trigger_addComa = function() {
-            final_transcript += append_comma;
-            setSendieText(final_transcript);
-        };
-
-    recognition.onstart = function() {
+    rec.onstart = function() {
         started = true;
         restart = true;
         activarMic();
         ignore_onend = false;
     };
 
-    recognition.onresult = function(event) {
+    rec.onresult = function(event) {
         clearTimeouts();
 
         var interim_transcript = '';
         if (typeof(event.results) == 'undefined') {
-            recognition.onend = null;
-            recognition.stop();
+            rec.onend = null;
+            stopRec();
             return;
         }
         for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -94,20 +71,21 @@ if (recognition != null){
                 interim_transcript += event.results[i][0].transcript;
         }
         final_transcript = capitalize(final_transcript);
-        final_span.html(linebreak(final_transcript));
-        interim_span.html(linebreak(interim_transcript));
+        showFinal(linebreak(final_transcript));
+        showInterim(linebreak(interim_transcript));
     };
 
-    recognition.onerror = function(event) {
+    rec.onerror = function(event) {
         console.log('ERROR SPEECH RECOGNITION');
         console.log(event);
         desactivarMic();
         started = false;
         clearTimeouts();
-        ignore_onend = true;
+        ignore_onend = false;
+        restart = true;
     };
 
-    recognition.onend = function() {
+    rec.onend = function() {
         if (ignore_onend) return;
 
         console.log('end speech recognition');
@@ -122,8 +100,43 @@ if (recognition != null){
 
         started = false;
 
-        if (restart) recognition.start();
+        if (restart) startRec();
     };
+
+}
+
+if (recognition != null){
+
+    var to_comma,
+        to_send,
+        time_comma = 1000,
+        time_send = 1000 + time_comma,
+        append_comma = ', ',
+        started = false;
+
+    function clearTimeouts(){
+        clearTimeout(to_comma);
+        clearTimeout(to_send);
+    }
+
+    function startTimeouts(){
+        to_comma = setTimeout(trigger_addComma, time_comma);
+        to_send = setTimeout(trigger_sendMessage, time_send);
+    }
+
+    var final_transcript = '';
+    var sendie = $('#sendie');
+    var ignore_onend = false;
+    var restart = true;
+
+    var trigger_sendMessage = function() {
+            removeComma(append_comma);
+            sendMessage();
+            final_transcript = '';
+        },
+        trigger_addComma = function() {
+            addComma(append_comma);
+        };
 
     var two_line = /\n\n/g;
     var one_line = /\n/g;

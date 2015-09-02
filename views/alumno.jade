@@ -30,7 +30,7 @@ block script-2
         function processKeyDownChat(e) { //--Con ENTER => enviar
             if (e.which != 13) return;
             var sendie = $('#sendie');
-            var text = $.trim(sendie.val());
+            var text = $.trim(sendie.text());
             if (text == "") return;
 
             if ($('#name').val().toUpperCase() == "PROFESOR") {
@@ -38,7 +38,7 @@ block script-2
                 return;
             }
 
-            sendMessage(text);
+            sendMessage();
 
             e.preventDefault();
         }

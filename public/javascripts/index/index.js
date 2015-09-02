@@ -348,9 +348,9 @@ function addChatMsg(data, sent){
     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
 }
 
-function sendMessage(text){
+function sendMessage(){
     var data = {
-        text: text,
+        text: sendie.text(),
         inputId: Date.now(),
         classRoom: classRoom,
         author: $('#name').val(),
@@ -362,18 +362,34 @@ function sendMessage(text){
     clearSendieText();
 }
 
-function getSendieText(){
-    return sendie.text();
-    //return sendie.children('#final_span').text();
-}
-
 function clearSendieText(){
-    document.getElementById('sendie').firstChild.data = '';
-    sendie.children('span').each(function(i, e){
-        $(e).text('');
-    })
+    ['sendie', 'interim_span', 'final_span'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el == null) return;
+
+        var nodes = el.childNodes,
+            i = nodes.length;
+        while (i--)
+            if (nodes[i].nodeType == 3) el.removeChild(nodes[i]);
+    });
 }
 
-function setSendieText(text){
-    sendie.children('#final_span').text(text);
+function showInterim(text){ showText('interim', text) }
+
+function showFinal(text){ showText('final', text) }
+
+function showText(span, text){
+    var id = span + '_span';
+    $('#' + id).remove();
+    $('#sendie').append(
+        '<span id="' + id + '" class="' + span + '">' + text + '</span>');
+}
+
+function addComma(comma){
+    var span = $('#final_span');
+    span.text(span.text() + comma);
+}
+function removeComma(comma) {
+    var span = $('#final_span');
+    span.text(span.text().replace(new RegExp(comma + '$'), ''));
 }

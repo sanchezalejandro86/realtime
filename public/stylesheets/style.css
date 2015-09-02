@@ -478,6 +478,15 @@ input.gsc-input,
     background-color: #e5e5e5;
     margin-top: 5px;
     color: black;
+    overflow-y: scroll;
+}
+#sendie-text{
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+#sendie-text:focus {
+    outline: none;
 }
 
 .msg-pending {
