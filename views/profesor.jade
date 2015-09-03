@@ -24,6 +24,7 @@ block script-2
             if(e.which == 32){ //con doble space bar, envia al chat
                 var thisKeypressTime = new Date();
                 if ( thisKeypressTime - lastKeypressTime <= delta ) {
+                    e.preventDefault();
                     var text = $.trim(sendie.text());
                     if (text == "") return;
 

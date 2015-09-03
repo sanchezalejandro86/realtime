@@ -51,6 +51,8 @@ function addEvents(rec){
         started = true;
         restart = true;
         activarMic();
+        blockSendie();
+        clearSendieText();
         ignore_onend = false;
     };
 
@@ -90,13 +92,9 @@ function addEvents(rec){
 
         console.log('end speech recognition');
         desactivarMic();
-
-        if (window.getSelection) {
-            window.getSelection().removeAllRanges();
-            var range = document.createRange();
-            range.selectNode(document.getElementById('final_span'));
-            window.getSelection().addRange(range);
-        }
+        sendMessage();
+        clearTimeouts();
+        unblockSendie();
 
         started = false;
 

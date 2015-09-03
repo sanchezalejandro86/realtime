@@ -350,7 +350,7 @@ function addChatMsg(data, sent){
 
 function sendMessage(){
     var data = {
-        text: sendie.text(),
+        text: getSendieText(),
         inputId: Date.now(),
         classRoom: classRoom,
         author: $('#name').val(),
@@ -362,16 +362,19 @@ function sendMessage(){
     clearSendieText();
 }
 
-function clearSendieText(){
-    ['sendie', 'interim_span', 'final_span'].forEach(function(id) {
-        var el = document.getElementById(id);
-        if (el == null) return;
+function blockSendie(){
+    sendie.attr('contentEditable', 'false');
+}
+function unblockSendie(){
+    sendie.attr('contentEditable', 'true');
+}
 
-        var nodes = el.childNodes,
-            i = nodes.length;
-        while (i--)
-            if (nodes[i].nodeType == 3) el.removeChild(nodes[i]);
-    });
+function getSendieText(){
+    return (started? sendie.text() : sendie.html());
+}
+
+function clearSendieText(){
+    sendie.text('');
 }
 
 function showInterim(text){ showText('interim', text) }
