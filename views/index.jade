@@ -48,12 +48,7 @@ block script
         // and override the original config object
         var customConfig;
 
-        Offline.options.reconnect= { initialDelay: 10 };
-
         Offline.options = { checks: { xhr: { url: '/ping' } } };
-
-        var $online = $('.online'),
-            $offline = $('.offline');
 
 
     block script-2
