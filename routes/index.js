@@ -18,6 +18,10 @@ router.get('/class/:classRoom/:prof?', function(req, res, next) {
         });
 });
 
+router.get('/ping', function(req, res, next){
+    res.status(204).send();
+});
+
 router.get('/', function(req, res, next){
     res.render('home');
 });

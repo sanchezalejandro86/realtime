@@ -48,6 +48,14 @@ block script
         // and override the original config object
         var customConfig;
 
+        Offline.options.reconnect= { initialDelay: 10 };
+
+        Offline.options = { checks: { xhr: { url: '/ping' } } };
+
+        var $online = $('.online'),
+            $offline = $('.offline');
+
+
     block script-2
     script(type='text/javascript', src='/javascripts/socket.io-1.3.5.js')
     script(type='text/javascript', src='/javascripts/peer.js')
