@@ -479,6 +479,7 @@ input.gsc-input,
     margin-top: 5px;
     color: black;
     overflow-y: scroll;
+    display: inline-block;
 }
 #sendie-text{
     margin: 0;

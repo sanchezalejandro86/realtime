@@ -21,6 +21,14 @@ block script-2
 
         function processKeyDownChat(e){
             var sendie = $('#sendie');
+
+            //--Forzar shiftkey para que no rompa el sendie
+            if(e.which == 13 && !e.shiftKey) {
+                document.execCommand('insertHTML', false, '<br><br>');
+                e.preventDefault();
+                return false;
+            }
+
             if(e.which == 32){ //con doble space bar, envia al chat
                 var thisKeypressTime = new Date();
                 if ( thisKeypressTime - lastKeypressTime <= delta ) {
