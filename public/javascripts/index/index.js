@@ -1,4 +1,16 @@
-function initializePeerStunTurnOptions() {
+function initializePeerStunTurnOptions(){
+    customConfig = { 'iceServers': [
+        {
+            url: 'stun:numb.viagenie.ca',
+            credential: 'fincaflichman',
+            username: 'fedetemoli02@gmail.com'
+        }, {
+            url: 'turn:numb.viagenie.ca',
+            credential: 'fincaflichman',
+            username: 'fedetemoli02@gmail.com'
+        }]};
+    return;
+
     // Call XirSys ICE servers
     $.ajax({
         url: "https://service.xirsys.com/ice",
@@ -19,34 +31,38 @@ function initializePeerStunTurnOptions() {
     });
 }
 
-var connOpts = { key: 'bp70suzmx5ok1emi' };
 
-var herokuOpts = {
+var connOpts = { key: 'bp70suzmx5ok1emi' };
+var herokuOpts= {
+    //key: 'peerjs',
     host: 'testsnail.herokuapp.com',
     port: '',
+    //path: '/peerjs',
     debug: 3,
     secure: true
+    /*config: customConfig*/
+    /*config: { 'iceServers': [
+     {url:'stun:stun.xten.com'},
+     /* {
+     url: 'turn:numb.viagenie.ca',
+     credential: 'muazkh',
+     username: 'webrtc@live.com'
+     }*//*
+     {
+     url: 'turn:192.158.29.39:3478?transport=tcp',
+     credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+     username: '28224511:1379330808'
+     }
+     ] }*/
 };
-
-var localOpts = {
-    key: 'peerjs',
-    host: '/',
-    port: 443,
-    path: '/api',
-    debug: 3,
-    secure: true
-};
-
 
 function getNewPeer(){
-    var conn = localOpts;
-
-    if(conn.config == null){
+    if(herokuOpts.config == null){
         initializePeerStunTurnOptions();
-        conn.config = customConfig;
+        herokuOpts.config = customConfig;
     }
 
-    return new Peer(conn);
+    return new Peer(herokuOpts);
 }
 var peer = getNewPeer();
 
@@ -118,7 +134,7 @@ function searchComplete(searcher) {
 
             var randomImageId = Math.floor(Math.random() * 1000000000) + 1;
             sr.append(
-                '<div class="col-xs-4 search-result">\
+                '<div class="col-md-4 search-result">\
                     <a id="' + randomImageId + '" href="javascript:fullSizeImage(' + randomImageId + ')" target="_blank">\
                         <img id="img_' + randomImageId + '" onerror="removeImg('+randomImageId+')" class="search-results-image" src="' + result.url + '" />\
                     </a>\
@@ -298,7 +314,7 @@ $(document).ready(function(){
 
     search_results.on("click", ".returnImageList", function(e){
         search_button.click();
-    })
+    });
 
     $('#chat-area').on('click', '.msg-remove', function (e) {
         var id = $(this).siblings('.messages').children('p').attr('id');
@@ -306,12 +322,14 @@ $(document).ready(function(){
 
         removeChatMsg(id);
     });
+
 });
 
 function removeChatMsg(id) {
     var msg = $('#' + id);
     msg.parent().parent().remove();
 }
+
 function addChatMsg(data, sent){
 
     var date = new Date(data.inputId);
@@ -330,10 +348,9 @@ function addChatMsg(data, sent){
     document.getElementById('chat-area').scrollTop = document.getElementById('chat-area').scrollHeight;
 }
 
-function sendMessage(text){
-
+function sendMessage(){
     var data = {
-        text: text,
+        text: getSendieText(),
         inputId: Date.now(),
         classRoom: classRoom,
         author: $('#name').val(),
@@ -342,5 +359,40 @@ function sendMessage(text){
 
     socket.emit('newMessageChat', data);
     addChatMsg(data, true);
-    $('#sendie').val("");
+    clearSendieText();
+}
+
+function blockSendie(){
+    sendie.attr('contentEditable', 'false');
+}
+function unblockSendie(){
+    sendie.attr('contentEditable', 'true');
+}
+
+function getSendieText(){
+    return (started? sendie.text() : sendie.html());
+}
+
+function clearSendieText(){
+    sendie.text('');
+}
+
+function showInterim(text){ showText('interim', text) }
+
+function showFinal(text){ showText('final', text) }
+
+function showText(span, text){
+    var id = span + '_span';
+    $('#' + id).remove();
+    $('#sendie').append(
+        '<span id="' + id + '" class="' + span + '">' + text + '</span>');
+}
+
+function addComma(comma){
+    var span = $('#final_span');
+    span.text(span.text() + comma);
+}
+function removeComma(comma) {
+    var span = $('#final_span');
+    span.text(span.text().replace(new RegExp(comma + '$'), ''));
 }
