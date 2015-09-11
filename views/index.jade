@@ -48,7 +48,19 @@ block script
         // and override the original config object
         var customConfig;
 
-        Offline.options = { checks: { xhr: { url: '/ping' } } };
+        Offline.options = {
+            reconnect: {
+                // How many seconds should we wait before rechecking.
+                initialDelay: 3,
+                // How long should we wait between retries.
+                delay: 3
+            },
+            checks: {
+                xhr: {
+                    url: '/ping'
+                }
+            }
+        };
 
 
     block script-2
